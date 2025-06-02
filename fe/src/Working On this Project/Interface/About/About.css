@@ -1,0 +1,69 @@
+/* About.css */
+
+.about-glass-section {
+  min-height: 90vh;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  box-sizing: border-box;
+}
+
+.about-glass-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.about-glass-text, .about-glass-image {
+  flex: 1 1 50%;
+  padding: 40px;
+  color: white;
+}
+
+.about-glass-text h1 {
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.about-glass-text h1 span {
+  color: #00ffd5;
+}
+
+.about-glass-text p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #f0f0f0;
+}
+
+.about-glass-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .about-glass-container {
+    flex-direction: column;
+  }
+
+  .about-glass-image {
+    padding: 0;
+  }
+
+  .about-glass-text, .about-glass-image {
+    flex: 1 1 100%;
+    padding: 30px;
+  }
+}
