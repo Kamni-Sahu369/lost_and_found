@@ -65,13 +65,7 @@ function Landing() {
               <Route path="/feedback" element={<Feedback />} />
 
 
-              <Route path="/logout" element={<Logout />} />
-<<<<<<< Updated upstream
-              
-=======
-
-
->>>>>>> Stashed changes
+  
             </Routes>
           </div>
         </div>
