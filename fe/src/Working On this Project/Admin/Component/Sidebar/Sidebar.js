@@ -41,8 +41,8 @@ const Sidebar = () => {
     name: 'Notification',
     icon: <Bell size={20} />,
     children: [
-      { name: 'Suggestion', path: '/notification/suggestion' },
-      { name: 'Feedback', path: '/notification/feedback' },
+      { name: 'Suggestion', path: '/suggestion' },
+      { name: 'Feedback', path: '/feedback' },
       { name: 'Updates', path: '/notification/updates' },
     ],
   };

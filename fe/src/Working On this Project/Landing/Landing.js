@@ -12,6 +12,8 @@ import Item from '../Admin/Pages/Item/Item';
 import Profile from '../Admin/Pages/Profile/Profile';
 import Match from '../Admin/Pages/Match/Match';
 import Setting from '../Admin/Pages/Setting/Setting';
+import Suggestion from '../Admin/Pages/Notification/Suggestion'
+import Feedback from '../Admin/Pages/Notification/Feedback'
 import Logout from '../Admin/Pages/Logout/Logout'
 
 
@@ -47,7 +49,13 @@ function Landing() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/match" element={<Match />} />
               <Route path="/setting" element={<Setting />} />
+              {/* notification */}
+              <Route path="/suggestion" element={<Suggestion />} />
+              <Route path="/feedback" element={<Feedback />} />
+
+
               <Route path="/logout" element={<Logout />} />
+              
             </Routes>
           </div>
         </div>
