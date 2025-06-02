@@ -5,7 +5,7 @@ import Header from "../Interface/Header/Header";
 import Footer from "../Interface/Footer/Footer";
 import Home from "../Interface/Home/Home";
 import Sidebar from '../Admin/Component/Sidebar/Sidebar';
-
+import Category from '../Interface/Category/Category'
 
 import Dashboard from '../Admin/Pages/Dashboard/DashboardHome';
 import Item from '../Admin/Pages/Item/Item';
@@ -15,6 +15,17 @@ import Setting from '../Admin/Pages/Setting/Setting';
 import Suggestion from '../Admin/Pages/Notification/Suggestion'
 import Feedback from '../Admin/Pages/Notification/Feedback'
 import Logout from '../Admin/Pages/Logout/Logout'
+
+import Phone from '../Phone/Phone'
+import Key from '../Key/Key'
+import Car from '../Car/Car'
+import Jewellry from "../Jewellry/Jewellry";
+import Watch from '../Watch/Watch'
+import Document from "../Document/Document";
+import Bag from "../Bag/Bag";
+import Laptop from '../Laptop/Laptop'
+import Other from "../Other/Other";
+import Person from '../Person/Person'
 
 
 import './Landing.css'; // External CSS import
@@ -55,7 +66,12 @@ function Landing() {
 
 
               <Route path="/logout" element={<Logout />} />
+<<<<<<< Updated upstream
               
+=======
+
+
+>>>>>>> Stashed changes
             </Routes>
           </div>
         </div>
@@ -64,6 +80,18 @@ function Landing() {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
+
+
+            <Route path='/Phone' element={<Phone />}></Route>
+            <Route path='/Bag' element={<Bag />}></Route>
+            <Route path='/Key' element={<Key />}></Route>
+            <Route path='/Laptop' element={<Laptop />}></Route>
+            <Route path='/Watch' element={<Watch />}></Route>
+            <Route path='/Document' element={<Document />}></Route>
+            <Route path='/Jewellry' element={<Jewellry />}></Route>
+            <Route path='/Other' element={<Other />}></Route>
+            <Route path='/Car' element={<Car />}></Route>
+             <Route path='/Person' element={<Person />}></Route>
           </Routes>
           <Footer />
         </>
