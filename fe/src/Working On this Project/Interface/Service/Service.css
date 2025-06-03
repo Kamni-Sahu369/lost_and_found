@@ -11,7 +11,7 @@
   color: #333;
 }
 
-.cards-wrapper {
+.service-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -33,3 +33,4 @@
 .service-card:nth-child(n+5) {
   width: calc(33.33% - 13.33px);
 }
+
