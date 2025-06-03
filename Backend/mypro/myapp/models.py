@@ -88,3 +88,9 @@ class CreateUserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+# feedback
+class Feedback(models.Model):
+    feedback = models.TextField()
+    rating = models.PositiveSmallIntegerField()

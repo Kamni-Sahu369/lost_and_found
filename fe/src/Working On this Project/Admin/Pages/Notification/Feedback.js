@@ -1,14 +1,15 @@
 import React from 'react';
 import { Card, Form, Input, Rate, Button, message } from 'antd';
-
+import {Feedback_post} from '../../../Api/Service'
 const { TextArea } = Input;
 
 const FeedbackCard = () => {
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
-    console.log('Feedback Submitted:', values);
-    message.success('Thank you for your feedback!');
+  const onFinish = async(values) => {
+    const response = await Feedback_post(values);
+    console.log('Feedback Submitted:', response);
+    alert('Thank you for your feedback!');
     form.resetFields();
     // TODO: API call here to send feedback to backend
   };

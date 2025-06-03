@@ -30,6 +30,7 @@ urlpatterns = [
     path('LostItemCreateView/',LostItemCreateView.as_view()),
     path('FoundItemCreateView/',FoundItemCreateView.as_view()),
     path('CraeteProfile/',CraeteProfile.as_view()),
+    path('FeedbackView/',FeedbackView.as_view()),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

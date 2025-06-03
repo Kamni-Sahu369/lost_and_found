@@ -9,9 +9,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
-
-
-
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+import random
 
 
 
@@ -25,7 +26,32 @@ class PracticeList(APIView):
 
         serializer = MyReg_Serializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
+
+            otp = random.randint(100000, 999999)  # 6 digit OTP
+
+            # 2. OTP ko kahi save karo (session, cache ya db)
+            request.session['otp'] = otp  # simple example - session me store
+
+            # Send email using template
+            subject = "Welcome to Our Platform"
+            from_email = settings.EMAIL_HOST_USER
+            to_email = user.email  # Ensure 'email' field exists in your serializer/model
+
+            context = {
+                'name': user.name  # Assuming `name` is in your model
+            }
+
+            html_content = render_to_string('email_template.html', context)
+            email = EmailMultiAlternatives(subject, '', from_email, [to_email])
+            email.attach_alternative(html_content, "text/html")
+            email.send()
+
+            return Response({'message': 'Data saved and email sent successfully'}, status=status.HTTP_201_CREATED)
+
+
+
+
             return Response({'message': 'Data saved successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -61,30 +87,6 @@ class PracticeList(APIView):
         user_obj.save()
 
         return Response({"message": "Password updated successfully"}, status=status.HTTP_200_OK)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -161,9 +163,15 @@ class CraeteProfile(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-
     def get(self, request):
         lost_items = CreateUserProfile.objects.all().order_by("-id") 
         serializer = CreateUserProfileSerializer(lost_items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class FeedbackView(APIView):
+    def post(self, request):
+        serializer = FeedbackSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

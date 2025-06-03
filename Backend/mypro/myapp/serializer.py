@@ -37,3 +37,8 @@ class CreateUserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CreateUserProfile
         fields = '__all__'  
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feedback
+        fields = '__all__'

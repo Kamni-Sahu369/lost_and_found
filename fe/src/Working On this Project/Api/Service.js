@@ -1,13 +1,12 @@
-import axios from 'axios'
-const Api_Url = 'http://localhost:8000'
-
+import axios from "axios";
+const Api_Url = "http://localhost:8000";
 
 // Registration post
-export const Mp_reg_post = async(data)=>{
-    const response = await axios.post(`${Api_Url}/PracticeList/`,data)
-    return response.data
-
-}
+export const Mp_reg_post = async (data) => {
+  alert("data");
+  const response = await axios.post(`${Api_Url}/PracticeList/`, data);
+  return response.data;
+};
 export const getPracticeList = async () => {
   const response = await axios.get(`${Api_Url}/PracticeList/`);
   return response.data;
@@ -17,15 +16,6 @@ export const updateUserPassword = async (id, data) => {
   const response = await axios.patch(`${Api_Url}/PracticeList/${id}/`, data);
   return response.data;
 };
-
-
-
-
-
-
-
-
-
 
 // Lost Item post
 export const Lost_post = async (values) => {
@@ -40,11 +30,15 @@ export const Lost_post = async (values) => {
   formData.append("description", values.description || "");
   formData.append("item_image", values.item_image); // 👈 Image file
 
-  const response = await axios.post(`${Api_Url}/LostItemCreateView/`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await axios.post(
+    `${Api_Url}/LostItemCreateView/`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 
   return response.data;
 };
@@ -59,7 +53,6 @@ export const Lost_get = async () => {
   }
 };
 
-
 // Found Item post
 export const Found_post = async (values) => {
   const formData = new FormData();
@@ -73,28 +66,28 @@ export const Found_post = async (values) => {
   formData.append("description", values.description || "");
   formData.append("item_image", values.item_image); // Image file
 
-  const response = await axios.post(`${Api_Url}/FoundItemCreateView/`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await axios.post(
+    `${Api_Url}/FoundItemCreateView/`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 
   return response.data;
 };
 
-
 export const Found_get = async () => {
   try {
     const response = await axios.get(`${Api_Url}/FoundItemCreateView/`);
-    return response.data; 
+    return response.data;
   } catch (error) {
     console.error("Error fetching lost items:", error);
     throw error;
   }
 };
-
-
-
 
 // create profile
 export const updateProfile = async (values, profileId) => {
@@ -105,7 +98,7 @@ export const updateProfile = async (values, profileId) => {
   }
 
   const formData = new FormData();
-  
+
   formData.append("alternate_phone", values.alternatePhone || "");
   formData.append("gender", values.gender || "");
   formData.append("dob", values.dob ? values.dob.format("YYYY-MM-DD") : "");
@@ -121,11 +114,11 @@ export const updateProfile = async (values, profileId) => {
   }
 
   const response = await axios.post(`${Api_Url}/CraeteProfile/`, formData, {
-  headers: {
-    "Content-Type": "multipart/form-data",
-    Authorization: `Bearer ${token}`,  // <== Add this!
-  },
-});
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`, // <== Add this!
+    },
+  });
   return response.data;
 };
 
@@ -137,4 +130,10 @@ export const updateProfile_get = async () => {
     console.error("Error fetching lost items:", error);
     throw error;
   }
+};
+
+// Feedback
+export const Feedback_post = async (data) => {
+  const response = await axios.post(`${Api_Url}/FeedbackView/`, data);
+  return response.data;
 };

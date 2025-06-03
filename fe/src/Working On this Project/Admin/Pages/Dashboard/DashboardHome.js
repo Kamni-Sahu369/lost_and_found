@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "antd";
+import { Input ,Button} from "antd";
 import { Lost_get ,Found_get } from "../../../Api/Service"; // adjust this import path
 import "./DashboardHome.css";
 
@@ -55,7 +55,7 @@ function DashboardHome() {
             {/* other options */}
           </select>
         </div>
-        <div className="input-container">
+        {/* <div className="input-container">
           <Input.Search
             placeholder="Search lost or found items..."
             enterButton
@@ -63,6 +63,9 @@ function DashboardHome() {
             onSearch={(value) => console.log("Search:", value)}
             style={{ width: 360 }}
           />
+        </div> */}
+        <div>
+          <Button>Theam</Button>
         </div>
       </div>
 

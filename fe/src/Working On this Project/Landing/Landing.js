@@ -63,6 +63,7 @@ function Landing() {
               {/* notification */}
               <Route path="/suggestion" element={<Suggestion />} />
               <Route path="/feedback" element={<Feedback />} />
+              <Route path="/logout" element={<Logout />} />
 
 
   
