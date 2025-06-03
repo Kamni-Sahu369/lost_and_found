@@ -85,7 +85,7 @@ function Landing() {
             <Route path='/Jewellry' element={<Jewellry />}></Route>
             <Route path='/Other' element={<Other />}></Route>
             <Route path='/Car' element={<Car />}></Route>
-             <Route path='/Person' element={<Person />}></Route>
+            <Route path='/Person' element={<Person />}></Route>
           </Routes>
           <Footer />
         </>
