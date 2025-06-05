@@ -9,6 +9,10 @@
     justify-content: space-between;
   
 }
+.profile_card_main{
+  display: flex;
+  justify-content:space-around;
+}
 .profile-card {
   width: 350px;             /* Wider card */
   height: 640px;            /* Approx 80vh (screen height ke 80%) */

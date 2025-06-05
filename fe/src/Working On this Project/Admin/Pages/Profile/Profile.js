@@ -78,6 +78,7 @@ function Profile() {
       const data = await updateProfile_get();
       setUser(data);
       console.log(data)
+      const savedat = localStorage.getItem("registerFormData")
       
     } catch (error) {
       console.error("Failed to fetch profile:", error);
@@ -255,7 +256,7 @@ function Profile() {
 
       {/* Profile Card */}
       <div>
-        <div>
+        <div className="profile_card_main">  
           {user.map((i) => (
             <div className="profile-card">
               <img

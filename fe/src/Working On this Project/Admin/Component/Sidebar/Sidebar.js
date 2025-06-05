@@ -21,7 +21,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const topMenus = [
-    { name: 'Dashboard', icon: <Home size={20} />, path: '/' },
+    { name: 'Dashboard', icon: <Home size={20}  />, path: '/' },
     { name: 'Item', icon: <PackageSearch size={20} />, path: '/item' },
     { name: 'Profile', icon: <User size={20} />, path: '/profile' },
     { name: 'Match', icon: <Search  size={20} />, path: '/match' },

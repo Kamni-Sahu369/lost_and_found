@@ -31,6 +31,7 @@ urlpatterns = [
     path('FoundItemCreateView/',FoundItemCreateView.as_view()),
     path('CraeteProfile/',CraeteProfile.as_view()),
     path('FeedbackView/',FeedbackView.as_view()),
+    path('varify_otp/',VerifyOtp.as_view()),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

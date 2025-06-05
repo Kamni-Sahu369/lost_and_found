@@ -7,6 +7,13 @@ export const Mp_reg_post = async (data) => {
   const response = await axios.post(`${Api_Url}/PracticeList/`, data);
   return response.data;
 };
+
+export const otp_varify= async (data) => {
+  alert("data");
+  const response = await axios.post(`${Api_Url}/varify_otp/`, data);
+  return response.data;
+};
+
 export const getPracticeList = async () => {
   const response = await axios.get(`${Api_Url}/PracticeList/`);
   return response.data;

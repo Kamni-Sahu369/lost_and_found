@@ -32,8 +32,9 @@ class My_Reg(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)  
     name = models.CharField(max_length=255)
     country = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15)  
-    is_active = models.BooleanField(default=True)
+    phone = models.CharField(max_length=15) 
+    otp = models.CharField(max_length=6 , default='000000' , blank=True , null= True) 
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     last_login = models.DateTimeField(null=True, blank=True)  
 

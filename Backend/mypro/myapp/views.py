@@ -16,30 +16,32 @@ import random
 
 
 
-# Registration
 class PracticeList(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
         data = request.data.copy()
+
+        # 1. Hash the password
         data['password'] = make_password(data.get('password'))
 
+        # 2. Generate a 6-digit OTP
+        otp = random.randint(100000, 999999)
+        data['otp'] = otp  # Save OTP in DB with user
+
+        # 3. Validate and Save User
         serializer = MyReg_Serializer(data=data)
         if serializer.is_valid():
             user = serializer.save()
 
-            otp = random.randint(100000, 999999)  # 6 digit OTP
-
-            # 2. OTP ko kahi save karo (session, cache ya db)
-            request.session['otp'] = otp  # simple example - session me store
-
-            # Send email using template
-            subject = "Welcome to Our Platform"
+            # 4. Prepare and send the email
+            subject = "Welcome to Our Platform – Your OTP Code"
             from_email = settings.EMAIL_HOST_USER
-            to_email = user.email  # Ensure 'email' field exists in your serializer/model
+            to_email = user.email
 
             context = {
-                'name': user.name  # Assuming `name` is in your model
+                'name': user.name,
+                'otp': otp
             }
 
             html_content = render_to_string('email_template.html', context)
@@ -47,12 +49,11 @@ class PracticeList(APIView):
             email.attach_alternative(html_content, "text/html")
             email.send()
 
-            return Response({'message': 'Data saved and email sent successfully'}, status=status.HTTP_201_CREATED)
+            return Response(
+                {'message': 'Registration successful and OTP sent to email','data':serializer.data},
+                status=status.HTTP_201_CREATED
+            )
 
-
-
-
-            return Response({'message': 'Data saved successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, pk=None):  # pk ko optional banaya
@@ -175,3 +176,30 @@ class FeedbackView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class VerifyOtp(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        otp = request.data.get('otp')
+
+        if not email or not otp:
+            return Response({
+                "status": False,
+                "message": "Email and OTP are required."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        user = My_Reg.objects.filter(email=email, otp=otp).first()
+
+        if user:
+            user.is_active = True
+            user.save()
+            return Response({
+                "status": True,
+                "message": "OTP verified. Account activated."
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "status": False,
+            "message": "Invalid email or OTP."
+        }, status=status.HTTP_400_BAD_REQUEST)
