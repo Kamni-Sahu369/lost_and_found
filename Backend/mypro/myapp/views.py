@@ -99,7 +99,8 @@ class LoginAPIView(APIView):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']
-            
+            # is_staff check karo directly
+            role = "admin" if user.is_staff else "user"
             refresh = RefreshToken.for_user(user)
             
             return Response({
@@ -107,6 +108,7 @@ class LoginAPIView(APIView):
                 "message": "Login successful",
                 "access_token": str(refresh.access_token),
                 "refresh_token": str(refresh),
+                "role": role
             }, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

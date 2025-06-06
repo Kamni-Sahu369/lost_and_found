@@ -1,11 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { Input ,Button} from "antd";
-import { Lost_get ,Found_get } from "../../../Api/Service"; // adjust this import path
+import { Input } from "antd";
+import { Lost_get, Found_get } from "../../../Api/Service"; // adjust if needed
 import "./DashboardHome.css";
+// import "./ThemeToggleDropdown.css"; // <- custom CSS
 
 function DashboardHome() {
   const [lostItems, setLostItems] = useState([]);
-  const [foundItems, setFoundItems] = useState([]); // placeholder
+  const [foundItems, setFoundItems] = useState([]);
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || "default"
+  );
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove("light-theme", "dark-theme");
+
+    if (theme === "dark") {
+      root.classList.add("dark-theme");
+      localStorage.setItem("theme", "dark");
+    } else if (theme === "light") {
+      root.classList.add("light-theme");
+      localStorage.setItem("theme", "light");
+    } else {
+      localStorage.removeItem("theme");
+    }
+  }, [theme]);
+
+  const handleSelect = (value) => {
+    setTheme(value);
+    setOpen(false);
+  };
 
   useEffect(() => {
     const fetchLostItems = async () => {
@@ -26,20 +51,27 @@ function DashboardHome() {
         const data = await Found_get();
         setFoundItems(data);
       } catch (error) {
-        console.error("Error fetching lost items:", error);
+        console.error("Error fetching found items:", error);
       }
     };
 
     fetchFoundItems();
   }, []);
 
-  
+  const cardData = [
+    { title: 'Total Users', value: 120, color: 'bg-blue-100 text-blue-800' },
+    { title: 'Active Users', value: 95, color: 'bg-green-100 text-green-800' },
+    { title: 'Inactive Users', value: 25, color: 'bg-yellow-100 text-yellow-800' },
+    { title: 'Admins', value: 5, color: 'bg-purple-100 text-purple-800' },
+  ];
+
+
 
   return (
     <div className="dashboard_container">
       {/* Header */}
       <div className="dashboard-header">
-        <div>
+        <div className="header_category">
           <select className="category-select">
             <option value="all">All Categories</option>
             <option value="personal_belongings">Personal Belongings</option>
@@ -52,10 +84,9 @@ function DashboardHome() {
             <option value="vehicles_related">Vehicles and Related Items</option>
             <option value="office_study">Office and Study Items</option>
             <option value="religious_items">Religious Items</option>
-            {/* other options */}
           </select>
         </div>
-        {/* <div className="input-container">
+        <div className="input-container">
           <Input.Search
             placeholder="Search lost or found items..."
             enterButton
@@ -63,21 +94,51 @@ function DashboardHome() {
             onSearch={(value) => console.log("Search:", value)}
             style={{ width: 360 }}
           />
-        </div> */}
+        </div>
+
+        {/* Theme Toggle Dropdown */}
         <div>
-          <Button>Theam</Button>
+          <div className="dropdown-container">
+            <button className="dropdown-button" onClick={() => setOpen(!open)}>
+              🌐 Theme
+            </button>
+            {open && (
+              <div className="dropdown-menu">
+                <button onClick={() => handleSelect("light")}>🌞 Light</button>
+                <button onClick={() => handleSelect("dark")}>🌚 Dark</button>
+                <button onClick={() => handleSelect("default")}>
+                  ⚙️ System
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Middle */}
+      {/* Content */}
       <div className="dashboard-content">
+        {/* member */}
+        <div className="p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            {cardData.map((card, index) => (
+              <div
+                key={index}
+                className={`rounded-2xl shadow-md p-6 ${card.color} transition-all duration-300 hover:scale-105`}
+              >
+                <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
+                <p className="text-3xl font-bold">{card.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
         {/* Lost Items */}
         <div className="lost-items">
           <h3>Lost Items</h3>
-          <div className="card-row" >
+          <div className="card-row">
             {lostItems.map((item) => (
-              <div className="card">
-                <img className="item_img"
+              <div className="card" key={item.id}>
+                <img
+                  className="item_img"
                   src={`http://localhost:8000${item.item_image}`}
                   alt={item.name}
                 />
@@ -85,7 +146,6 @@ function DashboardHome() {
               </div>
             ))}
           </div>
-        
         </div>
 
         {/* Found Items */}
@@ -106,7 +166,7 @@ function DashboardHome() {
       </div>
 
       {/* Footer */}
-      <div className="dashboard-footer">Footer content here</div>
+      {/* <div className="dashboard-footer">ankit</div> */}
     </div>
   );
 }

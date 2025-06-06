@@ -30,11 +30,13 @@ const Register = () => {
     try {
       const response = await Mp_reg_post(values);
       console.log("Success hai:", response.data.email);
-      // ✅ Notification on success
+      localStorage.setItem("Ankit data", JSON.stringify(response.data));
+      
+      
       alert("successfully Registration");
       setEmail(response.data.email);
       setIsModalOpen(true);
-      // ✅ Reset form after submission
+      
       form.resetFields();
 
       // ✅ Redirect to login (optional, uncomment if needed)
@@ -73,6 +75,7 @@ const Register = () => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    form.resetFields();
   };
 
   useEffect(() => {
@@ -203,6 +206,33 @@ const Register = () => {
 };
 
 export default Register;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import React from "react";
 // import {
