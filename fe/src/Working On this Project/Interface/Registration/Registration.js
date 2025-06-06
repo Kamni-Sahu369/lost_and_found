@@ -81,7 +81,7 @@ const Register = () => {
       }, []);
 
   return (
-    <div className="main_rigration" data-aos="fade-up" data-aos-duration="2000">
+    <div className="main_rigration"  data-aos-duration="2000">
       <div className="register-container">
         <div className="register-box">
           <Title level={2} style={{ textAlign: "center" }}>
