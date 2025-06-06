@@ -1,5 +1,5 @@
-import React, { useState, useRef,useEffect } from "react";
-
+import React, { useState, useRef, useEffect } from "react";
+import { Card,Select,Option} from 'antd';
 import AOS from 'aos';
 import 'aos/dist/aos.css'
 import Login from "../Login/Login";
@@ -31,12 +31,12 @@ const Register = () => {
       const response = await Mp_reg_post(values);
       console.log("Success hai:", response.data.email);
       localStorage.setItem("Ankit data", JSON.stringify(response.data));
-      
-      
+
+
       alert("successfully Registration");
       setEmail(response.data.email);
       setIsModalOpen(true);
-      
+
       form.resetFields();
 
       // ✅ Redirect to login (optional, uncomment if needed)
@@ -79,16 +79,16 @@ const Register = () => {
   };
 
   useEffect(() => {
-        AOS.init({ duration: 8000, once: true });
-        AOS.refresh()
-      }, []);
+    AOS.init({ duration: 8000, once: true });
+    AOS.refresh()
+  }, []);
 
   return (
-    <div className="main_rigration"  data-aos-duration="2000">
+    <div className="main_rigration" data-aos-duration="2000">
       <div className="register-container">
         <div className="register-box">
           <Title level={2} style={{ textAlign: "center" }}>
-            • Registration Form •
+            Registration Form
           </Title>
           <Form form={form} layout="vertical" onFinish={onFinish}>
             <Form.Item
@@ -110,8 +110,17 @@ const Register = () => {
               <Input placeholder="Email address" />
             </Form.Item>
 
-            <Form.Item name="country" label="Country">
+            {/* <Form.Item name="country" label="Country">
               <Input placeholder="Country" />
+            </Form.Item> */}
+
+            <Form.Item name="country" label="Country">
+              <Select placeholder="Select a country">
+                <Select.Option value="india">India</Select.Option>
+                <Select.Option value="usa">USA</Select.Option>
+                <Select.Option value="uk">UK</Select.Option>
+                <Select.Option value="australia">Australia</Select.Option>
+              </Select>
             </Form.Item>
 
             <Form.Item
@@ -121,7 +130,7 @@ const Register = () => {
                 { required: true, message: "Please enter your phone number" },
               ]}
             >
-              <Input placeholder="Phone" />
+              <Input type="" placeholder="Phone" maxLength={10} pattern='\d{10}' />
             </Form.Item>
 
             <Form.Item
@@ -160,7 +169,7 @@ const Register = () => {
                 type="primary"
                 htmlType="submit"
                 block
-                // onClick={showModal}
+              // onClick={showModal}
               >
                 CREATE ACCOUNT
               </Button>
@@ -192,13 +201,21 @@ const Register = () => {
                 </Space>
               </Modal>
             </Form.Item>
-            <Text style={{ display: "block", textAlign: "center" }}>
+            {/* <Text style={{ display: "block", textAlign: "center" }}>
               Already have an account?
-            </Text>
+            </Text> */}
           </Form>
-          <button type="button">
+          {/* <button type="button" className="registration_but">
             <Login />
-          </button>
+          </button> */}
+
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "6px" }}>
+            <Text style={{ margin: 0 }}>Already have an account?</Text>
+            <button type="button" className="registration_but">
+              <Login />
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
