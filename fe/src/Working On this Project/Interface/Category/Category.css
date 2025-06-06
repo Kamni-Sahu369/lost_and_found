@@ -3,9 +3,15 @@
   display: flex;
   justify-content: center;
   background-color: white;
-  margin-top: 3%;
+  margin-top: 1%;
   background-color: rgb(202, 227, 241);
   height: 50%;
+}
+.category_head{
+  font-size: 50px;
+  color: rgb(20, 70, 90);
+  margin-top:5%;
+ margin-left: 3%;
 }
 
 .category-grid {

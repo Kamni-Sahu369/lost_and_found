@@ -1,4 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
+
+import AOS from 'aos';
+import 'aos/dist/aos.css'
 import Login from "../Login/Login";
 import {
   Form,
@@ -75,8 +78,13 @@ const Register = () => {
     form.resetFields();
   };
 
+  useEffect(() => {
+        AOS.init({ duration: 8000, once: true });
+        AOS.refresh()
+      }, []);
+
   return (
-    <div className="main_rigration">
+    <div className="main_rigration" data-aos="fade-up" data-aos-duration="2000">
       <div className="register-container">
         <div className="register-box">
           <Title level={2} style={{ textAlign: "center" }}>

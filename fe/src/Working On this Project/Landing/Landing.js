@@ -5,7 +5,11 @@ import Header from "../Interface/Header/Header";
 import Footer from "../Interface/Footer/Footer";
 import Home from "../Interface/Home/Home";
 import Sidebar from '../Admin/Component/Sidebar/Sidebar';
+import About from '../Interface/About/About'
+import Service from "../Interface/Service/Service";
+import Register from "../Interface/Registration/Registration";
 import Category from '../Interface/Category/Category'
+import Categoryfolder from '../Interface/Categoryfolder/Categoryfolder'
 
 import Dashboard from '../Admin/Pages/Dashboard/DashboardHome';
 import Item from '../Admin/Pages/Item/Item';
@@ -16,17 +20,16 @@ import Suggestion from '../Admin/Pages/Notification/Suggestion'
 import Feedback from '../Admin/Pages/Notification/Feedback'
 import Logout from '../Admin/Pages/Logout/Logout'
 
-import Phone from '../Phone/Phone'
-import Key from '../Key/Key'
-import Car from '../Car/Car'
-import Jewellry from "../Jewellry/Jewellry";
-import Watch from '../Watch/Watch'
-import Document from "../Document/Document";
-import Bag from "../Bag/Bag";
-import Laptop from '../Laptop/Laptop'
-import Other from "../Other/Other";
-import Person from '../Person/Person'
-
+import Phone from '../Interface/Categoryfolder/Phone/Phone'
+import Key from '../Interface/Categoryfolder/Key/Key'
+import Car from '../Interface/Categoryfolder/Car/Car'
+import Jewellry from '../Interface/Categoryfolder/Jewellry/Jewellry'
+import Watch from '../Interface/Categoryfolder/Watch/Watch'
+import Document from '../Interface/Categoryfolder/Document/Document'
+import Bag from '../Interface/Categoryfolder/Bag/Bag'
+import Laptop from '../Interface/Categoryfolder/Laptop/Laptop'
+import Other from '../Interface/Categoryfolder/Other/Other'
+import Person from '../Interface/Categoryfolder/Person/Person'
 
 import './Landing.css'; // External CSS import
 
@@ -66,7 +69,7 @@ function Landing() {
               <Route path="/logout" element={<Logout />} />
 
 
-  
+
             </Routes>
           </div>
         </div>
@@ -74,8 +77,12 @@ function Landing() {
         <>
           <Header />
           <Routes>
-            <Route path="/" element={<Home />} />
-
+            <Route path="/home" element={<Home/>} />
+            <Route path='/About' element={<About />}></Route>
+            <Route path='/About' element={<About />}></Route>
+            <Route path='/Service' element={<Service />}></Route>
+            <Route path='/Register' element={<Register />}></Route>
+            <Route path='/category' element={<Category />}></Route>
 
             <Route path='/Phone' element={<Phone />}></Route>
             <Route path='/Bag' element={<Bag />}></Route>
