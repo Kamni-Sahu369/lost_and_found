@@ -37,7 +37,7 @@ class My_Reg(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     last_login = models.DateTimeField(null=True, blank=True)  
-
+    
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'

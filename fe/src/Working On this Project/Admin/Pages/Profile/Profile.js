@@ -78,7 +78,8 @@ function Profile() {
       const data = await updateProfile_get();
       setUser(data);
       console.log(data)
-      const savedat = localStorage.getItem("registerFormData")
+      const savedData = JSON.parse(localStorage.getItem("registerData"));
+      console.log(savedData)
       
     } catch (error) {
       console.error("Failed to fetch profile:", error);
