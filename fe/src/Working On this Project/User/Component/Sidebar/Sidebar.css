@@ -1,0 +1,117 @@
+
+
+
+
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(to bottom, #0d9488, #1d4ed8);
+  color: white;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  
+}
+
+.sidebar.open {
+  width: 240px;
+}
+
+.sidebar.closed {
+  width: 80px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.sidebar-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.toggle-btn {
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 12px;
+}
+
+.menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.menu-text {
+  font-size: 16px;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.settings-header:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.settings-icon-label {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.settings-submenu {
+  margin-left: 32px;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.settings-submenu-item {
+  cursor: pointer;
+  transition: text-decoration 0.2s;
+}
+
+.settings-submenu-item:hover {
+  text-decoration: underline;
+}
+
+.logout {
+  margin: 16px 0;
+}

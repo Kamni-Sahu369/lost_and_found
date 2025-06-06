@@ -96,6 +96,8 @@ class PracticeList(APIView):
 # Login
 class LoginAPIView(APIView):
     def post(self, request):
+        # import pdb
+        # pdb.set_trace()
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Input, Button, Form, Modal, message } from "antd";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Login() {
   const [openLogin, setOpenLogin] = useState(false);
@@ -20,12 +20,12 @@ function Login() {
       const response = await fetch("http://localhost:8000/login/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           email: values.email,
-          password: values.password,
-        }),
+          password: values.password
+        })
       });
 
       if (!response.ok) {
@@ -34,22 +34,22 @@ function Login() {
       }
 
       const data = await response.json();
-      console.log(data, "hiiiii");
+      console.log(data,"hiiiii")
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("refresh_token", data.refresh_token);
-      localStorage.setItem("loggedIn", true);
+      localStorage.setItem("loggedIn",true);
       localStorage.setItem("role", data.role);
-
+      const role = localStorage.getItem("role")
       message.success("Login successful!");
 
       // redirect or close modal
       setOpenLogin(false);
-
-      if (data.role === "admin") {
-        navigate("/admin/dashboard"); // admin ka route
-      } else {
-        navigate("/user/dashboard"); // user ka route
+      if (data.role === "admin"){
+      navigate("/");
       }
+      else {
+        navigate("/");
+      } // replace with your target route
     } catch (error) {
       console.error("Login failed:", error);
       message.error("Something went wrong");
@@ -67,14 +67,7 @@ function Login() {
 
       <Modal
         title={
-          <span
-            style={{
-              color: "darkblue",
-              fontWeight: "700",
-              fontSize: "25px",
-              marginLeft: "35%",
-            }}
-          >
+          <span style={{ color: "darkblue", fontWeight: '700', fontSize: "25px", marginLeft: "35%" }}>
             Login Page
           </span>
         }
@@ -92,7 +85,7 @@ function Login() {
           <Form.Item
             label="Email"
             name="email"
-            rules={[{ required: true, message: "Please enter email/username" }]}
+            rules={[{ required: true, message: 'Please enter email/username' }]}
           >
             <Input placeholder="Your email" style={{ width: 300 }} />
           </Form.Item>
@@ -100,23 +93,16 @@ function Login() {
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: "Please enter password" }]}
+            rules={[{ required: true, message: 'Please enter password' }]}
           >
-            <Input.Password
-              placeholder="Special character"
-              style={{ width: 300 }}
-            />
+            <Input.Password placeholder="Special character" style={{ width: 300 }} />
           </Form.Item>
 
           <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
-              style={{
-                backgroundColor: "green",
-                color: "white",
-                marginLeft: "25%",
-              }}
+              style={{ backgroundColor: "green", color: "white", marginLeft: "25%" }}
             >
               Submit
             </Button>

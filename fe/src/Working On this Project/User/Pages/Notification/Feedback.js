@@ -16,7 +16,7 @@ const FeedbackCard = () => {
 
   return (
     <div style={{ maxWidth: 500, margin: '50px auto' }}>
-      <Card title="View Feedback" bordered>
+      <Card title="Share Your Feedback" bordered>
         <Form
           form={form}
           layout="vertical"

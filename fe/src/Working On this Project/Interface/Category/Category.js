@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css'
 import './Category.css'
-import { Card } from 'antd'
+// import { Card } from 'antd'
 import { Link } from 'react-router-dom';
 import Mobile from '../../image/Category_img/mobiles.svg'
 import Bags from '../../image/Category_img/bags.svg'
