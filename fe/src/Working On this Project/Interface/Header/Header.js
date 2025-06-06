@@ -19,10 +19,10 @@ const Header = () => {
         <Link to="/home" >Home</Link>
         <Link to="about" smooth={true} duration={500}>About</Link>
         <Link to="service" smooth={true} duration={500}>Service</Link>
-          <Link to="/category" >Category</Link>
+        <Link to="/category" >Category</Link>
         <Link to="register" smooth={true} duration={500}>Register</Link>
-      
-        
+
+
       </div>
       <div>
         <Login />

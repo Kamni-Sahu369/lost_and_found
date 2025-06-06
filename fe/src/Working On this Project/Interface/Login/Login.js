@@ -59,8 +59,10 @@ function Login() {
   return (
     <div>
       <Button
+        // type="link"
+        // style={{ color: "red", textDecoration: "underline", padding: 0 }}
         onClick={() => setOpenLogin(true)}
-        className="Mp_home_beside_btn_second"
+      // className="Mp_home_beside_btn_second"
       >
         Login
       </Button>
