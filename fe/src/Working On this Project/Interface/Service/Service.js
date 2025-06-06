@@ -21,8 +21,9 @@
 
 // export default Service;
 
-
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css'
 import './Service.css';
 function Service() {
 
@@ -63,8 +64,12 @@ function Service() {
       "Our Lost and Found desk is open during regular hours for drop-offs and pickups."
   }
 ];
+useEffect(() => {
+      AOS.init({ duration: 8000, once: true });
+      AOS.refresh()
+    }, []);
   return (
-    <div>
+    <div data-aos="fade-up" data-aos-duration="2000">
      <div className="service-container">
       <h1 className="service-title">Our Lost and Found Services</h1>
       <div className="service-grid">

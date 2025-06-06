@@ -1,7 +1,7 @@
 import React from 'react';
 import './Header.css';
-
-import { Link } from "react-scroll"
+import { Link } from "react-router-dom"
+import { ScrollLink } from "react-scroll"
 
 // image
 import Logo from "../../image/ankit_logo-removebg-preview.png"
@@ -16,11 +16,12 @@ const Header = () => {
       </div>
       <div className="nav-links">
 
-        <Link to="home" smooth={true} duration={100}>Home</Link>
+        <Link to="/home" >Home</Link>
         <Link to="about" smooth={true} duration={500}>About</Link>
         <Link to="service" smooth={true} duration={500}>Service</Link>
+          <Link to="/category" >Category</Link>
         <Link to="register" smooth={true} duration={500}>Register</Link>
-        <Link to="category" smooth={true} duration={500}>Category</Link>
+      
         
       </div>
       <div>
