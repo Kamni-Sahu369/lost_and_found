@@ -120,11 +120,32 @@ const Register = () => {
               name="phone"
               label="Phone"
               rules={[
-                { required: true, message: "Please enter your phone number"  },
+                { required: true, message: "Please enter your phone number" },
+                {
+                  pattern: /^\d{10}$/,
+                  message: "Phone number must be exactly 10 digits",
+                },
               ]}
             >
-              <Input placeholder="Phone" type="number"  maxLength={10} pattern='\d{10}'/>
+              <Input
+                type="text"
+                inputMode="numeric"
+                maxLength={10}
+                placeholder="Enter phone number"
+                onKeyPress={(e) => {
+                  // Block any non-digit key
+                  if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
+                onChange={(e) => {
+                  // Remove any pasted non-digit characters
+                  e.target.value = e.target.value.replace(/\D/g, "");
+                }}
+              />
             </Form.Item>
+
+
 
             <Form.Item
               name="password"
