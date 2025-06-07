@@ -17,47 +17,48 @@ import Person from '../../image/Category_img/persons.svg'
 import User from '../../image/Category_img/user.svg'
 import Reporting from '../../image/Category_img/reporting.svg'
 import Correct from '../../image/Category_img/correct.svg'
+
 const Home = () => {
 
-   const lostFoundServices = [
-  {
-    title: "Secure Item Collection",
-    description:
-      "All found items are safely collected and stored in a secure location."
-  },
-  {
-    title: "Detailed Cataloging",
-    description:
-      "Each item is tagged and logged with detailed descriptions for easy identification."
-  },
-  {
-    title: "Lost Item Reporting",
-    description:
-      "Users can report lost items online or in person with a simple and fast process."
-  },
-  {
-    title: "Matching & Notifications",
-    description:
-      "We match found items with reports and notify owners promptly."
-  },
-  {
-    title: "Verified Item Return",
-    description:
-      "Items are returned only to verified owners to ensure security and accuracy."
-  },
-  {
-    title: "Customer Support",
-    description:
-      "Friendly support staff are available to assist with inquiries and updates."
-  },
-  {
-    title: "Accessible Service Hours",
-    description:
-      "Our Lost and Found desk is open during regular hours for drop-offs and pickups."
-  }
-];
+  const lostFoundServices = [
+    {
+      title: "Secure Item Collection",
+      description:
+        "All found items are safely collected and stored in a secure location."
+    },
+    {
+      title: "Detailed Cataloging",
+      description:
+        "Each item is tagged and logged with detailed descriptions for easy identification."
+    },
+    {
+      title: "Lost Item Reporting",
+      description:
+        "Users can report lost items online or in person with a simple and fast process."
+    },
+    {
+      title: "Matching & Notifications",
+      description:
+        "We match found items with reports and notify owners promptly."
+    },
+    {
+      title: "Verified Item Return",
+      description:
+        "Items are returned only to verified owners to ensure security and accuracy."
+    },
+    {
+      title: "Customer Support",
+      description:
+        "Friendly support staff are available to assist with inquiries and updates."
+    },
+    {
+      title: "Accessible Service Hours",
+      description:
+        "Our Lost and Found desk is open during regular hours for drop-offs and pickups."
+    }
+  ];
 
-const items = [
+  const items = [
     { path: '/Phone', img: Mobile, label: 'Mobile' },
     { path: '/Bags', img: Bags, label: 'Bag' },
     { path: '/Key', img: Key, label: 'Key' },
@@ -78,30 +79,34 @@ const items = [
               <div className="about-glass-text">
                 <h1>About <span>SmartE</span></h1>
                 <p>
-                  SmartE is a modern employee management platform built to simplify HR tasks like attendance, leave, and payroll. We believe in technology that empowers people to do more with less effort.
+                  Lost and Found is a system designed to help individuals recover lost items and return found items to their rightful owners. It acts as a bridge between the person who lost something and the person who found it.
+
+                  Whether it's a phone, Watch, car, keys, documents, or any personal belonging — this platform provides a central place to report, search, and connect.
+
+
                 </p>
               </div>
               <div className="about-glass-image">
-                <img src="https://source.unsplash.com/600x400/?technology,team" alt="Teamwork" />
+
               </div>
             </div>
           </div>
         </div>
       </div>
 
-       <div className="service-container">
-      <h1 className="service-title">Our Lost and Found Services</h1>
-      <div className="service-grid">
-        {lostFoundServices.map((service, index) => (
-          <div className="service-card" key={index}>
-            <h3 className='service_hrading'>{service.title}</h3>
-            <p>{service.description}</p>
-          </div>
-        ))}
+      <div className="service-container">
+        <h1 className="service-title">Our Lost and Found Services</h1>
+        <div className="service-grid">
+          {lostFoundServices.map((service, index) => (
+            <div className="service-card" key={index}>
+              <h3 className='service_hrading'>{service.title}</h3>
+              <p>{service.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
 
-<div className="category-container">
+      <div className="category-container">
         <ul className="category-grid">
           {items.map((item) => (
             <li className="category-item">
@@ -114,7 +119,7 @@ const items = [
         </ul>
       </div>
 
-       <h1 className='home_h1'>How to post the Ad ?</h1>
+      <h1 className='home_h1'>How to post the Ad ?</h1>
       <div className='second_div'>
         <Card className='home_box'>
           <img src={User} className='home_img1'></img>
