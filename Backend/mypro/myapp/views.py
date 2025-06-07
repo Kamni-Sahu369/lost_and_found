@@ -156,15 +156,15 @@ class FoundItemCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
-    def get(self, request ,pk=None):
+    def get(self, request, pk=None):
         if pk:
-            lost_item = LostItem.objects.filter(id=pk, user=request.user).first()
+            lost_item = FoundItem.objects.filter(id=pk, user=request.user).first()
             if not lost_item:
                 return Response({'error': 'Item not found'}, status=status.HTTP_404_NOT_FOUND)
-            serializer = LostItemSerializer(lost_item)
+            serializer = FoundItemSerializer(lost_item)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        
-        lost_items = FoundItem.objects.all().order_by("-id")  # You can limit if needed
+
+        lost_items = FoundItem.objects.all().order_by("-id")
         serializer = FoundItemSerializer(lost_items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
