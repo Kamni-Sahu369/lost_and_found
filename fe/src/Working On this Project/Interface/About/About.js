@@ -7,7 +7,7 @@ import { Card } from 'antd'
 import User from '../../image/Category_img/user.svg'
 import Reporting from '../../image/Category_img/reporting.svg'
 import Correct from '../../image/Category_img/correct.svg'
-import about_img from '../../image/about_img.png'
+// import about_img from '../../image/about_img.png'
 const About = () => {
 
   useEffect(() => {
@@ -29,8 +29,7 @@ const About = () => {
             </p>
           </div>
           <div className="about-glass-image">
-           {/* <img src='about_img'></img> */}
-           <img src={about_img}></img>
+          
           </div>
         </div>
       </div>
