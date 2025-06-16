@@ -16,7 +16,7 @@ const Header = () => {
       </div>
       <div className="nav-links">
 
-        <Link to="/home" >Home</Link>
+        <Link to="/" >Home</Link>
         <Link to="about" smooth={true} duration={500}>About</Link>
         <Link to="service" smooth={true} duration={500}>Service</Link>
         <Link to="/category" >Category</Link>

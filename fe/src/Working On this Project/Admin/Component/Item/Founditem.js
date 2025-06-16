@@ -1,8 +1,4 @@
 
-
-
-
-
 import React, { useState } from "react";
 import {
   Form,
@@ -71,6 +67,7 @@ const FoundForm = () => {
           <Col span={12}>
             <Form.Item
               name="category"
+              value
               label="Category"
               rules={[{ required: true, message: "Please select a category" }]}
             >

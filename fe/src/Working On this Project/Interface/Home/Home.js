@@ -59,16 +59,16 @@ const Home = () => {
   ];
 
   const items = [
-    { path: '/Phone', img: Mobile, label: 'Mobile' },
-    { path: '/Bags', img: Bags, label: 'Bag' },
-    { path: '/Key', img: Key, label: 'Key' },
-    { path: '/Laptop', img: Laptop, label: 'Laptop' },
-    { path: '/Watch', img: Watch, label: 'Watch' },
-    { path: '/gewellry', img: jewellry, label: 'jewellry' },
-    { path: '/Document', img: Document, label: 'Document' },
-    { path: '/Car', img: Car, label: 'Car' },
-    { path: '/Person', img: Person, label: 'Person' },
-    { path: '/Other', img: Other, label: 'Other' },
+    { path: '/SubCategory', img: Mobile, label: 'Mobile' },
+    { path: '/SubCategory', img: Bags, label: 'Bag' },
+    { path: '/SubCategory', img: Key, label: 'Key' },
+    { path: '/SubCategory', img: Laptop, label: 'Laptop' },
+    { path: '/SubCategory', img: Watch, label: 'Watch' },
+    { path: '/SubCategory', img: jewellry, label: 'jewellry' },
+    { path: '/SubCategory', img: Document, label: 'Document' },
+    { path: '/SubCategory', img: Car, label: 'Car' },
+    { path: '/SubCategory', img: Person, label: 'Person' },
+    { path: '/SubCategory', img: Other, label: 'Other' },
   ];
   return (
     <div>

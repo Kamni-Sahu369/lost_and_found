@@ -13,17 +13,26 @@ function Logout() {
     navigate("/dashboard");
   };
 
-  const handleConfirmLogout =  () => {
-    try {
-      localStorage.removeItem("loggedIn");
-      navigate("/");
-    } catch (error) {
-      console.error("Logout failed:", error);
+  const handleConfirmLogout = () => {
+  try {
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("role");
+    navigate("/");
+  } catch (error) {
+    console.error("Logout failed:", error);
 
-      localStorage.removeItem("loggedIn");
-      navigate("/");
-    }
-  };
+    // Even in case of error, attempt to clear localStorage
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("role");
+    navigate("/");
+  }
+};
 
   return (
     <div className="logout-page">

@@ -32,11 +32,13 @@ function DashboardHome() {
     setOpen(false);
   };
 
+  // Lost item Fetch
   useEffect(() => {
     const fetchLostItems = async () => {
       try {
-        const data = await Lost_get();
+        const data = await Lost_get(localStorage.getItem("user_id"));
         setLostItems(data);
+        console.log("Lost Items:", data); // Har item me id, name, image, etc. aayega
       } catch (error) {
         console.error("Error fetching lost items:", error);
       }
@@ -45,10 +47,12 @@ function DashboardHome() {
     fetchLostItems();
   }, []);
 
+
+  // Found item Fetch
   useEffect(() => {
     const fetchFoundItems = async () => {
       try {
-        const data = await Found_get();
+        const data = await Found_get(localStorage.getItem("user_id"));
         setFoundItems(data);
       } catch (error) {
         console.error("Error fetching found items:", error);

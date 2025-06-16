@@ -1,9 +1,10 @@
 import axios from "axios";
 const Api_Url = "http://localhost:8000";
 
+
 // Registration post
 export const Mp_reg_post = async (data) => {
-  alert("data");
+  // alert("data");
   const response = await axios.post(`${Api_Url}/PracticeList/`, data);
   return response.data;
 };
@@ -31,6 +32,8 @@ export const updateUserPassword = async (id, data) => {
 // Lost Item post
 export const Lost_post = async (values) => {
   const formData = new FormData();
+  const user_id = localStorage.getItem("user_id");
+  const token=localStorage.getItem('access_token')
 
   // Convert date and time to string
   formData.append("name", values.name);
@@ -39,14 +42,15 @@ export const Lost_post = async (values) => {
   formData.append("time", values.time.format("HH:mm:ss"));
   formData.append("location", values.location);
   formData.append("description", values.description || "");
-  formData.append("item_image", values.item_image); // 👈 Image file
-
+  formData.append("item_image", values.item_image); // 👈 Image fil
+  formData.append("user",user_id)
   const response = await axios.post(
     `${Api_Url}/LostItemCreateView/`,
     formData,
     {
       headers: {
         "Content-Type": "multipart/form-data",
+         Authorization: `Bearer ${token}`
       },
     }
   );
@@ -54,19 +58,41 @@ export const Lost_post = async (values) => {
   return response.data;
 };
 
-export const Lost_get = async () => {
+
+// Lost Item Get
+export const Lost_get = async (id) => {
+  const token = localStorage.getItem("access_token");
+
   try {
-    const response = await axios.get(`${Api_Url}/LostItemCreateView/`);
-    return response.data; // returns an array of lost items
+    let response;
+    if (id) {
+      response = await axios.get(`${Api_Url}/LostItemCreateView/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } else {
+      response = await axios.get(`${Api_Url}/LostItemCreateView/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
+
+    return response.data; // ✅ Return the data
   } catch (error) {
-    console.error("Error fetching lost items:", error);
-    throw error;
+    console.error("Error fetching lost item(s):", error);
+    throw error; // Re-throw the error for higher-level handling
   }
 };
+
+
 
 // Found Item post
 export const Found_post = async (values) => {
   const formData = new FormData();
+  const user_id = localStorage.getItem("user_id");
+  const token=localStorage.getItem('access_token')
 
   // Convert date and time to string format
   formData.append("name", values.name);
@@ -76,13 +102,15 @@ export const Found_post = async (values) => {
   formData.append("location", values.location);
   formData.append("description", values.description || "");
   formData.append("item_image", values.item_image); // Image file
-
+  formData.append("user",user_id)
   const response = await axios.post(
     `${Api_Url}/FoundItemCreateView/`,
     formData,
     {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`
+
       },
     }
   );
@@ -90,15 +118,35 @@ export const Found_post = async (values) => {
   return response.data;
 };
 
-export const Found_get = async () => {
+
+// found item get 
+export const Found_get = async (id) => {
+  const token = localStorage.getItem("access_token");
+
   try {
-    const response = await axios.get(`${Api_Url}/FoundItemCreateView/`);
-    return response.data;
+    let response;
+    if (id) {
+      response = await axios.get(`${Api_Url}/FoundItemCreateView/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } else {
+      response = await axios.get(`${Api_Url}/FoundItemCreateView/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
+
+    return response.data; // ✅ Return the data
   } catch (error) {
-    console.error("Error fetching lost items:", error);
-    throw error;
+    console.error("Error fetching Found item(s):", error);
+    throw error; // Re-throw the error for higher-level handling
   }
 };
+
+
 
 // create profile
 export const updateProfile = async (values, profileId) => {

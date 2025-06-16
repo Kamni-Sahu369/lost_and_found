@@ -1,6 +1,9 @@
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from .choice import CATEGORY_CHOICES
+
+
 
 class CustomUserManager(BaseUserManager):
     # Use for login
@@ -49,8 +52,10 @@ class My_Reg(AbstractBaseUser, PermissionsMixin):
 
 
 class LostItem(models.Model):
+    #user = models.ForeignKey(My_Reg, on_delete=models.CASCADE)
+    user = models.ForeignKey(My_Reg, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=100)
-    category = models.CharField(max_length=50)  # No choices, free text
+    category = models.CharField(max_length=50 , choices=CATEGORY_CHOICES)  #
     date = models.DateField(null=True, blank=True)  # Optional
     time = models.TimeField(null=True, blank=True)  # Made optional to avoid errors
     location = models.CharField(max_length=200)
@@ -62,8 +67,10 @@ class LostItem(models.Model):
         return self.name
 
 class FoundItem(models.Model):
+    #user = models.ForeignKey(My_Reg, on_delete=models.CASCADE)
+    user = models.ForeignKey(My_Reg, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=100)
-    category = models.CharField(max_length=50)  # No choices, free text
+    category = models.CharField(max_length=50 , choices=CATEGORY_CHOICES)  
     date = models.DateField(null=True, blank=True)  # Optional
     time = models.TimeField(null=True, blank=True)  # Made optional to avoid errors
     location = models.CharField(max_length=200)
@@ -76,7 +83,6 @@ class FoundItem(models.Model):
 
 class CreateUserProfile(models.Model):
     user = models.ForeignKey(My_Reg, on_delete=models.CASCADE)
-
     alternate_phone = models.CharField(max_length=15, blank=True, null=True)
     gender = models.CharField(max_length=10, choices=[("male", "Male"), ("female", "Female"), ("other", "Other")], blank=True)
     dob = models.DateField(blank=True, null=True)

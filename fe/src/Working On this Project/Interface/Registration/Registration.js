@@ -31,7 +31,7 @@ const Register = () => {
       localStorage.setItem("Ankit data", JSON.stringify(response.data));
 
 
-      alert("successfully Registration");
+      alert("Send Otp in your email");
       setEmail(response.data.email);
       setIsModalOpen(true);
 
@@ -43,7 +43,7 @@ const Register = () => {
       // }, 1500);
     } catch (error) {
       console.error("Registration failed:", error);
-      message.error("Registration failed. Please try again.");
+      alert("Registration failed. Please try again.");
     }
   };
 
@@ -237,161 +237,3 @@ const Register = () => {
 
 export default Register;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from "react";
-// import {
-//   Form,
-//   Input,
-//   Button,
-//   Checkbox,
-//   Typography,
-//   message,
-// } from "antd";
-// import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-// import { useNavigate } from "react-router-dom";
-// import { Mp_reg_post } from "../../Api/Service";
-// import "./Registration.css";
-
-// const { Title, Text } = Typography;
-
-// const Register = () => {
-//   const [form] = Form.useForm();
-//   const navigate = useNavigate();
-
-//   const onFinish = async (values) => {
-//     try {
-//       const response = await Mp_reg_post(values);
-//       message.success("Successfully Registered!");
-//       form.resetFields();
-//       navigate("/login");
-//     } catch (error) {
-//       console.error("Registration failed:", error);
-//       message.error("Registration failed. Please try again.");
-//     }
-//   };
-
-//   return (
-//     <div className="main_rigration">
-//       <div className="register-container">
-//         <div className="register-box">
-//           <Title level={2} style={{ textAlign: "center" }}>
-//             • Registration Form •
-//           </Title>
-//           <Form form={form} layout="vertical" onFinish={onFinish}>
-//             <Form.Item
-//               name="name"
-//               label="Name"
-//               rules={[{ required: true, message: "Please enter your name" }]}
-//             >
-//               <Input placeholder="Name" />
-//             </Form.Item>
-
-//             <Form.Item
-//               name="email"
-//               label="Email Address"
-//               rules={[
-//                 { required: true, message: "Please enter your email" },
-//                 { type: "email", message: "Enter a valid email" },
-//               ]}
-//             >
-//               <Input placeholder="Email address" />
-//             </Form.Item>
-
-//             <Form.Item name="country" label="Country">
-//               <Input placeholder="Country" />
-//             </Form.Item>
-
-//             <Form.Item
-//               name="phone"
-//               label="Phone"
-//               rules={[
-//                 { required: true, message: "Please enter your phone number" },
-//               ]}
-//             >
-//               <Input placeholder="Phone" />
-//             </Form.Item>
-
-//             <Form.Item
-//               name="password"
-//               label="Password"
-//               rules={[
-//                 { required: true, message: "Please enter your password" },
-//               ]}
-//             >
-//               <Input.Password
-//                 placeholder="Password"
-//                 iconRender={(visible) =>
-//                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-//                 }
-//               />
-//             </Form.Item>
-
-//             <Form.Item
-//               name="agreement"
-//               valuePropName="checked"
-//               rules={[
-//                 {
-//                   validator: (_, value) =>
-//                     value
-//                       ? Promise.resolve()
-//                       : Promise.reject(
-//                           new Error("You must agree to continue")
-//                         ),
-//                 },
-//               ]}
-//             >
-//               <Checkbox>I agree to the terms and conditions.</Checkbox>
-//             </Form.Item>
-
-//             <Form.Item>
-//               <Button type="primary" htmlType="submit" block>
-//                 CREATE ACCOUNT
-//               </Button>
-//             </Form.Item>
-
-//             <Text style={{ display: "block", textAlign: "center" }}>
-//               Already have an account?
-//             </Text>
-//             <Button
-//               type="link"
-//               onClick={() => {
-//                 navigate("/Login");
-//               }}
-//               style={{ display: "block", margin: "10px auto", textAlign: "center" }}
-//             >
-//               Login Here
-//             </Button>
-//           </Form>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Register;
