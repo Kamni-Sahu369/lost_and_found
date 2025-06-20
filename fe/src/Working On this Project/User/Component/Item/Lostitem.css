@@ -1,6 +1,6 @@
 /* LostForm.css */
 
-.lost-form-container {
+/* .lost-form-container {
   max-width: 800px;
   height: 100%;
   margin: 0 auto;
@@ -14,4 +14,115 @@
   flex-direction: column;
   align-items: center;
   color: rgba(0, 0, 0, 0.45);
+} */
+
+
+
+
+
+/* Container Styling */
+.lost-form-container {
+  background-color: #fff;
+  max-width: 900px;
+  /* border: 2px solid; */
+  /* height: 57vh; */
+  margin: auto;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Header */
+.lost-form-container h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 30px;
+  letter-spacing: 0.5px;
+}
+
+/* Form Labels */
+.ant-form-item-label>label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+}
+
+/* Input, Picker, Select Styling */
+.ant-input,
+.ant-select-selector,
+.ant-picker,
+.ant-input-textarea {
+  border-radius: 10px !important;
+  font-size: 15px;
+  min-height: 42px;
+  transition: border-color 0.2s ease;
+}
+
+/* On Hover */
+.ant-input:hover,
+.ant-select-selector:hover,
+.ant-picker:hover,
+.ant-input-textarea:hover {
+  border-color: #4096ff !important;
+}
+
+/* Upload Area */
+.lost-form-upload-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #999;
+  width: 300px;
+}
+
+.lost-form-upload-icon:hover {
+  color: #4096ff;
+}
+
+/* Upload Container */
+.ant-upload.ant-upload-select-picture-card {
+  width: 104px;
+  height:104px;
+  border-radius: 12px;
+  background-color: #f9fafb;
+  transition: border 0.3s ease;
+}
+
+.ant-upload.ant-upload-select-picture-card:hover {
+  border-color: #4096ff;
+}
+
+/* Submit Button */
+.submit-btn-wrapper {
+  margin-top: 20px;
+}
+
+.ant-btn-primary {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  height: 45px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.ant-btn-primary:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .lost-form-container {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .lost-form-container h2 {
+    font-size: 1.5rem;
+  }
 }

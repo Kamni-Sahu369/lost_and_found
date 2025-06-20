@@ -1,25 +1,110 @@
-
-
-
-
-
 .sidebar {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   height: 100vh;
   background: linear-gradient(to bottom, #0d9488, #1d4ed8);
   color: white;
   transition: width 0.3s ease;
+  overflow: hidden; */
+
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background: linear-gradient(to bottom, #0d9488, #1d4ed8);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+  z-index: 1000;
+
+}
+
+/* Sidebar.css */
+
+.sidebar {
+  background-color: #f9f9f9;
+  height: 100vh;
   overflow: hidden;
-  
+  transition: width 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
 .sidebar.open {
-  width: 240px;
+  width: 250px;
 }
 
 .sidebar.closed {
-  width: 80px;
+  width: 70px;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  padding: 10px;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.sidebar-content {
+  padding: 10px;
+}
+
+.menu-group {
+  margin-top: 20px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.menu-item:hover {
+  background-color: #e6f7ff;
+}
+
+.menu-text {
+  margin-left: 10px;
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.settings-submenu {
+  padding-left: 20px;
+}
+
+.settings-submenu-item {
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+.settings-submenu-item:hover {
+  text-decoration: underline;
+}
+
+.logout {
+  margin-top: auto;
+  padding: 10px;
 }
 
 .sidebar-header {

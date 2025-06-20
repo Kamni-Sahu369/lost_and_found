@@ -125,7 +125,7 @@ const LostForm = () => {
                 {fileList.length >= 1 ? null : (
                   <div className="lost-form-upload-icon">
                     <PlusOutlined />
-                    <div style={{ marginTop: 8 }}>Upload</div>
+                    <div style={{ marginTop: 10 }}>Upload</div>
                   </div>
                 )}
               </Upload>

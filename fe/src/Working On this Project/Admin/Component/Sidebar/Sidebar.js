@@ -14,8 +14,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
-const Sidebar = () => {
-  const [open, setOpen] = useState(false);
+const Sidebar = ({ open, setOpen }) => {
+  // const [open, setOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const navigate = useNavigate();

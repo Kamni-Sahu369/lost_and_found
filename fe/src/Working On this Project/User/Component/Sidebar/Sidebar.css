@@ -4,13 +4,27 @@
 
 
 .sidebar {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   height: 100vh;
   background: linear-gradient(to bottom, #0d9488, #1d4ed8);
   color: white;
   transition: width 0.3s ease;
-  overflow: hidden;
+  overflow: hidden; */
+
+
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background: linear-gradient(to bottom, #0d9488, #1d4ed8);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+  z-index: 1000;
   
 }
 
@@ -115,3 +129,11 @@
 .logout {
   margin: 16px 0;
 }
+
+
+
+
+
+
+
+
