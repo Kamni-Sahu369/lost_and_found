@@ -34,6 +34,7 @@ import LoginCopy from "../Interface/Login/LoginCopy"
 import "./Landing.css"; // External CSS import
 
 function Landing() {
+  const [open, setOpen] = useState(true);
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem("loggedIn") === "true"
   );
@@ -55,7 +56,9 @@ function Landing() {
       {loggedIn ? (
         <div className="landing_container">
           <div>
-            <Sidebar />
+            {/* <Sidebar /> */}
+              <Sidebar open={open} setOpen={setOpen} />
+         <div className={`dashboard-content ${open ? "sidebar-open" : "sidebar-closed"}`}></div>
           </div>
           <div className="dashboard-content">
             <Routes>

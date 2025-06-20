@@ -333,22 +333,22 @@ class PracticeList(APIView):
 
 
 # Authentication Login
-# class LoginAPIView(APIView):
-#     def post(self, request):
-#         serializer = LoginSerializer(data=request.data)
-#         if serializer.is_valid():
-#             user = serializer.validated_data['user']
-#             role = "admin" if user.is_staff else "user"
-#             refresh = RefreshToken.for_user(user)
-#             return Response({
-#                 "id": user.id,
-#                 "status": True,
-#                 "message": "Login successful",
-#                 "access_token": str(refresh.access_token),
-#                 "refresh_token": str(refresh),
-#                 "role": role
-#             })
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class LoginAPIView(APIView):
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            role = "admin" if user.is_staff else "user"
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                "id": user.id,
+                "status": True,
+                "message": "Login successful",
+                "access_token": str(refresh.access_token),
+                "refresh_token": str(refresh),
+                "role": role
+            })
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LostItemCreateView(APIView):

@@ -7,7 +7,9 @@
     width: 500px;
     height: 55px;
     justify-content: space-between;
-  
+   /* width: 86%;
+  height: 98vh; */
+  margin-left: 14%;
 }
 .profile_card_main{
   display: flex;

@@ -8,7 +8,7 @@ const DashboardLayout = () => {
   return (
     <div className="landing_container">
       <div>
-        <Sidebar />
+        <Sidebar/>
       </div>
       <div className="dashboard-content">
         <Outlet />
