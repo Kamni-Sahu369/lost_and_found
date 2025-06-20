@@ -15,12 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path , include
 from myapp.views import *
+from payment.views import *
 from rest_framework_simplejwt.views import ( TokenObtainPairView,TokenRefreshView,)
 from django.conf.urls.static import static
 from django.conf import settings
+from rest_framework.routers import DefaultRouter
 
+router = DefaultRouter()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('PracticeList/', PracticeList.as_view()),
@@ -34,6 +37,16 @@ urlpatterns = [
     path('CraeteProfile/',CraeteProfile.as_view()),
     path('FeedbackView/',FeedbackView.as_view()),
     path('varify_otp/',VerifyOtp.as_view()),
-]
+    path('claim/', ClaimItemAPIView.as_view(), name='claim-item'),
+    # path('', include(router.urls)),
+    # ..............................
+    path("login/", SimpleLoginAPIView.as_view(), name="simple_login"),
+    path("payments/", PaymentAPIView.as_view(), name="payment"),
+    # .....................................................................
+    # payment
+    path("create-checkout-session/", create_checkout_session),
+    path("webhook/", stripe_webhook),
+    path("payment-details/", get_payment_details),  # ✅ Added
 
+]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

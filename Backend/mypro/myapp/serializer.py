@@ -52,3 +52,19 @@ class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feedback
         fields = '__all__'
+
+class ClaimItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClaimItem
+        fields = '__all__'
+        read_only_fields = ['status', 'created_at', 'updated_at', 'user']
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = '__all__'
+
+# .........................................................
+class SimpleLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()

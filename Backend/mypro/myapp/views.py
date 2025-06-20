@@ -272,8 +272,8 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 import random
-
-
+from rest_framework import viewsets
+from rest_framework.status import HTTP_401_UNAUTHORIZED
 class PracticeList(APIView):
     permission_classes = [AllowAny]
 
@@ -333,22 +333,22 @@ class PracticeList(APIView):
 
 
 # Authentication Login
-# class LoginAPIView(APIView):
-#     def post(self, request):
-#         serializer = LoginSerializer(data=request.data)
-#         if serializer.is_valid():
-#             user = serializer.validated_data['user']
-#             role = "admin" if user.is_staff else "user"
-#             refresh = RefreshToken.for_user(user)
-#             return Response({
-#                 "id": user.id,
-#                 "status": True,
-#                 "message": "Login successful",
-#                 "access_token": str(refresh.access_token),
-#                 "refresh_token": str(refresh),
-#                 "role": role
-#             })
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class LoginAPIView(APIView):
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            role = "admin" if user.is_staff else "user"
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                "id": user.id,
+                "status": True,
+                "message": "Login successful",
+                "access_token": str(refresh.access_token),
+                "refresh_token": str(refresh),
+                "role": role
+            })
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LostItemCreateView(APIView):
@@ -462,3 +462,95 @@ class VerifyOtp(APIView):
             "status": False,
             "message": "Invalid email or OTP."
         }, status=status.HTTP_400_BAD_REQUEST)
+
+class ClaimItemAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = ClaimItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)  # ✅ Set user manually here
+            return Response({"message": "Claim submitted successfully"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def get(self, request):
+        claim = ClaimItem.objects.all().order_by("-id")
+        serializer = ClaimItemSerializer(claim, many=True)
+        return Response(serializer.data)
+
+# class PaymentViewSet(viewsets.ModelViewSet):
+#     serializer_class = PaymentSerializer
+#     # permission_classes = [IsAuthenticated]
+
+#     def get_queryset(self):
+#         return Payment.objects.filter(claim__user=self.request.user).select_related("claim")
+
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)
+
+#     def list(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             return Response({"detail": "Authentication credentials were not provided."}, status=HTTP_401_UNAUTHORIZED)
+
+#         queryset = self.get_queryset()
+#         data = []
+#         for payment in queryset:
+#             data.append({
+#                 "claim_id": payment.claim.id,
+#                 "description": payment.claim.description,
+#                 "location_info": payment.claim.location_info,
+#                 "receipt_bill": payment.claim.receipt_bill.url if payment.claim.receipt_bill else None,
+#                 "payment": {
+#                     "amount": payment.amount,
+#                     "status": payment.status,
+#                     "transaction_id": payment.transaction_id,
+#                     "method": payment.method,
+#                     "payment_time": payment.payment_time,
+#                 }
+#             })
+
+#         return Response(data)
+
+
+class PaymentAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = PaymentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)  # ✅ Set user manually here
+            return Response({"message": "Claim submitted successfully"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request):
+        claim = Payment.objects.all().order_by("-id")
+        serializer = PaymentSerializer(claim, many=True)
+        return Response(serializer.data)
+
+
+
+# ..............................................................................
+# Without Authentication login
+class SimpleLoginAPIView(APIView):
+    def post(self, request):
+        serializer = SimpleLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            password = serializer.validated_data['password']
+            try:
+                user = user.objects.get(email=email)
+                if user.check_password(password):
+                    role = "admin" if user.is_staff else "user"
+                    return Response({
+                        "id": user.id,
+                        "email": user.email,
+                        "username": user.username,
+                        "role": role,
+                        "message": "Login successful"
+                    })
+                else:
+                    return Response({"error": "Incorrect password"}, status=status.HTTP_401_UNAUTHORIZED)
+            except user.DoesNotExist:
+                return Response({"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

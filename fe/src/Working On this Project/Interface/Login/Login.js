@@ -163,7 +163,7 @@ function Login() {
 
       message.success("Login successful!");
       setOpenLogin(false);
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Login failed:", error);
       message.error("Something went wrong");
@@ -233,4 +233,3 @@ function Login() {
 }
 
 export default Login;
-

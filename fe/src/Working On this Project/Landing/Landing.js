@@ -20,6 +20,7 @@ import Setting from "../Admin/Pages/Setting/Setting";
 import Suggestion from "../Admin/Pages/Notification/Suggestion";
 import Feedback from "../Admin/Pages/Notification/Feedback";
 import Logout from "../Admin/Pages/Logout/Logout";
+import Updates from "../Admin/Pages/Notification/Updates"
 
 // User
 import UserDashboard from "../User/Pages/Dashboard/DashboardHome";
@@ -29,6 +30,8 @@ import UserMatch from "../User/Pages/Match/Match";
 import UserSetting from "../User/Pages/Setting/Setting";
 import UserSuggestion from "../User/Pages/Notification/Suggestion";
 import UserFeedback from "../User/Pages/Notification/Feedback";
+import UserUpdates from "../User/Pages/Notification/Updates"
+
 import UserLogout from "../User/Pages/Logout/Logout";
 import LoginCopy from "../Interface/Login/LoginCopy"
 import "./Landing.css"; // External CSS import
@@ -68,6 +71,7 @@ function Landing() {
                   <Route path="/setting" element={<Setting />} />
                   <Route path="/suggestion" element={<Suggestion />} />
                   <Route path="/feedback" element={<Feedback />} />
+                  <Route path="/updates" element={<Updates />} />
                 </>
               ) : (
                 <>
@@ -79,6 +83,7 @@ function Landing() {
                   <Route path="/setting" element={<UserSetting />} />
                   <Route path="/suggestion" element={<UserSuggestion />} />
                   <Route path="/feedback" element={<UserFeedback />} />
+                  <Route path="/updates" element={<UserUpdates />} />
                   <Route path="/logout" element={<UserLogout />} />
                   {/* Add more user-specific routes here */}
                 </>
@@ -99,7 +104,7 @@ function Landing() {
             <Route path="/category" element={<Category />} />
             <Route path="/subcategory" element={<SubCategory />} />
             <Route path="/view" element={<View />} />
-            <Route path="/login" element={<LoginCopy />} />
+            <Route path="/loginCopy" element={<LoginCopy />} />
           </Routes>
           <Footer />
         </>

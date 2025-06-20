@@ -43,7 +43,7 @@ const Sidebar = () => {
     children: [
       { name: 'Suggestion', path: '/suggestion' },
       { name: 'Feedback', path: '/feedback' },
-      { name: 'Updates', path: '/notification/updates' },
+      { name: 'Updates', path: '/updates' }
     ],
   };
 

@@ -61,21 +61,21 @@ export const Lost_post = async (values) => {
 
 // Lost Item Get
 export const Lost_get = async (id) => {
-  const token = localStorage.getItem("access_token");
+  // const token = localStorage.getItem("access_token");
 
   try {
     let response;
     if (id) {
       response = await axios.get(`${Api_Url}/LostItemCreateView/${id}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
       });
     } else {
       response = await axios.get(`${Api_Url}/LostItemCreateView/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
       });
     }
 
@@ -121,21 +121,21 @@ export const Found_post = async (values) => {
 
 // found item get 
 export const Found_get = async (id) => {
-  const token = localStorage.getItem("access_token");
+  // const token = localStorage.getItem("access_token");
 
   try {
     let response;
     if (id) {
       response = await axios.get(`${Api_Url}/FoundItemCreateView/${id}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
       });
     } else {
       response = await axios.get(`${Api_Url}/FoundItemCreateView/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
       });
     }
 
@@ -196,3 +196,37 @@ export const Feedback_post = async (data) => {
   const response = await axios.post(`${Api_Url}/FeedbackView/`, data);
   return response.data;
 };
+
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("access_token"); // adjust if key is different
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};
+
+// Post a payment (with user token)
+export const post_payment = async (data) => {
+  const response = await axios.post(`${Api_Url}/payments/`, data, getAuthHeaders());
+  return response.data;
+};
+
+// Get payments for the logged-in user
+export const get_userPayments = async () => {
+  const response = await axios.get(`${Api_Url}/payments/`, getAuthHeaders());
+  return response.data;
+};
+
+
+// payment gatway
+// import { loadStripe } from '@stripe/stripe-js';
+
+// const stripePromise = loadStripe('pk_test_51Rbg3MQTfWQgOkzpBqJZktgOL1U9TVvyZ3qoqxrygWmK7BQ1HgNUJ0eBc7NFFme7D8b7I5HFf4UC9ETmMLjsQUWN00hYuyPu7N');
+
+// export const handleCheckout = async () => {
+//   const res = await fetch('/create-checkout-session', { method: 'POST' });
+//   const data = await res.json();
+//   const stripe = await stripePromise;
+//   stripe.redirectToCheckout({ sessionId: data.id });
+// };
