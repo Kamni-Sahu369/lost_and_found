@@ -9,7 +9,6 @@ export const Mp_reg_post = async (data) => {
   return response.data;
 };
 
-
 // otp varification
 export const otp_varify= async (data) => {
   // alert("data");
@@ -20,7 +19,12 @@ export const otp_varify= async (data) => {
 
 // Registration data get
 export const getPracticeList = async () => {
-  const response = await axios.get(`${Api_Url}/PracticeList/`);
+  const token = localStorage.getItem("access_token")
+  const response = await axios.get(`${Api_Url}/PracticeList/`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
