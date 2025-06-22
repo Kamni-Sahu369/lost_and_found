@@ -6,18 +6,19 @@ function UserPayments() {
   const [payments, setPayments] = useState([]);
 
   useEffect(() => {
-    const fetchPayments = async () => {
-      try {
-        const res = await get_userPayments(); // ⬅️ Call your API here
-        console.log("User Payments:", res);
-        setPayments(res);
-      } catch (error) {
-        console.error("Failed to fetch payments", error);
-      }
-    };
+  const fetchPayments = async () => {
+    try {
+      const res = await get_userPayments(localStorage.getItem("user_id")); // API returns array directly
+      console.log("User Payments:", res);
+      setPayments(Array.isArray(res) ? res : []); // ✅ defensive + correct
+    } catch (error) {
+      console.error("Failed to fetch payments", error);
+    }
+  };
 
-    fetchPayments();
-  }, []);
+  fetchPayments();
+}, []);
+
 
   return (
     <div style={{ padding: 24 }}>
@@ -61,7 +62,7 @@ function UserPayments() {
               </div>
             ) : (
               <Tag color="orange">
-                <Payment/>
+                <Payment amount={item.amount}/>
               </Tag>
             )}
           </Card>

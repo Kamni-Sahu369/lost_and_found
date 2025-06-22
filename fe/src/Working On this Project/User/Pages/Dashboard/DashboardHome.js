@@ -47,7 +47,6 @@
 //     fetchLostItems();
 //   }, []);
 
-
 //   // Found item Fetch
 //   useEffect(() => {
 //     const fetchFoundItems = async () => {
@@ -68,8 +67,6 @@
 //     { title: 'Inactive Users', value: 25, color: 'bg-yellow-100 text-yellow-800' },
 //     { title: 'Admins', value: 5, color: 'bg-purple-100 text-purple-800' },
 //   ];
-
-
 
 //   return (
 //     <div className="dashboard_container">
@@ -181,12 +178,6 @@
 
 
 
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import { Input } from "antd";
 import { Lost_get, Found_get } from "../../../Api/Service";
@@ -197,7 +188,9 @@ function DashboardHome() {
   const [foundItems, setFoundItems] = useState([]);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "default");
   const [open, setOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
 
+  // Theme switcher
   useEffect(() => {
     const root = document.documentElement;
     root.classList.remove("light-theme", "dark-theme");
@@ -218,6 +211,7 @@ function DashboardHome() {
     setOpen(false);
   };
 
+  // Fetch Lost Items
   useEffect(() => {
     const fetchLostItems = async () => {
       try {
@@ -230,6 +224,7 @@ function DashboardHome() {
     fetchLostItems();
   }, []);
 
+  // Fetch Found Items
   useEffect(() => {
     const fetchFoundItems = async () => {
       try {
@@ -242,6 +237,7 @@ function DashboardHome() {
     fetchFoundItems();
   }, []);
 
+  // Card stats
   const cardData = [
     { title: "Total Users", value: 120 },
     { title: "Active Users", value: 95 },
@@ -249,21 +245,36 @@ function DashboardHome() {
     { title: "Admins", value: 5 },
   ];
 
+  // Filtered Data by Category
+  const filteredLostItems =
+    selectedCategory === "All Categories"
+      ? lostItems
+      : lostItems.filter((item) => item.category === selectedCategory);
+
+  const filteredFoundItems =
+    selectedCategory === "All Categories"
+      ? foundItems
+      : foundItems.filter((item) => item.category === selectedCategory);
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <select className="category-select">
-          <option>All Categories</option>
-          <option>Personal Belongings</option>
-          <option>Bags and Accessories</option>
-          <option>Documents</option>
-          <option>Electronics</option>
-          <option>Clothing and Wearables</option>
-          <option>Kids' Items</option>
-          <option>Pets</option>
-          <option>Vehicles</option>
-          <option>Office and Study</option>
-          <option>Religious Items</option>
+        <select
+          className="category-select"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          <option value="All Categories">All Categories</option>
+          <option value="personal_belongings">Personal Belongings</option>
+          <option value="bags_accessories">Bags and Accessories</option>
+          <option value="documents">Documents</option>
+          <option value="electronics">Electronics</option>
+          <option value="clothing_wearables">Clothing and Wearables</option>
+          <option value="kids_items">Kids' Items</option>
+          <option value="pets">Pets</option>
+          <option value="vehicles">Vehicles</option>
+          <option value="office_study">Office and Study</option>
+          <option value="religious_items">Religious Items</option>
         </select>
 
         <Input.Search
@@ -286,6 +297,7 @@ function DashboardHome() {
         </div>
       </div>
 
+      {/* Card Section */}
       <div className="cards-section">
         {cardData.map((card, index) => (
           <div key={index} className="info-card">
@@ -295,24 +307,32 @@ function DashboardHome() {
         ))}
       </div>
 
+      {/* Lost Items */}
       <div className="section">
-        <h3>Lost Items</h3>
+        <h3 style={{ color: "red" }}>Lost Items</h3>
         <div className="item-grid">
-          {lostItems.map((item) => (
+          {filteredLostItems.map((item) => (
             <div className="item-card" key={item.id}>
-              <img src={`http://localhost:8000${item.item_image}`} alt={item.name} />
+              <img
+                src={`http://localhost:8000${item.item_image}`}
+                alt={item.name}
+              />
               <p>{item.name}</p>
             </div>
           ))}
         </div>
       </div>
 
+      {/* Found Items */}
       <div className="section">
-        <h3>Found Items</h3>
+        <h3 style={{ color: "red" }}>Found Items</h3>
         <div className="item-grid">
-          {foundItems.map((item) => (
+          {filteredFoundItems.map((item) => (
             <div className="item-card" key={item.id}>
-              <img src={`http://localhost:8000${item.item_image}`} alt={item.name} />
+              <img
+                src={`http://localhost:8000${item.item_image}`}
+                alt={item.name}
+              />
               <p>{item.name}</p>
             </div>
           ))}
@@ -323,4 +343,3 @@ function DashboardHome() {
 }
 
 export default DashboardHome;
-

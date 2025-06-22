@@ -1,6 +1,7 @@
 from django.db import models
-
+from myapp.models import My_Reg
 class Payment(models.Model):
+    user = models.ForeignKey('myapp.My_Reg', on_delete=models.CASCADE, related_name='payment_payments')
     stripe_session_id = models.CharField(max_length=255, unique=True)
     amount_total = models.IntegerField()  # Stored in paisa (₹ * 100)
     email = models.EmailField(blank=True, null=True)

@@ -13,12 +13,14 @@ function Updates() {
   const [paymentModalVisible, setPaymentModalVisible] = useState(false);
   const [selectedClaimId, setSelectedClaimId] = useState(null);
   const [paymentAmount, setPaymentAmount] = useState("");
+  // const [userName, setUserName] = useState() 
   const user_id = localStorage.getItem("user_id")
   // Fetch claims on mount
   const getClaims = async () => {
     const data = await get_claimItem();
     console.log("Fetched claims:", data);
     setClaims(data);
+    
   };
 
   useEffect(() => {
@@ -61,11 +63,13 @@ function Updates() {
     transaction_id: "TXN" + Date.now(),
     method: "Manual",
     user: user_id, // ⬅️ hardcoded user_id (use dynamic one if needed)
+    // user_name : userName
   };
 
   try {
     const res = await post_payment(paymentData);
     console.log("Payment response:", res);
+    // const amount = localStorage.setItem("payment_new",res.amount)
     alert("Claim Approved & Payment Recorded!");
 
     setClaims((prev) => prev.filter((item) => item.id !== selectedClaimId));
@@ -94,7 +98,7 @@ function Updates() {
               title={
                 <div className="card-header">
                   <span>
-                    👤 <strong>{claim.user}</strong>
+                    👤 <strong>{claim.users.name}</strong>
                     <Tag color="blue" style={{ marginLeft: 10 }}>
                       Submitted
                     </Tag>

@@ -31,6 +31,7 @@ import UserSetting from "../User/Pages/Setting/Setting";
 import UserSuggestion from "../User/Pages/Notification/Suggestion";
 import UserFeedback from "../User/Pages/Notification/Feedback";
 import UserUpdates from "../User/Pages/Notification/Updates"
+import Success from "../User/Pages/Notification/Success"
 
 import UserLogout from "../User/Pages/Logout/Logout";
 import LoginCopy from "../Interface/Login/LoginCopy"
@@ -87,6 +88,7 @@ function Landing() {
                   <Route path="/suggestion" element={<UserSuggestion />} />
                   <Route path="/feedback" element={<UserFeedback />} />
                   <Route path="/updates" element={<UserUpdates />} />
+                  <Route path="/success" element={<Success />} />
                   <Route path="/logout" element={<UserLogout />} />
                   {/* Add more user-specific routes here */}
                 </>

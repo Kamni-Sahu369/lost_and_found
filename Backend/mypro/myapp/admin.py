@@ -36,3 +36,5 @@ class My_RegAdmin(UserAdmin):
 admin.site.register(My_Reg, My_RegAdmin)
 admin.site.register(LostItem)
 admin.site.register(CreateUserProfile)
+# admin.site.register(CreateUserProfile)
+admin.site.register(Payment)

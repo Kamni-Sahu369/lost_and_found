@@ -199,9 +199,13 @@ export const Feedback_post = async (data) => {
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("access_token"); // adjust if key is different
+  // const user_id = localStorage.getItem("user_id");
+  console.log("Token:", token);
+
   return {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
   };
 };
@@ -213,20 +217,18 @@ export const post_payment = async (data) => {
 };
 
 // Get payments for the logged-in user
-export const get_userPayments = async () => {
-  const response = await axios.get(`${Api_Url}/payments/`, getAuthHeaders());
-  return response.data;
+export const get_userPayments = async (id = null) => {
+  try {
+    let response;
+    if (id) {
+      response = await axios.get(`${Api_Url}/payments/${id}/`, getAuthHeaders());
+    } else {
+      response = await axios.get(`${Api_Url}/payments/`, getAuthHeaders());
+    }
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching payment(s):", error);
+    throw error;
+  }
 };
 
-
-// payment gatway
-// import { loadStripe } from '@stripe/stripe-js';
-
-// const stripePromise = loadStripe('pk_test_51Rbg3MQTfWQgOkzpBqJZktgOL1U9TVvyZ3qoqxrygWmK7BQ1HgNUJ0eBc7NFFme7D8b7I5HFf4UC9ETmMLjsQUWN00hYuyPu7N');
-
-// export const handleCheckout = async () => {
-//   const res = await fetch('/create-checkout-session', { method: 'POST' });
-//   const data = await res.json();
-//   const stripe = await stripePromise;
-//   stripe.redirectToCheckout({ sessionId: data.id });
-// };

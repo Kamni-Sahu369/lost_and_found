@@ -312,7 +312,14 @@ class PracticeList(APIView):
 
         users = My_Reg.objects.all().order_by("-id")
         serializer = MyReg_Serializer(users, many=True)
-        return Response(serializer.data)
+
+        count = users.count()
+
+        # 👇 Return both count and user list
+        return Response({
+            "total_users": count,
+            "users": serializer.data
+            })
 
     def patch(self, request, pk=None):
         if not pk:
@@ -477,40 +484,7 @@ class ClaimItemAPIView(APIView):
         claim = ClaimItem.objects.all().order_by("-id")
         serializer = ClaimItemSerializer(claim, many=True)
         return Response(serializer.data)
-
-# class PaymentViewSet(viewsets.ModelViewSet):
-#     serializer_class = PaymentSerializer
-#     # permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         return Payment.objects.filter(claim__user=self.request.user).select_related("claim")
-
-#     def perform_create(self, serializer):
-#         serializer.save(user=self.request.user)
-
-#     def list(self, request, *args, **kwargs):
-#         if not request.user.is_authenticated:
-#             return Response({"detail": "Authentication credentials were not provided."}, status=HTTP_401_UNAUTHORIZED)
-
-#         queryset = self.get_queryset()
-#         data = []
-#         for payment in queryset:
-#             data.append({
-#                 "claim_id": payment.claim.id,
-#                 "description": payment.claim.description,
-#                 "location_info": payment.claim.location_info,
-#                 "receipt_bill": payment.claim.receipt_bill.url if payment.claim.receipt_bill else None,
-#                 "payment": {
-#                     "amount": payment.amount,
-#                     "status": payment.status,
-#                     "transaction_id": payment.transaction_id,
-#                     "method": payment.method,
-#                     "payment_time": payment.payment_time,
-#                 }
-#             })
-
-#         return Response(data)
-
+    
 
 class PaymentAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -523,11 +497,18 @@ class PaymentAPIView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request):
-        claim = Payment.objects.all().order_by("-id")
-        serializer = PaymentSerializer(claim, many=True)
-        return Response(serializer.data)
-
+    def get(self, request, id=None):  
+        if id:
+            try:
+                payment = Payment.objects.filter(claim=id)
+                serializer = PaymentSerializer(payment,many=True)
+                return Response(serializer.data)
+            except Payment.DoesNotExist:
+                return Response({'error': 'Payment not found'}, status=404)
+        else:
+            payments = Payment.objects.all().order_by('-id')
+            serializer = PaymentSerializer(payments, many=True)
+            return Response(serializer.data)
 
 
 # ..............................................................................

@@ -54,6 +54,7 @@ class FeedbackSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ClaimItemSerializer(serializers.ModelSerializer):
+    users=MyReg_Serializer(source="user",read_only =True,many=False)
     class Meta:
         model = ClaimItem
         fields = '__all__'

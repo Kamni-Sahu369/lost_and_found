@@ -122,7 +122,7 @@ class ClaimItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Claim by {self.user.username} - {self.status}"
+        return f"Claim by - {self.status}"
     
 # payment
 class Payment(models.Model):
@@ -142,4 +142,4 @@ class Payment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Payment ₹{self.amount} for {self.claim} by {self.user.username}"
+        return f"Payment ₹{self.amount} for {self.claim} by "

@@ -42,6 +42,7 @@ urlpatterns = [
     # ..............................
     path("login/", SimpleLoginAPIView.as_view(), name="simple_login"),
     path("payments/", PaymentAPIView.as_view(), name="payment"),
+    path('payments/<int:id>/', PaymentAPIView.as_view()),
     # .....................................................................
     # payment
     path("create-checkout-session/", create_checkout_session),
