@@ -15,6 +15,7 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import { Lost_post } from "../../../Api/Service";
 import "./Lostitem.css"; // 👈 Import external CSS
+import { toast } from 'react-toastify';
 
 const { Option } = Select;
 
@@ -33,7 +34,7 @@ const LostForm = () => {
     try {
       const response = await Lost_post(values);
       console.log("Success:", response);
-      message.success("Lost item posted successfully!");
+      toast.success("Lost item posted successfully!");
       form.resetFields();
       setFileList([]);
     } catch (error) {

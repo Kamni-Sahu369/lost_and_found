@@ -1,7 +1,6 @@
 import axios from "axios";
 const Api_Url = "http://localhost:8000";
 
-
 // Registration post
 export const Mp_reg_post = async (data) => {
   // alert("data");
@@ -33,6 +32,8 @@ export const updateUserPassword = async (id, data) => {
   return response.data;
 };
 
+
+// ..............................................................................
 // Lost Item post
 export const Lost_post = async (values) => {
   const formData = new FormData();
@@ -54,14 +55,13 @@ export const Lost_post = async (values) => {
     {
       headers: {
         "Content-Type": "multipart/form-data",
-         Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       },
     }
   );
 
   return response.data;
 };
-
 
 // Lost Item Get
 export const Lost_get = async (id) => {
@@ -89,9 +89,7 @@ export const Lost_get = async (id) => {
     throw error; // Re-throw the error for higher-level handling
   }
 };
-
-
-
+// ...............................................................................
 // Found Item post
 export const Found_post = async (values) => {
   const formData = new FormData();
@@ -125,21 +123,13 @@ export const Found_post = async (values) => {
 
 // found item get 
 export const Found_get = async (id) => {
-  // const token = localStorage.getItem("access_token");
-
   try {
     let response;
     if (id) {
       response = await axios.get(`${Api_Url}/FoundItemCreateView/${id}/`, {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
       });
     } else {
       response = await axios.get(`${Api_Url}/FoundItemCreateView/`, {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
       });
     }
 
@@ -149,9 +139,7 @@ export const Found_get = async (id) => {
     throw error; // Re-throw the error for higher-level handling
   }
 };
-
-
-
+// ...............................................................................
 // create profile
 export const updateProfile = async (values, profileId) => {
   const token = localStorage.getItem("access_token");
@@ -162,7 +150,7 @@ export const updateProfile = async (values, profileId) => {
 
   const formData = new FormData();
 
-  formData.append("alternate_phone", values.alternatePhone || "");
+  formData.append("alternate_phone", values.alternate_phone || "");
   formData.append("gender", values.gender || "");
   formData.append("dob", values.dob ? values.dob.format("YYYY-MM-DD") : "");
   formData.append("address", values.address || "");
@@ -172,29 +160,45 @@ export const updateProfile = async (values, profileId) => {
   formData.append("user_type", values.userType || "regular");
   formData.append("agreement", values.agreement ? "true" : "false");
 
-  if (values.profilePic && values.profilePic.fileList.length > 0) {
-    formData.append("profile_pic", values.profilePic.file.originFileObj);
-  }
+  if (values.profile_pic && values.profile_pic.length > 0) {
+  formData.append("profile_pic", values.profile_pic[0].originFileObj);
+}
 
-  const response = await axios.post(`${Api_Url}/CraeteProfile/`, formData, {
+
+  const response = await axios.post(`${Api_Url}/CreateProfile/`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${token}`, // <== Add this!
+      Authorization: `Bearer ${token}`,
     },
   });
   return response.data;
 };
 
-export const updateProfile_get = async () => {
+export const updateProfile_get = async (id) => {
+  const token = localStorage.getItem("access_token");
+
   try {
-    const response = await axios.get(`${Api_Url}/CraeteProfile/`);
-    return response.data; // returns an array of lost items
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    };
+
+    let response;
+
+    if (id) {
+      response = await axios.get(`${Api_Url}/CreateProfile/${id}/`, { headers });
+    } else {
+      response = await axios.get(`${Api_Url}/CreateProfile/`, { headers });
+    }
+    return response.data;
   } catch (error) {
-    console.error("Error fetching lost items:", error);
+    console.error("Error fetching profile(s):", error);
     throw error;
   }
 };
 
+
+// ................................................................................
 // Feedback
 export const Feedback_post = async (data) => {
   const response = await axios.post(`${Api_Url}/FeedbackView/`, data);
@@ -236,3 +240,32 @@ export const get_userPayments = async (id = null) => {
   }
 };
 
+
+
+// Payment data get
+
+export const payment_receipts = async (id) => {
+  const token = localStorage.getItem("access_token");
+
+  if (!token) {
+    console.error("Access token missing!");
+    throw new Error("Unauthorized: Access token missing");
+  }
+
+  try {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json", // For GET requests, use JSON, not multipart
+    };
+
+    const url = id
+      ? `${Api_Url}/api/my-payments/${id}`
+      : `${Api_Url}/api/my-payments/`;
+
+    const response = await axios.get(url, { headers });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching payment receipts:", error.response?.data || error.message);
+    throw error;
+  }
+};

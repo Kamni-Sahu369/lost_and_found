@@ -28,8 +28,8 @@ const Register = () => {
     try {
       const response = await Mp_reg_post(values);
       console.log("Success hai:", response.data.email);
-      localStorage.setItem("Ankit data", JSON.stringify(response.data));
-
+      localStorage.setItem("registerData", JSON.stringify(response.data));
+      localStorage.setItem("email", JSON.stringify(response.data.email));
 
       alert("Send Otp in your email");
       setEmail(response.data.email);
@@ -68,6 +68,8 @@ const Register = () => {
     console.log(data, "data");
     const res = otp_varify(data);
     console.log(res, "res");
+    // localStorage.setItem("registerNew", JSON.stringify(res.data));
+
     setIsModalOpen(false);
   };
 
@@ -102,10 +104,6 @@ const Register = () => {
             >
               <Input placeholder="Email address" />
             </Form.Item>
-
-            {/* <Form.Item name="country" label="Country">
-              <Input placeholder="Country" />
-            </Form.Item> */}
 
             <Form.Item name="country" label="Country">
               <Select placeholder="Select a country">

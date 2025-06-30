@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // index.js or main.jsx — TOP par likho:
+import 'react-toastify/dist/ReactToastify.css';
 
 import 'antd/dist/reset.css'; // ✅ Required for Ant Design v5
 

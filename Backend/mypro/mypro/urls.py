@@ -34,11 +34,11 @@ urlpatterns = [
     path('LostItemCreateView/<int:pk>/',LostItemCreateView.as_view()),
     path('FoundItemCreateView/',FoundItemCreateView.as_view()),
     path('FoundItemCreateView/<int:pk>/', FoundItemCreateView.as_view()),  
-    path('CraeteProfile/',CraeteProfile.as_view()),
+     path('CreateProfile/', CreateProfile.as_view(), name='create-profile'),
+    path('CreateProfile/<int:id>/',CreateProfile.as_view()),
     path('FeedbackView/',FeedbackView.as_view()),
     path('varify_otp/',VerifyOtp.as_view()),
     path('claim/', ClaimItemAPIView.as_view(), name='claim-item'),
-    # path('', include(router.urls)),
     # ..............................
     path("login/", SimpleLoginAPIView.as_view(), name="simple_login"),
     path("payments/", PaymentAPIView.as_view(), name="payment"),
@@ -46,8 +46,11 @@ urlpatterns = [
     # .....................................................................
     # payment
     path("create-checkout-session/", create_checkout_session),
-    path("webhook/", stripe_webhook),
+    path("stripe_webhook", stripe_webhook),
     path("payment-details/", get_payment_details),  # ✅ Added
+    path("api/stripe/session/<str:session_id>/", stripe_session_details),
+    path("api/my-payments/", my_payments),
+    path("api/my-payments/<int:id>/", my_payments),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -43,7 +43,8 @@ const Sidebar = ({ open, setOpen }) => {
     children: [
       { name: 'Suggestion', path: '/suggestion' },
       { name: 'Feedback', path: '/feedback' },
-      { name: 'Updates', path: '/updates' }
+      { name: 'Updates', path: '/updates' },
+      { name: 'Payment Receipts', path: '/payment_receipts' },
     ],
   };
 

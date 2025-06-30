@@ -10,6 +10,8 @@ import {
   Select,
   Checkbox,
   message,
+  Divider,
+  Typography,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import "./Profile.css";
@@ -17,27 +19,33 @@ import {
   updateProfile,
   updateProfile_get,
   getPracticeList,
-  updateUserPassword
+  updateUserPassword,
 } from "../../../Api/Service";
 import moment from "moment";
 
 const { TextArea } = Input;
 const { Option } = Select;
+const { Title } = Typography;
 
 function Profile() {
   const [user, setUser] = useState([]);
   const [regUser, setregUser] = useState([]);
+  // const [practiceList, setPracticeList] = useState([]);
 
   const [form] = Form.useForm();
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const showProfileModal = () => {
-    form.setFieldsValue({
-      ...user,
-      dob: user.dob ? moment(user.dob) : null,
-      agreement: user.agreement === "true",
-    });
+    const savedData = JSON.parse(localStorage.getItem("registerData")) || {};
+    const mergedData = {
+      ...savedData, // LocalStorage registration data
+      ...user, // Backend profile data overrides
+      dob: user?.dob ? moment(user.dob) : null,
+      agreement: user?.agreement === "true",
+    };
+
+    form.setFieldsValue(mergedData);
     setIsProfileModalOpen(true);
   };
 
@@ -51,20 +59,22 @@ function Profile() {
 
   const handleProfileFinish = async (values) => {
     try {
-      await updateProfile(values);
-      message.success("Profile updated successfully!");
+      const data = await updateProfile(values);
+      alert("Profile updated successfully!");
       setIsProfileModalOpen(false);
+      // setPracticeList(data)
       fetchProfile();
+      console.log(data);
     } catch (error) {
       console.error("Profile update failed:", error);
-      message.error("Failed to update profile.");
+      alert("Failed to update profile.");
     }
   };
 
   const handlePasswordFinish = async (values) => {
-    alert("cvfbgb db")
+    alert("cvfbgb db");
     try {
-      await updateUserPassword(values.id,values);
+      await updateUserPassword(values.id, values);
       message.success("Password changed successfully!");
       setIsPasswordModalOpen(false);
     } catch (error) {
@@ -75,12 +85,11 @@ function Profile() {
 
   const fetchProfile = async () => {
     try {
-      const data = await updateProfile_get();
+      const data = await updateProfile_get(localStorage.getItem("user_id"));
       setUser(data);
-      console.log(data)
+      console.log("dataaaa", data);
       const savedData = JSON.parse(localStorage.getItem("registerData"));
-      console.log(savedData)
-      
+      console.log(savedData);
     } catch (error) {
       console.error("Failed to fetch profile:", error);
       message.error("Failed to load profile.");
@@ -89,9 +98,13 @@ function Profile() {
 
   useEffect(() => {
     fetchProfile();
+    profileData();
   }, []);
 
-  
+  const profileData = async () => {
+    const data = await getPracticeList();
+    console.log(data);
+  };
 
   return (
     <div>
@@ -107,37 +120,85 @@ function Profile() {
 
       {/* Profile Modal */}
       <Modal
-        title="Create Your Profile"
+        title={
+          <Title level={3} style={{ color: "#1677ff", marginBottom: 0 }}>
+            Create Your Profile
+          </Title>
+        }
         open={isProfileModalOpen}
         onCancel={handleProfileCancel}
         footer={null}
+        bodyStyle={{ padding: "24px 32px" }}
       >
         <Form layout="vertical" form={form} onFinish={handleProfileFinish}>
+          <Divider orientation="left" orientationMargin={0}>
+            <strong style={{ color: "#52c41a" }}>Basic Information</strong>
+          </Divider>
+
           <Form.Item
-            name="fullName"
-            label="Full Name"
+            name="name"
+            label={<span style={{ color: "#595959" }}>Full Name</span>}
             rules={[{ required: true }]}
           >
-            <Input />
+            <Input placeholder="Enter your name" />
           </Form.Item>
 
           <Form.Item
             name="email"
-            label="Email"
+            label={<span style={{ color: "#595959" }}>Email</span>}
             rules={[{ required: true, type: "email" }]}
           >
-            <Input />
+            <Input placeholder="Enter your email" />
           </Form.Item>
 
-          <Form.Item name="phone" label="Phone">
-            <Input />
+          <Form.Item
+            name="phone"
+            label="Phone"
+            rules={[
+              { required: true, message: "Please enter your phone number" },
+              {
+                pattern: /^\d{10}$/,
+                message: "Phone number must be exactly 10 digits",
+              },
+            ]}
+          >
+            <Input
+              inputMode="numeric"
+              maxLength={10}
+              placeholder="10-digit number"
+              onKeyPress={(e) => {
+                if (!/[0-9]/.test(e.key)) e.preventDefault();
+              }}
+              onChange={(e) => {
+                e.target.value = e.target.value.replace(/\D/g, "");
+              }}
+            />
           </Form.Item>
 
-          <Form.Item name="alternatePhone" label="Alternate Contact">
-            <Input />
+          <Form.Item
+            name="alternate_phone"
+            label="Alternate Phone Number"
+            rules={[
+              {
+                required: true,
+                pattern: /^\d{10}$/,
+                message: "Phone number must be exactly 10 digits",
+              },
+            ]}
+          >
+            <Input
+              // placeholder="+911234567890"
+              maxLength={10}
+              onChange={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9+]/g, "");
+              }}
+            />
           </Form.Item>
 
-          <Form.Item name="gender" label="Gender">
+          <Form.Item name="gender" label="Gender"
+          rules={[
+            {required:true}
+          ]}>
             <Radio.Group>
               <Radio value="male">Male</Radio>
               <Radio value="female">Female</Radio>
@@ -145,18 +206,28 @@ function Profile() {
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item name="dob" label="Date of Birth">
+          <Form.Item name="dob" label="Date of Birth" 
+          rules={[
+            {required:true}
+          ]}>
             <DatePicker style={{ width: "100%" }} />
           </Form.Item>
 
+          <Divider orientation="left" orientationMargin={0}>
+            <strong style={{ color: "#722ed1" }}>Additional Details</strong>
+          </Divider>
+
           <Form.Item
-            name="profilePic"
+            name="profile_pic"
             label="Profile Picture"
             valuePropName="fileList"
             getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
+            rules={[
+            {required:true}
+          ]}
           >
             <Upload
-              name="profilePic"
+              name="profile_pic"
               listType="picture"
               beforeUpload={() => false}
               maxCount={1}
@@ -165,27 +236,36 @@ function Profile() {
             </Upload>
           </Form.Item>
 
-          <Form.Item name="address" label="Address">
-            <TextArea rows={2} />
+          <Form.Item name="address" label="Address"
+          rules={[
+            {required:true}
+          ]}
+          >
+            <TextArea rows={2} placeholder="Enter your full address" />
           </Form.Item>
 
-          <Form.Item name="city" label="City">
+          <Form.Item name="city" label="City" 
+          rules={[
+            {required:true}
+          ]}
+          >
             <Input />
           </Form.Item>
 
-          <Form.Item name="state" label="State">
+          <Form.Item name="state" label="State" 
+          rules={[
+            {required:true}
+          ]}
+          >
             <Input />
           </Form.Item>
 
-          <Form.Item name="pincode" label="PIN Code">
+          <Form.Item name="pincode" label="PIN Code" 
+          rules={[
+            {required:true}
+          ]}
+          >
             <Input />
-          </Form.Item>
-
-          <Form.Item name="userType" label="User Type">
-            <Select placeholder="Select user type">
-              <Option value="regular">Regular</Option>
-              <Option value="admin">Admin</Option>
-            </Select>
           </Form.Item>
 
           <Form.Item
@@ -196,7 +276,7 @@ function Profile() {
                 validator: (_, value) =>
                   value
                     ? Promise.resolve()
-                    : Promise.reject(new Error("You must accept terms")),
+                    : Promise.reject("You must accept terms"),
               },
             ]}
           >
@@ -206,7 +286,16 @@ function Profile() {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              block
+              style={{
+                backgroundColor: "#13c2c2",
+                borderColor: "#13c2c2",
+                fontWeight: "bold",
+              }}
+            >
               Save Profile
             </Button>
           </Form.Item>
@@ -221,8 +310,11 @@ function Profile() {
         footer={null}
         width={450}
       >
-        <Form layout="vertical" onFinish={handlePasswordFinish} style={{width:350}}>
-          
+        <Form
+          layout="vertical"
+          onFinish={handlePasswordFinish}
+          style={{ width: 350 }}
+        >
           <Form.Item
             name="newPassword"
             label="New Password"
@@ -257,7 +349,7 @@ function Profile() {
 
       {/* Profile Card */}
       <div>
-        <div className="profile_card_main">  
+        <div className="profile_card_main">
           {user.map((i) => (
             <div className="profile-card">
               <img
@@ -269,16 +361,19 @@ function Profile() {
                 <strong>Name:</strong> {i.users.name}
               </p>
               <p>
+                <strong>Email:</strong> {i.users.email}
+              </p>
+              <p>
                 <strong>city:</strong> {i.city}
               </p>
               <p>
-                <strong>Phone:</strong> {i.alternate_phone}
+                <strong>Gender:</strong> {i.gender}
               </p>
               <p>
-                <strong>Location:</strong> {user.location}
+                <strong>Date of Birth:</strong> {i.dob}
               </p>
               <p>
-                <strong>Bio:</strong> {user.bio}
+                <strong>Phone:</strong> {i.users.phone}
               </p>
             </div>
           ))}

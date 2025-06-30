@@ -7,20 +7,20 @@ import {
 } from "@ant-design/icons";
 import "./Updates.css";
 import { get_claimItem } from "../../../Api/InterfaceService";
-import {post_payment} from "../../../Api/Service"
+import { post_payment } from "../../../Api/Service";
 function Updates() {
   const [claims, setClaims] = useState([]);
   const [paymentModalVisible, setPaymentModalVisible] = useState(false);
   const [selectedClaimId, setSelectedClaimId] = useState(null);
   const [paymentAmount, setPaymentAmount] = useState("");
-  // const [userName, setUserName] = useState() 
-  const user_id = localStorage.getItem("user_id")
+  const [user_id,setUserid]=useState('')
+  // const [userName, setUserName] = useState()
+  // const user_id = localStorage.getItem("user_id");
   // Fetch claims on mount
   const getClaims = async () => {
     const data = await get_claimItem();
     console.log("Fetched claims:", data);
     setClaims(data);
-    
   };
 
   useEffect(() => {
@@ -28,8 +28,9 @@ function Updates() {
   }, []);
 
   // Open modal for approval
-  const handleApprove = (id) => {
+  const handleApprove = (id,user_id) => {
     setSelectedClaimId(id);
+    setUserid(user_id)
     setPaymentModalVisible(true);
   };
 
@@ -51,36 +52,36 @@ function Updates() {
 
   // Modal confirm approve
   const confirmApproval = async () => {
-  if (!paymentAmount || isNaN(paymentAmount) || Number(paymentAmount) <= 0) {
-    alert("Please enter a valid payment amount");
-    return;
-  }
+    if (!paymentAmount || isNaN(paymentAmount) || Number(paymentAmount) <= 0) {
+      alert("Please enter a valid payment amount");
+      return;
+    }
 
-  const paymentData = {
-    claim: selectedClaimId,
-    amount: Number(paymentAmount),
-    status: "pending",
-    transaction_id: "TXN" + Date.now(),
-    method: "Manual",
-    user: user_id, // ⬅️ hardcoded user_id (use dynamic one if needed)
-    // user_name : userName
+    const paymentData = {
+      claim: selectedClaimId,
+      amount: Number(paymentAmount),
+      status: "pending",
+      transaction_id: "TXN" + Date.now(),
+      method: "Manual",
+      user: user_id, // ⬅️ hardcoded user_id (use dynamic one if needed)
+      // user_name : userName
+    };
+
+    try {
+      const res = await post_payment(paymentData);
+      console.log("Payment response:", res);
+      alert("Claim Approved & Payment Recorded!");
+
+      setClaims((prevClaims) => prevClaims.filter((claim) => claim.id !== selectedClaimId));
+
+      setPaymentModalVisible(false);
+      setPaymentAmount("");
+      setSelectedClaimId(null);
+    } catch (err) {
+      console.error("Payment error:", err);
+      alert("Failed to record payment");
+    }
   };
-
-  try {
-    const res = await post_payment(paymentData);
-    console.log("Payment response:", res);
-    // const amount = localStorage.setItem("payment_new",res.amount)
-    alert("Claim Approved & Payment Recorded!");
-
-    setClaims((prev) => prev.filter((item) => item.id !== selectedClaimId));
-    setPaymentModalVisible(false);
-    setPaymentAmount("");
-    setSelectedClaimId(null);
-  } catch (err) {
-    console.error("Payment error:", err);
-    alert("Failed to record payment");
-  }
-};
   return (
     <div style={{ padding: "24px" }}>
       <h2 style={{ marginBottom: 16 }}>📋 Pending Claims</h2>
@@ -134,7 +135,7 @@ function Updates() {
                   <Button
                     type="primary"
                     icon={<CheckCircleOutlined />}
-                    onClick={() => handleApprove(claim.id)}
+                    onClick={() => handleApprove(claim.id,claim.user)}
                   >
                     Approve
                   </Button>

@@ -94,6 +94,7 @@ class LoginAPIView(APIView):
             refresh = RefreshToken.for_user(user)
             return Response({
                 "id": user.id,
+                "email":user.email,
                 "status": True,
                 "message": "Login successful",
                 "access_token": str(refresh.access_token),
@@ -164,22 +165,50 @@ class FoundItemCreateView(APIView):
         return Response(serializer.data)
 
 
-class CraeteProfile(APIView):
+class CreateProfile(APIView):
     permission_classes = [IsAuthenticated]
+
+    # def post(self, request):
+    #     data = request.data.copy()
+    #     data['user'] = request.user.id
+    #     serializer = CreateUserProfileSerializer(data=data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors)
 
     def post(self, request):
         data = request.data.copy()
         data['user'] = request.user.id
-        serializer = CreateUserProfileSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors)
 
-    def get(self, request):
-        profiles = CreateUserProfile.objects.all().order_by("-id")
-        serializer = CreateUserProfileSerializer(profiles, many=True)
-        return Response(serializer.data)
+        # Check if profile exists
+        try:
+            profile = CreateUserProfile.objects.get(user=request.user)
+            # Update existing profile
+            serializer = CreateUserProfileSerializer(profile, data=data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except CreateUserProfile.DoesNotExist:
+            # Create new profile
+            serializer = CreateUserProfileSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, id=None):  # ✅ id optional
+        if id:
+            try:
+                profile = CreateUserProfile.objects.filter(user=id)
+                serializer = CreateUserProfileSerializer(profile ,many = True)
+                return Response(serializer.data)
+            except CreateUserProfile.DoesNotExist:
+                return Response({"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            profiles = CreateUserProfile.objects.all().order_by("-id")
+            serializer = CreateUserProfileSerializer(profiles, many=True)
+            return Response(serializer.data)
 
 
 class FeedbackView(APIView):
@@ -237,15 +266,31 @@ class PaymentAPIView(APIView):
     def post(self, request):
         serializer = PaymentSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user)  # ✅ Set user manually here
-            return Response({"message": "Claim submitted successfully"}, status=status.HTTP_201_CREATED)
+            payment = serializer.save()  # ✅ Save and get instance
+
+            # 🟢 Update related claim status
+            claim_id = request.data.get("claim")
+            # import pdb;
+            # pdb.set_trace()
+            if claim_id:
+                try:
+                    claim = ClaimItem.objects.get(id=claim_id)
+                    claim.status = "Approved"  # or "paid", based on your logic
+                    claim.save()
+                except ClaimItem.DoesNotExist:
+                    return Response({"error": "Claim not found"}, status=status.HTTP_404_NOT_FOUND)
+
+            return Response({
+                "message": "Payment & claim status updated",
+                "claim_id": claim.id,
+                "new_status": claim.status
+                }, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     def get(self, request, id=None):  
         if id:
             try:
-                payment = Payment.objects.filter(claim=id)
+                payment = Payment.objects.filter(user=int(id)).order_by('-id')
                 serializer = PaymentSerializer(payment,many=True)
                 return Response(serializer.data)
             except Payment.DoesNotExist:

@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Input, Table, Spin } from "antd";
-import {
-  Lost_get,
-  Found_get,
-  getPracticeList,
-} from "../../../Api/Service"; // adjust if needed
+import { Lost_get, Found_get, getPracticeList } from "../../../Api/Service"; // adjust if needed
 import "./DashboardHome.css";
 
 function DashboardHome() {
   const [lostItems, setLostItems] = useState([]);
   const [foundItems, setFoundItems] = useState([]);
   const [practiceList, setPracticeList] = useState(null);
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "default");
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || "default"
+  );
   const [open, setOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
   const [loading, setLoading] = useState(false);
@@ -77,7 +75,7 @@ function DashboardHome() {
         {
           title: "Total Users",
           value: practiceList.total_users,
-          color: "bg-blue-100 text-blue-800",
+          color: "bg-black text-white",
         },
         {
           title: "Active Users",
