@@ -239,11 +239,32 @@ function DashboardHome() {
 
   // Card stats
   const cardData = [
-    { title: "Total Users", value: 120 },
-    { title: "Active Users", value: 95 },
-    { title: "Inactive Users", value: 25 },
-    { title: "Admins", value: 5 },
-  ];
+  {
+    title: "Total Users",
+    value: 120,
+    bgColor: "#e3f2fd",
+    textColor: "#1565c0",
+  },
+  {
+    title: "Active Users",
+    value: 95,
+    bgColor: "#e8f5e9",
+    textColor: "#2e7d32",
+  },
+  {
+    title: "Inactive Users",
+    value: 25,
+    bgColor: "#fff3e0",
+    textColor: "#ef6c00",
+  },
+  {
+    title: "Admins",
+    value: 5,
+    bgColor: "#ede7f6",
+    textColor: "#6a1b9a",
+  },
+];
+
 
   // Filtered Data by Category
   const filteredLostItems =
