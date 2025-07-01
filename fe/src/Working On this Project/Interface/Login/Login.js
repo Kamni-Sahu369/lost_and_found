@@ -117,12 +117,10 @@
 
 // export default Login;
 
-
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Input, Button, Form, Modal, message } from "antd";
-import { useLocation, useNavigate } from 'react-router-dom';
-import './Login.css';
+import { useLocation, useNavigate } from "react-router-dom";
+import "./Login.css";
 
 function Login() {
   const [openLogin, setOpenLogin] = useState(false);
@@ -141,12 +139,12 @@ function Login() {
       const response = await fetch("http://localhost:8000/login/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: values.email,
-          password: values.password
-        })
+          password: values.password,
+        }),
       });
 
       if (!response.ok) {
@@ -160,7 +158,7 @@ function Login() {
       localStorage.setItem("refresh_token", data.refresh_token);
       localStorage.setItem("loggedIn", true);
       localStorage.setItem("role", data.role);
-
+      localStorage.setItem("email", data.email);
       message.success("Login successful!");
       setOpenLogin(false);
       navigate("/", { replace: true });
@@ -172,8 +170,8 @@ function Login() {
 
   const onRegister = () => {
     navigate("/register");
-    setOpenLogin(false)
-  }
+    setOpenLogin(false);
+  };
   return (
     <div>
       <Button onClick={() => setOpenLogin(true)} className="login-btn">
@@ -196,7 +194,7 @@ function Login() {
           <Form.Item
             label="Email"
             name="email"
-            rules={[{ required: true, message: 'Please enter your email' }]}
+            rules={[{ required: true, message: "Please enter your email" }]}
           >
             <Input placeholder="Enter your email" />
           </Form.Item>
@@ -204,13 +202,16 @@ function Login() {
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: 'Please enter your password' }]}
+            rules={[{ required: true, message: "Please enter your password" }]}
           >
             <Input.Password placeholder="Enter your password" />
           </Form.Item>
 
           <div className="login-links-top">
-            <span onClick={() => navigate('/forgot-password')} className="forgot-password">
+            <span
+              onClick={() => navigate("/forgot-password")}
+              className="forgot-password"
+            >
               Forgot Password?
             </span>
           </div>

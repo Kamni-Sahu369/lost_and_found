@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Card, Empty, Tag } from "antd";
-import { get_userPayments  } from "../../../Api/Service"; // ⬅️ define this API call
-import Payment from "./Payment"
+import { get_userPayments } from "../../../Api/Service"; // ⬅️ define this API call
+import Payment from "./Payment";
 function UserPayments() {
   const [payments, setPayments] = useState([]);
 
-  useEffect(() => {
   const fetchPayments = async () => {
     try {
       const res = await get_userPayments(localStorage.getItem("user_id")); // API returns array directly
@@ -16,9 +15,9 @@ function UserPayments() {
     }
   };
 
-  fetchPayments();
-}, []);
-
+  useEffect(() => {
+    fetchPayments();
+  }, []);
 
   return (
     <div style={{ padding: 24 }}>
@@ -33,11 +32,17 @@ function UserPayments() {
             style={{ marginBottom: 16 }}
             title={`Claim #${item.claim_id}`}
           >
-            <p><strong>amount:</strong> {item.amount}</p>
+            <p>
+              <strong>amount:</strong> {item.amount}
+            </p>
             {/* <p><strong>amount:</strong> {item.amount}</p> */}
 
-            <p><strong>Description:</strong> {item.description}</p>
-            <p><strong>Location/Time:</strong> {item.location_info}</p>
+            <p>
+              <strong>Description:</strong> {item.description}
+            </p>
+            <p>
+              <strong>Location/Time:</strong> {item.location_info}
+            </p>
             {item.receipt_bill && (
               <p>
                 <a
@@ -54,15 +59,26 @@ function UserPayments() {
 
             {item.payment ? (
               <div style={{ marginTop: 12 }}>
-                <p><strong>Amount:</strong> ₹{item.payment.amount}</p>
-                <p><strong>Status:</strong> {item.payment.status}</p>
-                <p><strong>Txn ID:</strong> {item.payment.transaction_id}</p>
-                <p><strong>Method:</strong> {item.payment.method}</p>
-                <p><strong>Paid At:</strong> {new Date(item.payment.payment_time).toLocaleString()}</p>
+                <p>
+                  <strong>Amount:</strong> ₹{item.payment.amount}
+                </p>
+                <p>
+                  <strong>Status:</strong> {item.payment.status}
+                </p>
+                <p>
+                  <strong>Txn ID:</strong> {item.payment.transaction_id}
+                </p>
+                <p>
+                  <strong>Method:</strong> {item.payment.method}
+                </p>
+                <p>
+                  <strong>Paid At:</strong>{" "}
+                  {new Date(item.payment.payment_time).toLocaleString()}
+                </p>
               </div>
             ) : (
               <Tag color="orange">
-                <Payment amount={item.amount}/>
+                <Payment amount={item.amount} email={item.users.email} />
               </Tag>
             )}
           </Card>

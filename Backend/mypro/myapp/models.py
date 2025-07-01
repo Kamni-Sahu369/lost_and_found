@@ -89,7 +89,6 @@ class CreateUserProfile(models.Model):
     city = models.CharField(max_length=100, blank=True, null=True)
     state = models.CharField(max_length=100, blank=True, null=True)
     pincode = models.CharField(max_length=10, blank=True, null=True)
-    user_type = models.CharField(max_length=20, choices=[("regular", "Regular User"), ("admin", "Admin")], default="regular")
     agreement = models.BooleanField(default=False)
 
     def __str__(self):

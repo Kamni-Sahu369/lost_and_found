@@ -17,7 +17,7 @@ import {
   updateProfile,
   updateProfile_get,
   getPracticeList,
-  updateUserPassword
+  updateUserPassword,
 } from "../../../Api/Service";
 import moment from "moment";
 
@@ -62,9 +62,9 @@ function Profile() {
   };
 
   const handlePasswordFinish = async (values) => {
-    alert("cvfbgb db")
+    alert("cvfbgb db");
     try {
-      await updateUserPassword(values.id,values);
+      await updateUserPassword(values.id, values);
       message.success("Password changed successfully!");
       setIsPasswordModalOpen(false);
     } catch (error) {
@@ -77,10 +77,9 @@ function Profile() {
     try {
       const data = await updateProfile_get();
       setUser(data);
-      console.log(data)
+      console.log(data);
       const savedData = JSON.parse(localStorage.getItem("registerData"));
-      console.log(savedData)
-      
+      console.log(savedData);
     } catch (error) {
       console.error("Failed to fetch profile:", error);
       message.error("Failed to load profile.");
@@ -90,8 +89,6 @@ function Profile() {
   useEffect(() => {
     fetchProfile();
   }, []);
-
-  
 
   return (
     <div>
@@ -221,8 +218,11 @@ function Profile() {
         footer={null}
         width={450}
       >
-        <Form layout="vertical" onFinish={handlePasswordFinish} style={{width:350}}>
-          
+        <Form
+          layout="vertical"
+          onFinish={handlePasswordFinish}
+          style={{ width: 350 }}
+        >
           <Form.Item
             name="newPassword"
             label="New Password"
@@ -257,7 +257,7 @@ function Profile() {
 
       {/* Profile Card */}
       <div>
-        <div className="profile_card_main">  
+        <div className="profile_card_main">
           {user.map((i) => (
             <div className="profile-card">
               <img
@@ -269,16 +269,19 @@ function Profile() {
                 <strong>Name:</strong> {i.users.name}
               </p>
               <p>
+                <strong>Email:</strong> {i.users.email}
+              </p>
+              <p>
                 <strong>city:</strong> {i.city}
               </p>
               <p>
-                <strong>Phone:</strong> {i.alternate_phone}
+                <strong>Gender:</strong> {i.gender}
               </p>
               <p>
-                <strong>Location:</strong> {user.location}
+                <strong>Date of Birth:</strong> {i.dob}
               </p>
               <p>
-                <strong>Bio:</strong> {user.bio}
+                <strong>Phone:</strong> {i.users.phone}
               </p>
             </div>
           ))}

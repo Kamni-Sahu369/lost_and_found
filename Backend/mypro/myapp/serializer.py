@@ -61,6 +61,7 @@ class ClaimItemSerializer(serializers.ModelSerializer):
         read_only_fields = ['status', 'created_at', 'updated_at', 'user']
 
 class PaymentSerializer(serializers.ModelSerializer):
+    users=MyReg_Serializer(source="user",read_only =True,many=False)
     class Meta:
         model = Payment
         fields = '__all__'

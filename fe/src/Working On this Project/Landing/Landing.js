@@ -21,7 +21,7 @@ import Suggestion from "../Admin/Pages/Notification/Suggestion";
 import Feedback from "../Admin/Pages/Notification/Feedback";
 import Logout from "../Admin/Pages/Logout/Logout";
 import Updates from "../Admin/Pages/Notification/Updates"
-
+import Payment_Receipts from "../Admin/Pages/Notification/Payment" 
 // User
 import UserDashboard from "../User/Pages/Dashboard/DashboardHome";
 import UserItem from "../User/Pages/Item/Item";
@@ -32,6 +32,7 @@ import UserSuggestion from "../User/Pages/Notification/Suggestion";
 import UserFeedback from "../User/Pages/Notification/Feedback";
 import UserUpdates from "../User/Pages/Notification/Updates"
 import Success from "../User/Pages/Notification/Success"
+import Payment_receipts from "../User/Pages/Notification/Payment_receipts"
 
 import UserLogout from "../User/Pages/Logout/Logout";
 import LoginCopy from "../Interface/Login/LoginCopy"
@@ -76,6 +77,7 @@ function Landing() {
                   <Route path="/suggestion" element={<Suggestion />} />
                   <Route path="/feedback" element={<Feedback />} />
                   <Route path="/updates" element={<Updates />} />
+                  <Route path="/payment_receipts" element={<Payment_Receipts />} />
                 </>
               ) : (
                 <>
@@ -90,6 +92,7 @@ function Landing() {
                   <Route path="/updates" element={<UserUpdates />} />
                   <Route path="/success" element={<Success />} />
                   <Route path="/logout" element={<UserLogout />} />
+                  <Route path="/payment_receipts" element={<Payment_receipts />} />
                   {/* Add more user-specific routes here */}
                 </>
               )}+
