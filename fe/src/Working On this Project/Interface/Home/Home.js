@@ -77,7 +77,7 @@ const Home = () => {
           <div className="about-glass-section">
             <div className="about-glass-container">
               <div className="about-glass-text">
-                <h1>About <span>SmartE</span></h1>
+                <h1>About <span>Lost and Found</span></h1>
                 <p>
                   Lost and Found is a system designed to help individuals recover lost items and return found items to their rightful owners. It acts as a bridge between the person who lost something and the person who found it.
 

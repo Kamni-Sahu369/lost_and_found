@@ -355,30 +355,29 @@ function DashboardHome() {
     }
   };
 
-   const cardData = practiceList
+  const cardData = practiceList
     ? [
-        {
-          title: "Total Users",
-          value: practiceList.total_users,
-          color: "bg-red-100 text-blue-800",
-          color: "bg-black text-white",
-        },
-        {
-          title: "Active Users",
-          value: practiceList.active_users,
-          // color: "bg-green-100 text-green-800",
-        },
-        {
-          title: "Inactive Users",
-          value: practiceList.inactive_users,
-          color: "bg-yellow-100 text-yellow-800",
-        },
-        {
-          title: "Admins",
-          value: practiceList.admins,
-          color: "bg-purple-100 text-purple-800",
-        },
-      ]
+      {
+        title: "Total Users",
+        value: practiceList.total_users,
+        color: "bg-black text-white",
+      },
+      {
+        title: "Active Users",
+        value: practiceList.active_users,
+        // color: "bg-green-100 text-green-800",
+      },
+      {
+        title: "Inactive Users",
+        value: practiceList.inactive_users,
+        color: "bg-yellow-100 text-yellow-800",
+      },
+      {
+        title: "Admins",
+        value: practiceList.admins,
+        color: "bg-purple-100 text-purple-800",
+      },
+    ]
     : [];
 
   const filteredLostItems =
@@ -399,30 +398,15 @@ function DashboardHome() {
   //   { title: "Phone", dataIndex: "phone", key: "phone" },
   // ];
 
-  
 
-   const columns = [
+
+  const columns = [
     { title: "ID", dataIndex: "id", key: "id" },
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email" },
     { title: "Country", dataIndex: "country", key: "country" },
     { title: "Phone", dataIndex: "phone", key: "phone" },
-    {
-      title: "Month",
-      key: "month",
-      render: (_, record) => {
-        const date = new Date(record.registered_date || record.created_at);
-        return isNaN(date) ? "-" : date.toLocaleString("default", { month: "long" });
-      },
-    },
-    {
-      title: "Year",
-      key: "year",
-      render: (_, record) => {
-        const date = new Date(record.registered_date || record.created_at);
-        return isNaN(date) ? "-" : date.getFullYear();
-      },
-    },
+
   ];
 
   return (
@@ -468,12 +452,26 @@ function DashboardHome() {
 
       <div className="dashboard-content">
         <div className="card-container">
-          {cardData.map((card, idx) => (
+          {/* {cardData.map((card, idx) => (
             <div className="stat-card"  key={idx}>
               <h3>{card.title}</h3>
               <p>{card.value}</p>
             </div>
+          ))} */}
+
+
+
+          {cardData.map((card, idx) => (
+            <div className={`stat-card ${card.title === "Total Users" ? "total-users" :
+                card.title === "Active Users" ? "active-users" :
+                  card.title === "Inactive Users" ? "inactive-users" :
+                    card.title === "Admins" ? "admins" : ""
+              }`} key={idx}>
+              <h3>{card.title}</h3>
+              <p>{card.value}</p>
+            </div>
           ))}
+
         </div>
 
         <h3 className="section-titlelost">Lost Items</h3>

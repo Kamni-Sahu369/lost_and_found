@@ -103,6 +103,7 @@ function Profile() {
       </div>
 
       {/* Profile Modal */}
+      
       <Modal
         title="Create Your Profile"
         open={isProfileModalOpen}

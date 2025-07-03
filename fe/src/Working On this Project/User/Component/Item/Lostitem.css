@@ -21,18 +21,49 @@
 
 
 /* Container Styling */
-.lost-form-container {
+/* .lost-form-container {
   background-color: #fff;
   max-width: 900px;
-  /* border: 2px solid; */
-  /* height: 57vh; */
   margin: auto;
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   font-family: "Segoe UI", sans-serif;
+} */
+
+
+.lost-form-container {
+  background-color: #fff;
+  max-width: 600px;       /* 👈 aur chhota width */
+  height: 90vh;           /* 👈 aur kam height */
+   margin: -20px auto;      /*👈 thoda vertical margin */
+  padding: 16px 20px;     /* 👈 kam padding andar */
+   /* overflow-y: auto;       👈 andar scroll agar zarurat ho */
+  border-radius: 12px;    /* 👈 thoda chhota roundness */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  font-family: "Segoe UI", sans-serif;
 }
+
+.ant-form-item {
+  margin-bottom: 2px;    /* 👈 field ke beech ka gap kam */
+}
+
+.lost-form-container h2 {
+  font-size: 1.5rem;      /* 👈 title bhi compact */
+  margin-bottom: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /* Header */
 .lost-form-container h2 {

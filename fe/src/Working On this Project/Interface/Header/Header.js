@@ -3,6 +3,7 @@ import './Header.css';
 import { Link } from "react-router-dom"
 import { ScrollLink } from "react-scroll"
 
+
 // image
 import Logo from "../../image/ankit_logo-removebg-preview.png"
 
@@ -21,6 +22,7 @@ const Header = () => {
         <Link to="service" smooth={true} duration={500}>Service</Link>
         <Link to="/category" >Category</Link>
         <Link to="register" smooth={true} duration={500}>Register</Link>
+
 
 
       </div>
