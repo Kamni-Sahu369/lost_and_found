@@ -48,11 +48,41 @@ class CreateUserProfileSerializer(serializers.ModelSerializer):
         model = CreateUserProfile
         fields = '__all__'  
 
+#Feedback=================================================================
+
 class FeedbackSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Feedback
-        fields = '__all__'
+        fields = ['id', 'user', 'feedback', 'rating', 'created_at']
 
+    def get_user(self, obj):
+        if obj.user is not None:
+            return {
+                "id": obj.user.id,
+                "email": obj.user.email,
+                "name": obj.user.name,
+            }
+        return None
+    
+#Suggestion=================================================================
+
+class SuggestionSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Suggestion
+        fields = ['id', 'user', 'type', 'subject', 'message', 'created_at']
+
+    def get_user(self, obj):
+        return {
+            "id": obj.user.id,
+            "name": obj.user.name,
+            "email": obj.user.email,
+        }
+    
+#==================================================================
 class ClaimItemSerializer(serializers.ModelSerializer):
     users=MyReg_Serializer(source="user",read_only =True,many=False)
     class Meta:

@@ -18,7 +18,7 @@ import Profile from "../Admin/Pages/Profile/Profile";
 import Match from "../Admin/Pages/Match/Match";
 import Setting from "../Admin/Pages/Setting/Setting";
 import Suggestion from "../Admin/Pages/Notification/Suggestion";
-import Feedback from "../Admin/Pages/Notification/Feedback";
+import Feedback from "../Admin/Pages/Notification/Feedback/Feedback";
 import Logout from "../Admin/Pages/Logout/Logout";
 import Updates from "../Admin/Pages/Notification/Updates"
 import Payment_Receipts from "../Admin/Pages/Notification/Payment" 
@@ -28,8 +28,8 @@ import UserItem from "../User/Pages/Item/Item";
 import UserProfile from "../User/Pages/Profile/Profile";
 import UserMatch from "../User/Pages/Match/Match";
 import UserSetting from "../User/Pages/Setting/Setting";
-import UserSuggestion from "../User/Pages/Notification/Suggestion";
-import UserFeedback from "../User/Pages/Notification/Feedback";
+import UserSuggestion from "../User/Pages/Notification/Suggestion/Suggestion";
+import UserFeedback from "../User/Pages/Notification/Feedback/Feedback";
 import UserUpdates from "../User/Pages/Notification/Updates"
 import Success from "../User/Pages/Notification/Success"
 import Payment_receipts from "../User/Pages/Notification/Payment_receipts"

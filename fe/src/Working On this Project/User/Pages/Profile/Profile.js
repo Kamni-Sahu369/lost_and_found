@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Row, Col } from "antd";
 import {
   Button,
   Modal,
@@ -119,7 +120,7 @@ function Profile() {
       </div>
 
       {/* Profile Modal */}
-      <Modal
+      {/* <Modal
         title={
           <Title level={3} style={{ color: "#1677ff", marginBottom: 0 }}>
             Create Your Profile
@@ -300,10 +301,191 @@ function Profile() {
             </Button>
           </Form.Item>
         </Form>
+      </Modal> */}
+
+
+
+
+
+
+
+      <Modal
+        className="Create_Your_Profile"
+        title={
+          <Title level={3} style={{ color: "#1677ff", marginBottom: 0 }}>
+            Create Your Profile
+          </Title>
+        }
+        open={isProfileModalOpen}
+        onCancel={handleProfileCancel}
+        footer={null}
+        bodyStyle={{
+          padding: "24px 32px",
+          maxHeight: "70vh",      // fixed visible height
+          overflowY: "auto",      // vertical scroll
+        }}
+      >
+
+        <Form layout="vertical" form={form} onFinish={handleProfileFinish}>
+          <Divider orientation="left" orientationMargin={0}>
+            <strong style={{ color: "#52c41a" }}>Basic Information</strong>
+          </Divider>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="name"
+                label={<span style={{ color: "#595959" }}>Full Name</span>}
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="Enter your name" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="email"
+                label={<span style={{ color: "#595959" }}>Email</span>}
+                rules={[{ required: true, type: "email" }]}
+              >
+                <Input placeholder="Enter your email" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="phone"
+                label="Phone"
+                rules={[
+                  { required: true, message: "Please enter your phone number" },
+                  { pattern: /^\d{10}$/, message: "Phone must be 10 digits" },
+                ]}
+              >
+                <Input
+                  maxLength={10}
+                  inputMode="numeric"
+                  placeholder="10-digit number"
+                  onKeyPress={(e) => {
+                    if (!/[0-9]/.test(e.key)) e.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col span={12}>
+              <Form.Item
+                name="alternate_phone"
+                label="Alternate Phone Number"
+                rules={[
+                  { required: true },
+                  { pattern: /^\d{10}$/, message: "Phone must be 10 digits" },
+                ]}
+              >
+                <Input maxLength={10} placeholder="10-digit number" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="gender"
+                label="Gender"
+                rules={[{ required: true }]}
+              >
+                <Radio.Group>
+                  <Radio value="male">Male</Radio><br></br>
+                  <Radio value="female">Female</Radio><br></br>
+                  <Radio value="other">Other</Radio><br></br>
+                </Radio.Group>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="dob" label="Date of Birth" rules={[{ required: true }]}>
+                <DatePicker style={{ width: "100%" }} />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Divider orientation="left" orientationMargin={0}>
+            <strong style={{ color: "#722ed1" }}>Additional Details</strong>
+          </Divider>
+
+          <Form.Item
+            name="profile_pic"
+            label="Profile Picture"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
+            rules={[{ required: true }]}
+          >
+            <Upload
+              name="profile_pic"
+              listType="picture"
+              beforeUpload={() => false}
+              maxCount={1}
+            >
+              <Button icon={<UploadOutlined />}>Upload</Button>
+            </Upload>
+          </Form.Item>
+
+          <Form.Item name="address" label="Address" rules={[{ required: true }]}>
+            <TextArea rows={2} placeholder="Enter your full address" />
+          </Form.Item>
+
+          <Row gutter={16}>
+            <Col span={8}>
+              <Form.Item name="city" label="City" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item name="state" label="State" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item name="pincode" label="PIN Code" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Form.Item
+            name="agreement"
+            valuePropName="checked"
+            rules={[
+              {
+                validator: (_, value) =>
+                  value ? Promise.resolve() : Promise.reject("You must accept terms"),
+              },
+            ]}
+          >
+            <Checkbox>
+              I agree to the <a href="/terms">terms and conditions</a>.
+            </Checkbox>
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              block
+              style={{
+                backgroundColor: "#13c2c2",
+                borderColor: "#13c2c2",
+                fontWeight: "bold",
+              }}
+            >
+              Save Profile
+            </Button>
+          </Form.Item>
+        </Form>
       </Modal>
 
+
       {/* Password Modal */}
-      <Modal
+      <Modal className="Change_Password"
         title="Change Password"
         open={isPasswordModalOpen}
         onCancel={handlePasswordCancel}

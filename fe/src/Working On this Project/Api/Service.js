@@ -205,6 +205,40 @@ export const Feedback_post = async (data) => {
   return response.data;
 };
 
+export const Feedback_get = async () => {
+  const userId = localStorage.getItem("user_id");
+  const role = localStorage.getItem("role");
+
+  const url =
+    role === "admin"
+      ? `${Api_Url}/FeedbackView/`                  // Admin = all feedback
+      : `${Api_Url}/FeedbackView/?user_id=${userId}`; // User = own feedback only
+
+  const response = await axios.get(url);
+  return response.data;
+};
+
+export const Feedback_getById = async (id) => {
+  const response = await axios.get(`${Api_Url}/FeedbackView/${id}/`);
+  return response.data;
+};
+
+export const Feedback_put = async (id, data) => {
+  const response = await axios.put(`${Api_Url}/FeedbackView/${id}/`, data);
+  return response.data;
+};
+
+export const Feedback_patch = async (id, data) => {
+  const response = await axios.patch(`${Api_Url}/FeedbackView/${id}/`, data);
+  return response.data;
+};
+
+export const Feedback_delete = async (id) => {
+  const response = await axios.delete(`${Api_Url}/FeedbackView/${id}/`);
+  return response.data;
+};
+
+
 const getAuthHeaders = () => {
   const token = localStorage.getItem("access_token"); // adjust if key is different
   // const user_id = localStorage.getItem("user_id");
@@ -218,6 +252,37 @@ const getAuthHeaders = () => {
   };
 };
 
+//-------------------------------------------------------------------------
+//suggestions
+
+export const getSuggestions = async () => {
+  const userId = localStorage.getItem("user_id");
+  const role = localStorage.getItem("role");
+
+  const url =
+    role === "admin"
+      ? `${Api_Url}/suggestions/`                  // Admin = all feedback
+      : `${Api_Url}/suggestions/?user_id=${userId}`; // User = own feedback only
+
+  const response = await axios.get(url);
+  return response.data;
+};
+
+
+export const postSuggestion = async (data) => {
+  const response = await axios.post(`${Api_Url}/suggestions/`, data);  // ❌ No token
+  return response.data;
+};
+
+export const deleteSuggestion = async (id) => {
+  const user_id = localStorage.getItem("user_id");
+  const response = await axios.delete(`${Api_Url}/suggestions/${id}/?user_id=${user_id}`);
+  return response.data;
+};
+
+
+
+//..........................................................................
 // Post a payment (with user token)
 export const post_payment = async (data) => {
   const response = await axios.post(`${Api_Url}/payments/`, data, getAuthHeaders());

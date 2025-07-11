@@ -36,7 +36,13 @@ urlpatterns = [
     path('FoundItemCreateView/<int:pk>/', FoundItemCreateView.as_view()),  
      path('CreateProfile/', CreateProfile.as_view(), name='create-profile'),
     path('CreateProfile/<int:id>/',CreateProfile.as_view()),
-    path('FeedbackView/',FeedbackView.as_view()),
+
+    path('FeedbackView/', FeedbackView.as_view()),             # For GET all and POST
+    path('FeedbackView/<int:pk>/', FeedbackView.as_view()),
+
+    path('suggestions/', SuggestionView.as_view()),  # GET (list), POST
+    path('suggestions/<int:pk>/', SuggestionView.as_view()),  # GET by ID, DELETE
+    
     path('varify_otp/',VerifyOtp.as_view()),
     path('claim/', ClaimItemAPIView.as_view(), name='claim-item'),
     # ..............................

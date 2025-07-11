@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import My_Reg, LostItem, FoundItem, CreateUserProfile
 from .serializer import *
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.hashers import make_password
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -209,16 +210,121 @@ class CreateProfile(APIView):
             profiles = CreateUserProfile.objects.all().order_by("-id")
             serializer = CreateUserProfileSerializer(profiles, many=True)
             return Response(serializer.data)
-
-
+        
+#==========================#Feedback#================================================
 class FeedbackView(APIView):
+    def get(self, request, pk=None):
+        if pk:
+            try:
+                feedback = Feedback.objects.get(pk=pk)
+                serializer = FeedbackSerializer(feedback)
+                return Response(serializer.data)
+            except Feedback.DoesNotExist:
+                return Response({"error": "Feedback not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            user_id = request.GET.get("user_id")
+
+            if user_id:
+                feedbacks = Feedback.objects.filter(user_id=user_id).order_by("-created_at")
+            else:
+                # ✅ No user_id → assume admin → return all feedback
+                feedbacks = Feedback.objects.all().order_by("-created_at")
+
+            serializer = FeedbackSerializer(feedbacks, many=True)
+            return Response(serializer.data)
+
+
     def post(self, request):
-        serializer = FeedbackSerializer(data=request.data)
+        user_id = request.data.get("user")
+        try:
+            user = My_Reg.objects.get(id=user_id)
+        except My_Reg.DoesNotExist:
+            return Response({"error": "Invalid user ID"}, status=status.HTTP_400_BAD_REQUEST)
+
+        data = request.data.copy()
+        data["user"] = user.id  # Keep ID for serializer
+
+        serializer = FeedbackSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save(user=user)  # Pass user instance to .save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk):
+        feedback = get_object_or_404(Feedback, pk=pk)
+        serializer = FeedbackSerializer(feedback, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def patch(self, request, pk):
+        feedback = get_object_or_404(Feedback, pk=pk)
+        serializer = FeedbackSerializer(feedback, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        feedback = get_object_or_404(Feedback, pk=pk)
+        feedback.delete()
+        return Response({"message": "Feedback deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+#==========================#Suggestion#============================
+class SuggestionView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk=None):
+        if pk:
+            try:
+                feedback = Suggestion.objects.get(pk=pk)
+                serializer = SuggestionSerializer(feedback)
+                return Response(serializer.data)
+            except Suggestion.DoesNotExist:
+                return Response({"error": "Feedback not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            user_id = request.GET.get("user_id")
+
+            if user_id:
+                suggestions = Suggestion.objects.filter(user_id=user_id).order_by("-created_at")
+            else:
+                # ✅ No user_id → assume admin → return all feedback
+                suggestions = Suggestion.objects.all().order_by("-created_at")
+
+            serializer = SuggestionSerializer(suggestions, many=True)
+            return Response(serializer.data)
+
+
+
+    def post(self, request):
+        user_id = request.data.get("user")
+        try:
+            user = My_Reg.objects.get(id=user_id)
+        except My_Reg.DoesNotExist:
+            return Response({"error": "Invalid user ID"}, status=status.HTTP_400_BAD_REQUEST)
+
+        data = request.data.copy()
+        data["user"] = user.id  # Keep ID for serializer
+
+        serializer = SuggestionSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save(user=user)  # Pass user instance to .save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, request, pk):
+        try:
+            suggestion = Suggestion.objects.get(pk=pk)
+            if request.user.is_staff or suggestion.user == request.user:
+                suggestion.delete()
+                return Response({"message": "Deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+            return Response({"error": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+        except Suggestion.DoesNotExist:
+            return Response({"error": "Not found"}, status=status.HTTP_404_NOT_FOUND)
+
+#============VerifyOtp=======================
 
 class VerifyOtp(APIView):
     def post(self, request):
