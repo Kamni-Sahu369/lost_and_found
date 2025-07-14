@@ -61,6 +61,7 @@ class LostItem(models.Model):
     description = models.TextField(blank=True)
     item_image = models.ImageField(upload_to='lost_items/')
     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -75,6 +76,7 @@ class FoundItem(models.Model):
     description = models.TextField(blank=True)
     item_image = models.ImageField(upload_to='lost_items/')
     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
