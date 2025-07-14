@@ -431,3 +431,8 @@ class SimpleLoginAPIView(APIView):
             except user.DoesNotExist:
                 return Response({"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+#category..........................................
+

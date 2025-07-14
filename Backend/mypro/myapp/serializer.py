@@ -100,3 +100,8 @@ class PaymentSerializer(serializers.ModelSerializer):
 class SimpleLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+
+
+
+#Category...........................................
+    

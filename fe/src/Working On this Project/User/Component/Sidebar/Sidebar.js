@@ -2,50 +2,68 @@ import React, { useState } from 'react';
 import {
   Home,
   User,
-  Settings,
   LogOut,
   PackageSearch,
   Menu,
   ChevronDown,
   ChevronRight,
+  MessageCircle,
+  ThumbsUp,
   Bell,
-  Search 
+  FileText,
+  CreditCard,
+  Search
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
-const Sidebar = () => {
-  const [open, setOpen] = useState(false);
+const Sidebar = ({ open, setOpen }) => {
+  // const [open, setOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const navigate = useNavigate();
 
   const topMenus = [
-    { name: 'Dashboard', icon: <Home size={20}  />, path: '/' },
-    { name: 'Item', icon: <PackageSearch size={20} />, path: '/item' },
+    { name: 'Dashboard', icon: <Home size={20} />, path: '/' },
     { name: 'Profile', icon: <User size={20} />, path: '/profile' },
-    { name: 'Match', icon: <Search  size={20} />, path: '/match' },
+    { name: 'Item', icon: <PackageSearch size={20} />, path: '/item' },
+    { name: 'Match', icon: <Search size={20} />, path: '/match' },
   ];
-
-  const settingsMenu = {
-    name: 'Settings',
-    icon: <Settings size={20} />,
+  const PaymentMenu = {
+    name: 'Payment',
+    icon: <CreditCard size={20} />,
     children: [
-      { name: 'Change Password', path: '/settings/change-password' },
-      { name: 'Notification', path: '/settings/notifications' },
-      { name: 'Privacy', path: '/settings/privacy' },
+      { name: 'Pending-Paymenet', path: '/Pending_pay' },
+      { name: 'Complete-Payment', path: '/Complete_pay' },
     ],
   };
 
-  const notificationMenu = {
-    name: 'Notification',
-    icon: <Bell size={20} />,
-    children: [
-      { name: 'Suggestion', path: '/suggestion' },
-      { name: 'Feedback', path: '/feedback' },
-      { name: 'Updates', path: '/updates' },
-    ],
-  };
+  const OtherMenus = [
+    { name: 'Suggestion', icon: <MessageCircle size={20} />, path: '/suggestion' },
+    { name: 'Feedback', icon: <ThumbsUp size={20} />, path: '/feedback' },
+    { name: 'Notification', icon: <Bell size={20} />, path: '/Notification' },
+    { name: 'Reports', icon: <FileText size={20} />, path: '/Reports' },
+  ]
+
+  // const PaymentMenu = {
+  //   name: 'Payment',
+  //   icon: <CreditCard size={20} />,
+  //   children: [
+  //     { name: 'Pending-Paymenet', path: '/Pending_pay' },
+  //     { name: 'Complete-Payment', path: '/Complete_pay' },
+  //   ],
+  // };
+
+  // const notificationMenu = {
+  //   name: 'Notification',
+  //   icon: <Bell size={20} />,
+  //   children: [
+  //     { name: 'Suggestion', path: '/suggestion' },
+  //     { name: 'Feedback', path: '/feedback' },
+  //     { name: 'Updates', path: '/updates' },
+  //     { name: 'Payment Receipts', path: '/payment_receipts' },
+  //   ],
+  // };
 
   const logoutMenu = { name: 'Logout', icon: <LogOut size={20} />, path: '/logout' };
 
@@ -66,12 +84,12 @@ const Sidebar = () => {
             </div>
           ))}
 
-          {/* Settings Menu */}
-          <div>
+          {/* Payment Menu */}
+          {<div>
             <div className="settings-header" onClick={() => setShowSettings(!showSettings)}>
               <div className="settings-icon-label">
-                {settingsMenu.icon}
-                {open && <span className="menu-text">{settingsMenu.name}</span>}
+                {PaymentMenu.icon}
+                {open && <span className="menu-text">{PaymentMenu.name}</span>}
               </div>
               {open && (
                 <span>
@@ -82,17 +100,26 @@ const Sidebar = () => {
 
             {showSettings && open && (
               <div className="settings-submenu">
-                {settingsMenu.children.map((submenu, idx) => (
+                {PaymentMenu.children.map((submenu, idx) => (
                   <div key={idx} className="settings-submenu-item" onClick={() => navigate(submenu.path)}>
                     {submenu.name}
                   </div>
                 ))}
               </div>
             )}
-          </div>
+          </div>}
+
+          {/* Other Menu */}
+          {OtherMenus.map((menu, index) => (
+            <div key={index} className="menu-item" onClick={() => navigate(menu.path)}>
+              {menu.icon}
+              {open && <span className="menu-text">{menu.name}</span>}
+            </div>
+          ))}
+
 
           {/* Notification Menu */}
-          <div>
+          {/* <div>
             <div className="settings-header" onClick={() => setShowNotification(!showNotification)}>
               <div className="settings-icon-label">
                 {notificationMenu.icon}
@@ -114,7 +141,7 @@ const Sidebar = () => {
                 ))}
               </div>
             )}
-          </div>
+          </div> */}
         </div>
 
         <div className="logout">
@@ -129,6 +156,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
-
-

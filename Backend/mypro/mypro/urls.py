@@ -58,5 +58,8 @@ urlpatterns = [
     path("api/my-payments/", my_payments),
     path("api/my-payments/<int:id>/", my_payments),
 
+    #category.................................................................
+    
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

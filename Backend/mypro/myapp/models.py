@@ -163,3 +163,9 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment ₹{self.amount} for {self.claim} by "
+    
+
+
+#Category......................................
+
+   

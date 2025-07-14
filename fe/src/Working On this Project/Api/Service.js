@@ -334,3 +334,8 @@ export const payment_receipts = async (id) => {
     throw error;
   }
 };
+
+//Category..............................................
+export const getCategories = () => axios.get(Api_Url);
+export const postCategory = (data) => axios.post(Api_Url, data);
+export const deleteCategory = (id) => axios.delete(`${Api_Url}${id}/`);

@@ -72,8 +72,8 @@
 .menu-item {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 10px;
+  gap: 10px;
+  /* padding: 4px; */
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
