@@ -104,6 +104,74 @@ class LoginAPIView(APIView):
             })
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# class LostItemCreateView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def post(self, request):
+#         serializer = LostItemSerializer(data=request.data)
+#         if serializer.is_valid():
+#             if request.user and request.user.is_authenticated:
+#                 serializer.save(user=request.user)
+#             else:
+#                 serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     def get(self, request, pk=None):
+#         category = request.GET.get("category")
+
+#         if pk:
+#             try:
+#                 item = LostItem.objects.get(id=pk)
+#                 serializer = LostItemSerializer(item)
+#                 return Response(serializer.data)
+#             except LostItem.DoesNotExist:
+#                 return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
+
+#         if category:
+#             items = LostItem.objects.filter(category__iexact=category).order_by("-id")
+#         else:
+#             items = LostItem.objects.all().order_by("-id")
+
+#         serializer = LostItemSerializer(items, many=True)
+#         return Response(serializer.data)
+
+
+# class FoundItemCreateView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def post(self, request):
+#         serializer = FoundItemSerializer(data=request.data)
+#         if serializer.is_valid():
+#             if request.user and request.user.is_authenticated:
+#                 serializer.save(user=request.user)
+#             else:
+#                 serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#     def get(self, request, pk=None):
+#         category = request.GET.get("category")
+
+#         if pk:
+#             try:
+#                 item = FoundItem.objects.get(id=pk)
+#                 serializer = FoundItemSerializer(item)
+#                 return Response(serializer.data)
+#             except FoundItem.DoesNotExist:
+#                 return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
+
+#         if category:
+#             items = FoundItem.objects.filter(category__iexact=category).order_by("-id")
+#         else:
+#             items = FoundItem.objects.all().order_by("-id")
+
+#         serializer = FoundItemSerializer(items, many=True)
+#         return Response(serializer.data)
+
+
+
+
 
 class LostItemCreateView(APIView):
     permission_classes = [AllowAny]
@@ -119,13 +187,15 @@ class LostItemCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, pk=None):
-
         category = request.GET.get("category")
 
         if pk:
-            items = LostItem.objects.filter(user=pk)
-            serializer = LostItemSerializer(items, many=True)
-            return Response(serializer.data)
+            try:
+                item = LostItem.objects.get(id=pk)
+                serializer = LostItemSerializer(item)
+                return Response(serializer.data)
+            except LostItem.DoesNotExist:
+                return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
 
         if category:
             items = LostItem.objects.filter(category__iexact=category).order_by("-id")
@@ -134,6 +204,26 @@ class LostItemCreateView(APIView):
 
         serializer = LostItemSerializer(items, many=True)
         return Response(serializer.data)
+
+    def patch(self, request, pk):
+        try:
+            item = LostItem.objects.get(id=pk)
+        except LostItem.DoesNotExist:
+            return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = LostItemSerializer(item, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        try:
+            item = LostItem.objects.get(id=pk)
+            item.delete()
+            return Response({"message": "Item deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except LostItem.DoesNotExist:
+            return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class FoundItemCreateView(APIView):
@@ -153,9 +243,12 @@ class FoundItemCreateView(APIView):
         category = request.GET.get("category")
 
         if pk:
-            items = FoundItem.objects.filter(user=pk)
-            serializer = FoundItemSerializer(items, many=True)
-            return Response(serializer.data)
+            try:
+                item = FoundItem.objects.get(id=pk)
+                serializer = FoundItemSerializer(item)
+                return Response(serializer.data)
+            except FoundItem.DoesNotExist:
+                return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
 
         if category:
             items = FoundItem.objects.filter(category__iexact=category).order_by("-id")
@@ -164,6 +257,27 @@ class FoundItemCreateView(APIView):
 
         serializer = FoundItemSerializer(items, many=True)
         return Response(serializer.data)
+
+    def patch(self, request, pk):
+        try:
+            item = FoundItem.objects.get(id=pk)
+        except FoundItem.DoesNotExist:
+            return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = FoundItemSerializer(item, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        try:
+            item = FoundItem.objects.get(id=pk)
+            item.delete()
+            return Response({"message": "Item deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except FoundItem.DoesNotExist:
+            return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 class CreateProfile(APIView):
