@@ -13,6 +13,7 @@ import SubCategory from "../Interface/Category/SubCategory/SubCategory";
 import View from "../Interface/Category/View/View";
 // Admin
 import Dashboard from "../Admin/Pages/Dashboard/DashboardHome";
+import Pending from "../Admin/Pages/Request/Pending/Pending";
 import Item from "../Admin/Pages/Item/Item";
 import Additem from "../Admin/Component/Item/Additem";
 import Listitem from "../Admin/Component/Item/Listitem";
@@ -34,7 +35,7 @@ import UserItem from "../User/Pages/Item/Item";
 
 import UsrAdditem from "../User/Component/Item/Additem"
 import UserListitem from "../User/Component/Item/Listitem"
-
+import UserPending from "../User/Pages/Request/Pending/Pending";
 import UserProfile from "../User/Pages/Profile/Profile";
 import UserCategorys from "../User/Pages/Categorys/Categorys";
 import UserMatch from "../User/Pages/Match/Match";
@@ -86,6 +87,7 @@ function Landing() {
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/Categorys" element={<Categorys />} />
+                  <Route path="/request/pending" element={<Pending />} />
                   <Route path="/item" element={<Item />} />
                   <Route path="/Additem" element={<Additem />} />
                   <Route path="/Listitem" element={<Listitem />} />
@@ -109,6 +111,7 @@ function Landing() {
                   <Route path="/Additem" element={<UsrAdditem />} />
                   <Route path="/Listitem" element={<UserListitem />} />
                   <Route path="/match" element={<UserMatch />} />
+                  <Route path="/request/pending" element={<UserPending />} />
                   <Route path="/suggestion" element={<UserSuggestion />} />
                   <Route path="/feedback" element={<UserFeedback />} />
                   <Route path="/Notication" element={<UserNotification />} />

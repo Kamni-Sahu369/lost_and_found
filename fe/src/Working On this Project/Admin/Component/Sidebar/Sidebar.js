@@ -14,7 +14,8 @@ import {
   Link,
   FileText,
   CreditCard,
-  Search
+  Search,
+  FilePlus,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
@@ -24,14 +25,15 @@ const Sidebar = ({ open, setOpen }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null); // for Item dropdown
+  const [showRequest, setShowRequest] = useState(false);
 
   const navigate = useNavigate();
 
   const topMenus = [
     { name: 'Dashboard', icon: <Home size={20} />, path: '/' },
     { name: 'Profile', icon: <User size={20} />, path: '/profile' },
-     { name: 'Category', icon: <Layers size={20} />, path: '/Categorys' },
-     {
+    { name: 'Category', icon: <Layers size={20} />, path: '/Categorys' },
+    {
       name: 'Item',
       icon: <PackageSearch size={20} />,
       children: [
@@ -41,6 +43,14 @@ const Sidebar = ({ open, setOpen }) => {
     },
     { name: 'Match', icon: <Link size={20} />, path: '/match' },
   ];
+  const requestMenu = {
+    name: 'Request',
+    icon: <FilePlus size={20} />,
+    children: [
+      { name: 'Pending', path: '/request/pending' },
+      { name: 'Approval', path: '/request/approval' },
+    ],
+  };
   const PaymentMenu = {
     name: 'Payment',
     icon: <CreditCard size={20} />,
@@ -117,6 +127,35 @@ const Sidebar = ({ open, setOpen }) => {
               )}
             </div>
           ))}
+          {/*request Menu */}
+          <div>
+            <div className="settings-header" onClick={() => setShowRequest(!showRequest)}>
+              <div className="settings-icon-label">
+                {requestMenu.icon}
+                {open && <span className="menu-text">{requestMenu.name}</span>}
+              </div>
+              {open && (
+                <span>
+                  {showRequest ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                </span>
+              )}
+            </div>
+
+            {showRequest && open && (
+              <div className="settings-submenu">
+                {requestMenu.children.map((submenu, idx) => (
+                  <div
+                    key={idx}
+                    className="settings-submenu-item"
+                    onClick={() => navigate(submenu.path)}
+                  >
+                    {submenu.name}
+                  </div>
+                ))}
+
+              </div>
+            )}
+          </div>
 
           {/* Payment Menu */}
           {<div>
