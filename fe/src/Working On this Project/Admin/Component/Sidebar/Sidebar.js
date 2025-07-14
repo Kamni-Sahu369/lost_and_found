@@ -21,11 +21,11 @@ import { useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = ({ open, setOpen }) => {
-  // const [open, setOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null); // for Item dropdown
+  const [openDropdown, setOpenDropdown] = useState(null);
   const [showRequest, setShowRequest] = useState(false);
+  const [showReports, setShowReports] = useState(false); // <- for Reports dropdown
 
   const navigate = useNavigate();
 
@@ -43,6 +43,7 @@ const Sidebar = ({ open, setOpen }) => {
     },
     { name: 'Match', icon: <Link size={20} />, path: '/match' },
   ];
+
   const requestMenu = {
     name: 'Request',
     icon: <FilePlus size={20} />,
@@ -51,6 +52,7 @@ const Sidebar = ({ open, setOpen }) => {
       { name: 'Approval', path: '/request/approval' },
     ],
   };
+
   const PaymentMenu = {
     name: 'Payment',
     icon: <CreditCard size={20} />,
@@ -60,24 +62,24 @@ const Sidebar = ({ open, setOpen }) => {
     ],
   };
 
+  const reportMenu = {
+    name: 'Reports',
+    icon: <FileText size={20} />,
+    children: [
+      { name: 'All Lost Items', path: '/All_lostitem' },
+      { name: 'All Found Items', path: 'All_founditem' },
+      { name: 'Match Items', path: '/Matchitem' },
+      { name: 'Monthly Report', path: '/Monthly_report' },
+      { name: 'Yearly Report', path: '/Yearly_report' },
+      { name: 'Payment Report', path: '/Payment_report' },
+    ],
+  };
+
   const OtherMenus = [
     { name: 'Suggestion', icon: <MessageCircle size={20} />, path: '/suggestion' },
     { name: 'Feedback', icon: <ThumbsUp size={20} />, path: '/feedback' },
     { name: 'Notification', icon: <Bell size={20} />, path: '/Notification' },
-    { name: 'Reports', icon: <FileText size={20} />, path: '/Reports' },
-  ]
-
-
-  // const notificationMenu = {
-  //   name: 'Notification',
-  //   icon: <Bell size={20} />,
-  //   children: [
-  //     { name: 'Suggestion', path: '/suggestion' },
-  //     { name: 'Feedback', path: '/feedback' },
-  //     { name: 'Updates', path: '/updates' },
-  //     { name: 'Payment Receipts', path: '/payment_receipts' },
-  //   ],
-  // };
+  ];
 
   const logoutMenu = { name: 'Logout', icon: <LogOut size={20} />, path: '/logout' };
 
@@ -91,6 +93,7 @@ const Sidebar = ({ open, setOpen }) => {
 
       <div className="sidebar-content">
         <div className="menu-group">
+          {/* Top Menus */}
           {topMenus.map((menu, index) => (
             <div key={index}>
               <div
@@ -127,7 +130,8 @@ const Sidebar = ({ open, setOpen }) => {
               )}
             </div>
           ))}
-          {/*request Menu */}
+
+          {/* Request Menu */}
           <div>
             <div className="settings-header" onClick={() => setShowRequest(!showRequest)}>
               <div className="settings-icon-label">
@@ -152,13 +156,12 @@ const Sidebar = ({ open, setOpen }) => {
                     {submenu.name}
                   </div>
                 ))}
-
               </div>
             )}
           </div>
 
           {/* Payment Menu */}
-          {<div>
+          <div>
             <div className="settings-header" onClick={() => setShowSettings(!showSettings)}>
               <div className="settings-icon-label">
                 {PaymentMenu.icon}
@@ -180,43 +183,43 @@ const Sidebar = ({ open, setOpen }) => {
                 ))}
               </div>
             )}
-          </div>}
+          </div>
 
-          {/* Other Menu */}
-          {OtherMenus.map((menu, index) => (
-            <div key={index} className="menu-item" onClick={() => navigate(menu.path)}>
-              {menu.icon}
-              {open && <span className="menu-text">{menu.name}</span>}
-            </div>
-          ))}
-
-
-          {/* Notification Menu */}
-          {/* <div>
-            <div className="settings-header" onClick={() => setShowNotification(!showNotification)}>
+          {/* Reports Menu Dropdown */}
+          <div>
+            <div className="settings-header" onClick={() => setShowReports(!showReports)}>
               <div className="settings-icon-label">
-                {notificationMenu.icon}
-                {open && <span className="menu-text">{notificationMenu.name}</span>}
+                {reportMenu.icon}
+                {open && <span className="menu-text">{reportMenu.name}</span>}
               </div>
               {open && (
                 <span>
-                  {showNotification ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                  {showReports ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                 </span>
               )}
             </div>
 
-            {showNotification && open && (
+            {showReports && open && (
               <div className="settings-submenu">
-                {notificationMenu.children.map((submenu, idx) => (
+                {reportMenu.children.map((submenu, idx) => (
                   <div key={idx} className="settings-submenu-item" onClick={() => navigate(submenu.path)}>
                     {submenu.name}
                   </div>
                 ))}
               </div>
             )}
-          </div> */}
+          </div>
+
+          {/* Other Menus */}
+          {OtherMenus.map((menu, index) => (
+            <div key={index} className="menu-item" onClick={() => navigate(menu.path)}>
+              {menu.icon}
+              {open && <span className="menu-text">{menu.name}</span>}
+            </div>
+          ))}
         </div>
 
+        {/* Logout */}
         <div className="logout">
           <div className="menu-item" onClick={() => navigate(logoutMenu.path)}>
             {logoutMenu.icon}

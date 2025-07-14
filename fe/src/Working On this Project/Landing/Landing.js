@@ -26,6 +26,13 @@ import Notification from "../Admin/Pages/Notification/Notification/Notification"
 import Pending_pay from "../Admin/Pages/payment/Pending_pay/Pending_pay";
 import Complete_pay from "../Admin/Pages/payment/Complete_pay/Complete_pay";
 import Reports from "../Admin/Pages/Reports/Reports";
+
+import All_lostitem from '../Admin/Pages/Reports/All_Lost_item/All_lostitem'
+import All_founditem from '../Admin/Pages/Reports/All_Found_item/All_founditem'
+import Matchitem from '../Admin/Pages/Reports/Match_item/Matchitem'
+import Montly_report from '../Admin/Pages/Reports/Monthly_report/Monthly_report'
+import Yearly_report from '../Admin/Pages/Reports/Yearly_report/Yearly_report'
+import Payment_report from '../Admin/Pages/Reports/Payment_report/Payment_report'
 import Logout from "../Admin/Pages/Logout/Logout";
 import Updates from "../Admin/Pages/Notification/Updates"
 import Payment_Receipts from "../Admin/Pages/Notification/Payment"
@@ -48,7 +55,12 @@ import UserReports from "../User/Pages/Reports/Reports";
 import UserUpdates from "../User/Pages/Notification/Updates"
 import Success from "../User/Pages/Notification/Success"
 import Payment_receipts from "../User/Pages/Notification/Payment_receipts"
-
+import UserAll_lostitem from '../User/Pages/Reports/All_Loat_item/All_lostitem'
+import UserAll_founditem from '../User/Pages/Reports/All_Found_item/All_founditem'
+import UserMatchitem from '../User/Pages/Reports/Match_item/Matchitem'
+import UserMonthly_report from '../User/Pages/Reports/Monthly_report/Monthly_report'
+import UserYearly_report from '../User/Pages/Reports/Yearly_report/Yearly_report'
+import UserPayment_report from '../User/Pages/Reports/Payment_report/Payment_report'
 import UserLogout from "../User/Pages/Logout/Logout";
 import LoginCopy from "../Interface/Login/LoginCopy"
 import "./Landing.css"; // External CSS import
@@ -96,6 +108,14 @@ function Landing() {
                   <Route path="/feedback" element={<Feedback />} />
                   <Route path="/Notification" element={<Notification />} />
                   <Route path="/Reports" element={<Reports />} />
+
+                  <Route path="/All_lostitem" element={<All_lostitem />} />
+                  <Route path="/All_founditem" element={<All_founditem />} />
+                  <Route path="/Matchitem" element={<Matchitem />} />
+                  <Route path="/Montly_report" element={<Montly_report />} />
+                  <Route path="/Yearly_report" element={<Yearly_report />} />
+                  <Route path="/Payment_report" element={<Payment_report />} />
+
                   <Route path="/Pending_pay" element={<Pending_pay />} />
                   <Route path="/Complete_pay" element={<Complete_pay />} />
                   <Route path="/updates" element={<Updates />} />
@@ -116,6 +136,14 @@ function Landing() {
                   <Route path="/feedback" element={<UserFeedback />} />
                   <Route path="/Notication" element={<UserNotification />} />
                   <Route path="/Reports" element={<UserReports />} />
+
+                  <Route path="/All_lostitem" element={<UserAll_lostitem />} />
+                  <Route path="/All_founditem" element={<UserAll_founditem />} />
+                  <Route path="/Matchitem" element={<UserMatchitem />} />
+                  <Route path="/Monthly_report" element={<UserMonthly_report />} />
+                  <Route path="/Yearly_report" element={<UserYearly_report />} />
+                  <Route path="/Payment_report" element={<UserPayment_report />} />
+
                   <Route path="/Complete_pay" element={<UserComplete_pay />} />
                   <Route path="/Pending_pay" element={<UserPending_pay />} />
                   <Route path="/updates" element={<UserUpdates />} />
