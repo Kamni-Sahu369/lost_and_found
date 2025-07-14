@@ -14,6 +14,8 @@ import View from "../Interface/Category/View/View";
 // Admin
 import Dashboard from "../Admin/Pages/Dashboard/DashboardHome";
 import Item from "../Admin/Pages/Item/Item";
+import Additem from "../Admin/Component/Item/Additem";
+import Listitem from "../Admin/Component/Item/Listitem";
 import Profile from "../Admin/Pages/Profile/Profile";
 import Categorys from "../Admin/Pages/Categorys/Categorys";
 import Match from "../Admin/Pages/Match/Match";
@@ -29,6 +31,10 @@ import Payment_Receipts from "../Admin/Pages/Notification/Payment"
 // User
 import UserDashboard from "../User/Pages/Dashboard/DashboardHome";
 import UserItem from "../User/Pages/Item/Item";
+
+import UsrAdditem from "../User/Component/Item/Additem"
+import UserListitem from "../User/Component/Item/Listitem"
+
 import UserProfile from "../User/Pages/Profile/Profile";
 import UserCategorys from "../User/Pages/Categorys/Categorys";
 import UserMatch from "../User/Pages/Match/Match";
@@ -81,6 +87,8 @@ function Landing() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/Categorys" element={<Categorys />} />
                   <Route path="/item" element={<Item />} />
+                  <Route path="/Additem" element={<Additem />} />
+                  <Route path="/Listitem" element={<Listitem />} />
                   <Route path="/match" element={<Match />} />
                   <Route path="/suggestion" element={<Suggestion />} />
                   <Route path="/feedback" element={<Feedback />} />
@@ -98,6 +106,8 @@ function Landing() {
                   <Route path="/profile" element={<UserProfile />} />
                   <Route path="/Categorys" element={<UserCategorys />} />
                   <Route path="/item" element={<UserItem />} />
+                  <Route path="/Additem" element={<UsrAdditem />} />
+                  <Route path="/Listitem" element={<UserListitem />} />
                   <Route path="/match" element={<UserMatch />} />
                   <Route path="/suggestion" element={<UserSuggestion />} />
                   <Route path="/feedback" element={<UserFeedback />} />

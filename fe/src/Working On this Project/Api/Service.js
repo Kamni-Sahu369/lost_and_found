@@ -65,29 +65,51 @@ export const Lost_post = async (values) => {
 
 // Lost Item Get
 export const Lost_get = async (id) => {
-  // const token = localStorage.getItem("access_token");
-
+  const user_id = localStorage.getItem("user_id");
   try {
     let response;
     if (id) {
-      response = await axios.get(`${Api_Url}/LostItemCreateView/${id}/`, {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
-      });
+      response = await axios.get(`${Api_Url}/LostItemCreateView/${id}/`);
     } else {
-      response = await axios.get(`${Api_Url}/LostItemCreateView/`, {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
-      });
+      response = await axios.get(`${Api_Url}/LostItemCreateView/?user=${user_id}`);
     }
-
-    return response.data; // ✅ Return the data
+    return response.data;
   } catch (error) {
     console.error("Error fetching lost item(s):", error);
-    throw error; // Re-throw the error for higher-level handling
+    throw error;
   }
+};
+// Lost Item PATCH (update)
+export const Lost_update = async (id, values) => {
+  const token = localStorage.getItem("access_token");
+
+  const response = await axios.patch(
+    `${Api_Url}/LostItemCreateView/${id}/`,
+    values,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+// Lost Item DELETE
+export const Lost_delete = async (id) => {
+  const token = localStorage.getItem("access_token");
+
+  const response = await axios.delete(
+    `${Api_Url}/LostItemCreateView/${id}/`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
 };
 // ...............................................................................
 // Found Item post
@@ -126,19 +148,52 @@ export const Found_get = async (id) => {
   try {
     let response;
     if (id) {
-      response = await axios.get(`${Api_Url}/FoundItemCreateView/${id}/`, {
-      });
+      response = await axios.get(`${Api_Url}/FoundItemCreateView/${id}/`);
     } else {
-      response = await axios.get(`${Api_Url}/FoundItemCreateView/`, {
-      });
+      response = await axios.get(`${Api_Url}/FoundItemCreateView/`);
     }
 
-    return response.data; // ✅ Return the data
+    return response.data;
   } catch (error) {
     console.error("Error fetching Found item(s):", error);
-    throw error; // Re-throw the error for higher-level handling
+    throw error;
   }
 };
+
+// Found Item PATCH (update)
+export const Found_update = async (id, values) => {
+  const token = localStorage.getItem("access_token");
+
+  const response = await axios.patch(
+    `${Api_Url}/FoundItemCreateView/${id}/`,
+    values,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+// Found Item DELETE
+export const Found_delete = async (id) => {
+  const token = localStorage.getItem("access_token");
+
+  const response = await axios.delete(
+    `${Api_Url}/FoundItemCreateView/${id}/`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+
 // ...............................................................................
 // create profile
 export const updateProfile = async (values, profileId) => {

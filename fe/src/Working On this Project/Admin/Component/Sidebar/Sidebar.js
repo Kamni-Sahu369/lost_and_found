@@ -23,13 +23,22 @@ const Sidebar = ({ open, setOpen }) => {
   // const [open, setOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null); // for Item dropdown
+
   const navigate = useNavigate();
 
   const topMenus = [
     { name: 'Dashboard', icon: <Home size={20} />, path: '/' },
     { name: 'Profile', icon: <User size={20} />, path: '/profile' },
      { name: 'Category', icon: <Layers size={20} />, path: '/Categorys' },
-    { name: 'Item', icon: <PackageSearch size={20} />, path: '/item' },
+     {
+      name: 'Item',
+      icon: <PackageSearch size={20} />,
+      children: [
+        { name: 'Add Item', path: '/Additem' },
+        { name: 'List Items', path: '/Listitem' },
+      ],
+    },
     { name: 'Match', icon: <Link size={20} />, path: '/match' },
   ];
   const PaymentMenu = {
@@ -73,9 +82,39 @@ const Sidebar = ({ open, setOpen }) => {
       <div className="sidebar-content">
         <div className="menu-group">
           {topMenus.map((menu, index) => (
-            <div key={index} className="menu-item" onClick={() => navigate(menu.path)}>
-              {menu.icon}
-              {open && <span className="menu-text">{menu.name}</span>}
+            <div key={index}>
+              <div
+                className="menu-item"
+                onClick={() => {
+                  if (menu.children) {
+                    setOpenDropdown(openDropdown === menu.name ? null : menu.name);
+                  } else {
+                    navigate(menu.path);
+                  }
+                }}
+              >
+                {menu.icon}
+                {open && <span className="menu-text">{menu.name}</span>}
+                {menu.children && open && (
+                  <span>
+                    {openDropdown === menu.name ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                  </span>
+                )}
+              </div>
+
+              {menu.children && openDropdown === menu.name && open && (
+                <div className="settings-submenu">
+                  {menu.children.map((child, idx) => (
+                    <div
+                      key={idx}
+                      className="settings-submenu-item"
+                      onClick={() => navigate(child.path)}
+                    >
+                      {child.name}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
 
