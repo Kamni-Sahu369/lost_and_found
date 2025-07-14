@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Card, List, Button, Tooltip, Modal, Tag, Empty } from "antd";
+import { Card, List, Button, Tooltip, Modal, Tag,  Empty } from "antd";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
-import "./Updates.css";
-import { get_claimItem } from "../../../Api/InterfaceService";
-import { post_payment } from "../../../Api/Service";
-function Updates() {
+import "./Pending.css";
+import { get_claimItem } from "../../../../Api/InterfaceService";
+import { post_payment } from "../../../../Api/Service";
+
+function Pending() {
   const [claims, setClaims] = useState([]);
   const [paymentModalVisible, setPaymentModalVisible] = useState(false);
   const [selectedClaimId, setSelectedClaimId] = useState(null);
   const [paymentAmount, setPaymentAmount] = useState("");
-  const [user_id,setUserid]=useState('')
-  // const [userName, setUserName] = useState()
-  // const user_id = localStorage.getItem("user_id");
-  // Fetch claims on mount
+  const [user_id, setUserid] = useState("");
+
   const getClaims = async () => {
     const data = await get_claimItem();
     console.log("Fetched claims:", data);
@@ -27,14 +26,12 @@ function Updates() {
     getClaims();
   }, []);
 
-  // Open modal for approval
-  const handleApprove = (id,user_id) => {
+  const handleApprove = (id, user_id) => {
     setSelectedClaimId(id);
-    setUserid(user_id)
+    setUserid(user_id);
     setPaymentModalVisible(true);
   };
 
-  // Confirm rejection
   const handleReject = (id) => {
     Modal.confirm({
       title: "Reject Claim?",
@@ -45,12 +42,11 @@ function Updates() {
       onOk() {
         alert("Claim Rejected.");
         setClaims((prev) => prev.filter((item) => item.id !== id));
-        // 🟡 Backend call for rejection can be added here
+        // Optional: API call to reject claim
       },
     });
   };
 
-  // Modal confirm approve
   const confirmApproval = async () => {
     if (!paymentAmount || isNaN(paymentAmount) || Number(paymentAmount) <= 0) {
       alert("Please enter a valid payment amount");
@@ -63,8 +59,7 @@ function Updates() {
       status: "pending",
       transaction_id: "TXN" + Date.now(),
       method: "Manual",
-      user: user_id, // ⬅️ hardcoded user_id (use dynamic one if needed)
-      // user_name : userName
+      user: user_id,
     };
 
     try {
@@ -72,7 +67,9 @@ function Updates() {
       console.log("Payment response:", res);
       alert("Claim Approved & Payment Recorded!");
 
-      setClaims((prevClaims) => prevClaims.filter((claim) => claim.id !== selectedClaimId));
+      setClaims((prevClaims) =>
+        prevClaims.filter((claim) => claim.id !== selectedClaimId)
+      );
 
       setPaymentModalVisible(false);
       setPaymentAmount("");
@@ -82,6 +79,7 @@ function Updates() {
       alert("Failed to record payment");
     }
   };
+
   return (
     <div style={{ padding: "24px" }}>
       <h2 style={{ marginBottom: 16 }}>📋 Pending Claims</h2>
@@ -135,7 +133,7 @@ function Updates() {
                   <Button
                     type="primary"
                     icon={<CheckCircleOutlined />}
-                    onClick={() => handleApprove(claim.id,claim.user)}
+                    onClick={() => handleApprove(claim.id, claim.user)}
                   >
                     Approve
                   </Button>
@@ -181,4 +179,4 @@ function Updates() {
   );
 }
 
-export default Updates;
+export default Pending;
