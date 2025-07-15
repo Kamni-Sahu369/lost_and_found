@@ -1,4 +1,4 @@
-/* .profile_header_main{
+/* /* .profile_header_main{
     display: flex;
     width: 500px;
     height: 55px;
@@ -57,24 +57,8 @@
   white-space: nowrap;    
   overflow: hidden;
   text-overflow: ellipsis; 
-} */
+} 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Profile.css */
 
 .profile-container {
   padding: 20px;
@@ -89,10 +73,9 @@
 
 .Create_Your_Profile {
   margin-left: 490px;
-  /* margin-top: -100px; */
   width: 3000px;
   height: 50%;
-  /* border: 10px solid red; */
+
   padding: 0px 40px;
 }
 
@@ -154,25 +137,59 @@ text-align: center;
   margin-bottom: 10px;
 
 }
-
-/* Add to Profile.css if needed */
 .ant-form-item-label>label {
   font-weight: 500;
   margin-left: 400px;
   width: 400px;
 }
+  */
 
 
 
 
 
 
+  
 
+.user-table-container {
+  padding: 30px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  max-width: 1000px;
+  margin: 30px auto;
+}
 
+.table-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
 
+.table-wrapper {
+  overflow-x: auto;
+}
 
+.ant-table {
+  background: white;
+  border-radius: 8px;
+}
 
+.ant-table-thead > tr > th {
+  background-color:red;
+  color: black;
+  font-weight: 600;
+}
 
+.ant-table-tbody > tr:hover > td {
+  background-color: #f0f5ff !important;
+}
 
-
- 
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+}
