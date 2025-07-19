@@ -147,6 +147,80 @@ class ClaimItem(models.Model):
         return f"Claim by - {self.status}"
     
 # payment
+# from django.db import models
+# from .models import My_Reg, LostItem, FoundItem
+
+# class Payment(models.Model):
+#     STATUS_CHOICES = [
+#         ('pending', 'Pending'),
+#         ('paid', 'Paid'),
+#         ('failed', 'Failed'),
+#     ]
+
+#     # Item can be LostItem or FoundItem
+#     lost_item = models.ForeignKey(LostItem, on_delete=models.SET_NULL, null=True, blank=True)
+#     found_item = models.ForeignKey(FoundItem, on_delete=models.SET_NULL, null=True, blank=True)
+
+#     # Payment info
+#     payer = models.ForeignKey(My_Reg, on_delete=models.CASCADE, related_name='payments_made')   # Payer
+#     receiver = models.ForeignKey(My_Reg, on_delete=models.CASCADE, related_name='payments_received')  # Receiver
+
+#     amount = models.DecimalField(max_digits=10, decimal_places=2)
+#     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')  # Is_paid
+#     transaction_id = models.CharField(max_length=100, blank=True, null=True)  # Pay_id
+
+#     created_at = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f"Payment ₹{self.amount} from {self.payer.email} to {self.receiver.email}"
+
+#     @property
+#     def item_name(self):
+#         if self.lost_item:
+#             return self.lost_item.name
+#         elif self.found_item:
+#             return self.found_item.name
+#         return None
+
+#     @property
+#     def category(self):
+#         if self.lost_item:
+#             return self.lost_item.category
+#         elif self.found_item:
+#             return self.found_item.category
+#         return None
+
+#     @property
+#     def location(self):
+#         if self.lost_item:
+#             return self.lost_item.location
+#         elif self.found_item:
+#             return self.found_item.location
+#         return None
+
+#     @property
+#     def image_url(self):
+#         if self.lost_item and self.lost_item.item_image:
+#             return self.lost_item.item_image.url
+#         elif self.found_item and self.found_item.item_image:
+#             return self.found_item.item_image.url
+#         return None
+
+#     @property
+#     def is_paid(self):
+#         return self.status == 'paid'
+
+    
+
+
+#Category......................................
+
+   
+
+
+from django.db import models
+from .models import My_Reg, LostItem, FoundItem
+
 class Payment(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -154,20 +228,17 @@ class Payment(models.Model):
         ('failed', 'Failed'),
     ]
 
-    claim = models.ForeignKey(ClaimItem, on_delete=models.CASCADE, related_name='payments')
-    user = models.ForeignKey(My_Reg, on_delete=models.CASCADE)
+    lost_item = models.ForeignKey(LostItem, on_delete=models.SET_NULL, null=True, blank=True)
+    found_item = models.ForeignKey(FoundItem, on_delete=models.SET_NULL, null=True, blank=True)
+
+    payer = models.ForeignKey(My_Reg, on_delete=models.CASCADE, related_name='payments_made')
+    # receiver = models.ForeignKey(My_Reg, on_delete=models.CASCADE, related_name='payments_received')
+
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     transaction_id = models.CharField(max_length=100, blank=True, null=True)
-    payment_time = models.DateTimeField(auto_now_add=True)
-    method = models.CharField(max_length=50, blank=True, null=True)  # Optional: UPI, Card, Razorpay
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Payment ₹{self.amount} for {self.claim} by "
-    
-
-
-#Category......................................
-
-   
+        return f"Payment ₹{self.amount} from {self.payer} to {self.receiver}"

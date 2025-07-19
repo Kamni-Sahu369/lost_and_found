@@ -90,18 +90,81 @@ class ClaimItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['status', 'created_at', 'updated_at', 'user']
 
+# class PaymentSerializer(serializers.ModelSerializer):
+#     users=MyReg_Serializer(source="user",read_only =True,many=False)
+#     lost_item=LostItemSerializer(source="lost_item.name",read_only =True,many=False)
+#     class Meta:
+#         model = Payment
+#         fields = '__all__'
+
+# ...
 class PaymentSerializer(serializers.ModelSerializer):
-    users=MyReg_Serializer(source="user",read_only =True,many=False)
+    payer = MyReg_Serializer(read_only=True)
+    lost_item = LostItemSerializer(read_only=True)
+    found_item = FoundItemSerializer(read_only=True)
     class Meta:
         model = Payment
         fields = '__all__'
-
-# .........................................................
 class SimpleLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
 
 
 
-#Category...........................................
-    
+#Razorpay..........................................
+
+# myapp/serializer.py
+
+import razorpay
+from django.conf import settings
+from rest_framework import serializers
+from .models import Payment, My_Reg, LostItem, FoundItem
+
+class PaymentCreateSerializer(serializers.ModelSerializer):
+    payer_id = serializers.IntegerField(write_only=True)
+    # receiver_id = serializers.IntegerField(write_only=True)
+    lost_item_id = serializers.IntegerField(write_only=True, required=False)
+    found_item_id = serializers.IntegerField(write_only=True, required=False)
+
+    class Meta:
+        model = Payment
+        fields = ['id', 'payer_id', 'amount', 'lost_item_id', 'found_item_id']
+
+    def create(self, validated_data):
+        payer_id = validated_data.pop('payer_id')
+        # receiver_id = validated_data.pop('receiver_id')
+        lost_item_id = validated_data.pop('lost_item_id', None)
+        found_item_id = validated_data.pop('found_item_id', None)
+
+        payer = My_Reg.objects.get(id=payer_id)
+        # receiver = My_Reg.objects.get(id=receiver_id)
+
+        lost_item = LostItem.objects.get(id=lost_item_id) if lost_item_id else None
+        found_item = FoundItem.objects.get(id=found_item_id) if found_item_id else None
+
+        amount = validated_data.get('amount')
+
+        # ✅ Initialize Razorpay client
+        client = razorpay.Client(auth=(settings.RAZORPAY_API_KEY, settings.RAZORPAY_API_SECRET))
+
+        # ✅ Create Razorpay Order
+        razorpay_order = client.order.create({
+            "amount": int(amount * 100),  # Convert to paise
+            "currency": "INR",
+            "payment_capture": 1
+        })
+
+        # ✅ Create Payment instance in DB
+        payment = Payment.objects.create(
+            payer=payer,
+            # receiver=receiver,
+            amount=amount,
+            lost_item=lost_item,
+            found_item=found_item,
+            transaction_id=razorpay_order['id'],
+            status='pending'
+        )
+
+        return payment
+
+

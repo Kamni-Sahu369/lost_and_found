@@ -201,3 +201,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'Ourmaill2002@gmail.com'
 EMAIL_HOST_PASSWORD = 'rnyx akzc kwps ebqr'  # NOT your Gmail password
+
+# razorpay
+# settings.pyy
+RAZORPAY_API_KEY = 'rzp_test_s79mdLqr3Mp1I3'
+RAZORPAY_API_SECRET = 'ZvPWe37koEohjyloJoOZhfK3'

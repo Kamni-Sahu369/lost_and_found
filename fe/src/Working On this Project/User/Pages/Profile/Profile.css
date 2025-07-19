@@ -123,3 +123,22 @@ textarea {
   background-color: #bfbfbf;
   border-radius: 4px;
 }
+
+
+
+
+
+
+
+.table-wrapper {
+  max-height: none; /* Removes height restriction */
+}
+
+.user-table-container {
+  padding: 20px;
+}
+
+.table-title {
+  text-align: center;
+  margin-bottom: 20px;
+}

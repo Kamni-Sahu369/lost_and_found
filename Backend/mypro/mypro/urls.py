@@ -22,6 +22,9 @@ from rest_framework_simplejwt.views import ( TokenObtainPairView,TokenRefreshVie
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework.routers import DefaultRouter
+from myapp.views import PaymentCreateView, PaymentWebhookView, PaymentListView
+
+
 
 router = DefaultRouter()
 urlpatterns = [
@@ -58,8 +61,11 @@ urlpatterns = [
     path("api/my-payments/", my_payments),
     path("api/my-payments/<int:id>/", my_payments),
 
-    #category.................................................................
-    
-
+    #Razorpay.................................................................
+     path('paymentsList/', PaymentListView.as_view(), name='payment-list'),
+    path('payments/create/', PaymentCreateView.as_view(), name='payment-create'),
+    path('payments/webhook/', PaymentWebhookView.as_view(), name='payment-webhook'),
+#    path('create-payment-order/', CreatePaymentOrderView.as_view(), name='create-payment-order'),
+#     path('payment-success/', PaymentSuccessView.as_view(), name='payment-success'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

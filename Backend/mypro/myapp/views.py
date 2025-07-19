@@ -104,75 +104,6 @@ class LoginAPIView(APIView):
             })
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# class LostItemCreateView(APIView):
-#     permission_classes = [AllowAny]
-
-#     def post(self, request):
-#         serializer = LostItemSerializer(data=request.data)
-#         if serializer.is_valid():
-#             if request.user and request.user.is_authenticated:
-#                 serializer.save(user=request.user)
-#             else:
-#                 serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#     def get(self, request, pk=None):
-#         category = request.GET.get("category")
-
-#         if pk:
-#             try:
-#                 item = LostItem.objects.get(id=pk)
-#                 serializer = LostItemSerializer(item)
-#                 return Response(serializer.data)
-#             except LostItem.DoesNotExist:
-#                 return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
-
-#         if category:
-#             items = LostItem.objects.filter(category__iexact=category).order_by("-id")
-#         else:
-#             items = LostItem.objects.all().order_by("-id")
-
-#         serializer = LostItemSerializer(items, many=True)
-#         return Response(serializer.data)
-
-
-# class FoundItemCreateView(APIView):
-#     permission_classes = [AllowAny]
-
-#     def post(self, request):
-#         serializer = FoundItemSerializer(data=request.data)
-#         if serializer.is_valid():
-#             if request.user and request.user.is_authenticated:
-#                 serializer.save(user=request.user)
-#             else:
-#                 serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#     def get(self, request, pk=None):
-#         category = request.GET.get("category")
-
-#         if pk:
-#             try:
-#                 item = FoundItem.objects.get(id=pk)
-#                 serializer = FoundItemSerializer(item)
-#                 return Response(serializer.data)
-#             except FoundItem.DoesNotExist:
-#                 return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
-
-#         if category:
-#             items = FoundItem.objects.filter(category__iexact=category).order_by("-id")
-#         else:
-#             items = FoundItem.objects.all().order_by("-id")
-
-#         serializer = FoundItemSerializer(items, many=True)
-#         return Response(serializer.data)
-
-
-
-
-
 class LostItemCreateView(APIView):
     permission_classes = [AllowAny]
 
@@ -481,7 +412,7 @@ class ClaimItemAPIView(APIView):
     
 
 class PaymentAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def post(self, request):
         serializer = PaymentSerializer(data=request.data)
@@ -548,5 +479,148 @@ class SimpleLoginAPIView(APIView):
     
 
 
-#category..........................................
+
+# razorpay>>>>>>>>>>>>>>>>>>>>>>>>>>>
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from .serializer import PaymentCreateSerializer, PaymentSerializer
+from .models import Payment, My_Reg, LostItem, FoundItem
+
+# ✅ Create Payment Order View (without token)
+class PaymentCreateView(generics.CreateAPIView):
+    serializer_class = PaymentCreateSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            payment = serializer.save()
+            return Response({
+                "payment_id": payment.id,
+                "transaction_id": payment.transaction_id,
+                "amount": payment.amount,
+                "status": payment.status,
+                "payer_email": payment.payer.email if payment.payer else None,
+                # "receiver_email": payment.receiver.email if payment.receiver else None,
+                # "item_name": payment.item_name,
+                # "category": payment.category,
+                # "location": payment.location,
+                # "image_url": payment.image_url,
+                # "is_paid": payment.is_paid
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# ✅ Payment Success Webhook View
+class PaymentWebhookView(APIView):
+    @method_decorator(csrf_exempt)
+    def post(self, request, *args, **kwargs):
+        data = request.data
+
+        razorpay_payment_id = data.get('payload', {}).get('payment', {}).get('entity', {}).get('id')
+        razorpay_order_id = data.get('payload', {}).get('payment', {}).get('entity', {}).get('order_id')
+        payment_status = data.get('payload', {}).get('payment', {}).get('entity', {}).get('status')
+
+        try:
+            payment = Payment.objects.get(transaction_id=razorpay_order_id)
+            if payment_status == 'captured':
+                payment.status = 'paid'
+                payment.transaction_id = razorpay_payment_id
+                payment.save()
+        except Payment.DoesNotExist:
+            pass
+
+        return Response({"status": "success"}, status=status.HTTP_200_OK)
+
+# ✅ Payment List View
+class PaymentListView(APIView):
+    def get(self, request):
+        payments = Payment.objects.all()
+        serializer = PaymentSerializer(payments, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = PaymentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import razorpay
+# from django.conf import settings
+# from rest_framework.views import APIView
+# from rest_framework.response import Response
+# from rest_framework import status
+# from .models import Payment
+# from .serializer import PaymentSerializer
+
+# class CreatePaymentOrderView(APIView):
+#     def post(self, request):
+#         amount = request.data.get('amount')
+#         payer_id = request.data.get('payer')
+#         receiver_id = request.data.get('receiver')
+
+#         if not amount or not payer_id or not receiver_id:
+#             return Response({"error": "All fields are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+#         client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+#         try:
+#             payment = client.order.create({
+#                 "amount": int(float(amount) * 100),
+#                 "currency": "INR",
+#                 "payment_capture": "1"
+#             })
+
+#             # Payment model me entry create karo
+#             payment_obj = Payment.objects.create(
+#                 payer_id=payer_id,
+#                 receiver_id=receiver_id,
+#                 amount=amount,
+#                 status='pending',
+#                 transaction_id=payment['id']
+#             )
+
+#             serializer = PaymentSerializer(payment_obj)
+
+#             return Response({
+#                 "order_id": payment['id'],
+#                 "amount": payment['amount'],
+#                 "currency": payment['currency'],
+#                 "key": settings.RAZORPAY_KEY_ID,
+#                 "payment": serializer.data
+#             })
+
+#         except Exception as e:
+#             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# class PaymentSuccessView(APIView):
+#     def post(self, request):
+#         payment_id = request.data.get('payment_id')
+#         order_id = request.data.get('order_id')
+
+#         if not payment_id or not order_id:
+#             return Response({"error": "Payment ID and Order ID are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+#         try:
+#             payment = Payment.objects.get(transaction_id=order_id)
+#             payment.status = 'paid'
+#             payment.save()
+#             return Response({"message": "Payment updated successfully."})
+#         except Payment.DoesNotExist:
+#             return Response({"error": "Payment not found"}, status=status.HTTP_404_NOT_FOUND)
 

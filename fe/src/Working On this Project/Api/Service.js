@@ -394,3 +394,60 @@ export const payment_receipts = async (id) => {
 export const getCategories = () => axios.get(Api_Url);
 export const postCategory = (data) => axios.post(Api_Url, data);
 export const deleteCategory = (id) => axios.delete(`${Api_Url}${id}/`);
+
+
+
+// razorpay...............................
+// export const handlePayNow = async (item) => {
+//   try {
+//     const res = await axios.post(`${Api_Url}/payments/create/`, {
+//       payer_id: item.payerId,       // ✅ Must be provided
+//       receiver_id: item.receiverId, // ✅ Must be provided as per model
+//       amount: item.amount,
+//       method: 'Razorpay'            // If your serializer uses it
+//     });
+
+//     console.log("Payment Response:", res.data);
+
+//     // ✅ Example: Show payment info
+//     alert(`Payment created successfully!
+// ID: ${res.data.payment_id}
+// Amount: ₹${res.data.amount}
+// Transaction: ${res.data.transaction_id}`);
+
+//   } catch (error) {
+//     console.error("Payment create error:", error.response || error);
+//     alert("Payment creation failed.");
+//   }
+// };
+
+export const handlePayNow = async (item) => {
+  try {
+    const res = await axios.post(`${Api_Url}/payments/create/`, {
+      payer_id: item.payerId,
+      receiver_id: item.receiverId,
+      amount: item.amount,
+      method: 'Razorpay'
+    });
+
+    console.log("Payment Response:", res.data);
+
+    // ✅ Return data for Razorpay options
+    return res.data;
+
+  } catch (error) {
+    console.error("Payment create error:", error.response || error);
+    alert("Payment creation failed.");
+    throw error;
+  }
+};
+
+export const getPayments = async () => {
+  try {
+    const response = await axios.get(`${Api_Url}/payments/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching payments:", error);
+    throw error;
+  }
+};
