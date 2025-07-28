@@ -1,0 +1,58 @@
+.feedback-manager-container {
+  max-width: 100%;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.feedback-manager-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.feedback-search {
+  flex: 1;
+  min-width: 250px;
+  max-width: 400px;
+}
+
+.feedback-table-card {
+  width: 100%;
+}
+.custom-feedback-table .ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.table-row-light {
+  background-color: #ffffff;
+}
+
+.table-row-dark {
+  background-color: #fafafa;
+}
+
+.custom-feedback-table .ant-table-tbody > tr:hover > td {
+  background-color: #e6f7ff !important;
+}
+
+.custom-feedback-table .ant-table-tbody > tr > td {
+  vertical-align: top;
+  padding: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

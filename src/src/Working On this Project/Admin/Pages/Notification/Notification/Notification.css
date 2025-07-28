@@ -1,0 +1,23 @@
+.notification-dropdown {
+  width: 350px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.notification-item {
+  padding: 12px 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-time {
+  font-size: 12px;
+  color: #999;
+}

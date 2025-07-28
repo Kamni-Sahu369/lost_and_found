@@ -1,0 +1,53 @@
+.suggestion-wrapper {
+  padding: 20px;
+  background-color: #f5f6fa;
+  min-height: 100vh;
+}
+
+.suggestion-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 10px 20px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.suggestion-table {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.suggestion-row:hover {
+  background-color: #f0f2f5 !important;
+  cursor: pointer;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #fafafa !important;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.ant-table-tbody > tr > td {
+  font-size: 14px;
+}
+
+.anticon-delete {
+  color: #f5222d;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.anticon-delete:hover {
+  color: #cf1322;
+  transform: scale(1.1);
+}
+.table-row-dark {
+  background-color: #fafafa;
+}

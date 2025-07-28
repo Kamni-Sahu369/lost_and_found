@@ -1,0 +1,38 @@
+.lostfound-container {
+  padding: 20px;
+  background: #f9fafb;
+}
+
+.table-header {
+  display: flex;
+  /* justify-content: flex-end; */
+  margin-bottom: 10px;
+}
+
+.search-input {
+  height: 48px;
+  width: 850px;
+  border-radius: 8px;
+}
+
+.table-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.table-title {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #f4f6f8;
+  font-weight: 500;
+}
+
+.ant-table-row:hover {
+  background-color: #f0f7ff !important;
+}
