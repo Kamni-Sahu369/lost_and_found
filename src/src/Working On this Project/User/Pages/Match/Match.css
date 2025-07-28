@@ -1,0 +1,82 @@
+.tinder-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin-top: 20px; */
+  /* background-color: #000; */
+  /* min-height: 800px; */
+  /* padding: 20px; */
+}
+
+.profile-card {
+  position: relative;
+  width: 370px;
+  height: 620px;
+  /* border-radius: 20px; */
+  /* overflow: hidden; */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.profile-image {
+  /* width: 100%;
+  height: 100%; */
+  /* object-fit: cover; */
+}
+
+.profile-info {
+  position: absolute;
+  bottom: 0;
+  /* padding: 20px; */
+  color: white;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.profile-info h2 {
+  margin: 10px 0 0;
+  font-size: 24px;
+}
+
+.profile-info span {
+  font-weight: normal;
+  color: #ccc;
+  font-size: 20px;
+}
+
+.profile-info p {
+  margin: 5px 0 0;
+  font-size: 16px;
+  color: #ddd;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  margin-top: 25px;
+}
+
+.action-btn {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border: none;
+  font-size: 20px;
+  color: black;
+}
+
+.cancel {
+  color: #ff4d4f;
+}
+
+.like {
+  color: #52c41a;
+}
+
+.star {
+  color: #1890ff;
+}
+
+.send {
+  color: #faad14;
+}

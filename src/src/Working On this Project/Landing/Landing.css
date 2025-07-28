@@ -1,0 +1,38 @@
+/* Landing.css */
+
+.landing_container {
+    display: flex;
+    background-color: burlywood;
+}
+
+
+
+.dashboard-content {
+    flex: 1;
+    padding: 1.25rem;
+    background-color: #f3f4f6;
+    height: 100vh;
+}
+
+/* Landing.css */
+
+.landing_container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.dashboard-content {
+  flex: 1;
+  transition: margin-left 0.3s ease;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.dashboard-content.sidebar-open {
+  margin-left: 250px; /* Full sidebar width */
+}
+
+.dashboard-content.sidebar-closed {
+  margin-left: 70px; /* Collapsed sidebar width */
+}
