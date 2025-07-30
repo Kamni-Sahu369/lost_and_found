@@ -1,0 +1,45 @@
+.match-items-container {
+  padding: 20px;
+  background-color: #fff;
+}
+
+.match-items-container h2 {
+  font-size: 26px;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.search-filter-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  padding: 12px;
+  min-height: 70px;
+}
+
+/* Oval Search Box */
+.oval-search .ant-input,
+.oval-search .ant-btn {
+  border-radius: 999px !important;
+  height: 40px;
+}
+
+.oval-search .ant-input {
+  padding-left: 16px;
+}
+
+.oval-search .ant-input-search-button {
+  border-radius: 999px !important;
+}
+
+/* Rounded Select Dropdown */
+.search-filter-container .ant-select-selector {
+  border-radius: 999px !important;
+  height: 40px !important;
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+}

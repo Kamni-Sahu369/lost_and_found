@@ -1,0 +1,138 @@
+/* MonthlyReport.css */
+
+/* Main container */
+.report-container {
+  padding: 24px;
+  background: linear-gradient(135deg, #e2f0f9, #f9e2ec);
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Heading */
+.report-container h2 {
+  text-align: center;
+  font-size: 30px;
+  color: #286fb4;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+/* Search and Filter section */
+.search-filter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+/* Search input style */
+.oval-search .ant-input-affix-wrapper {
+  border-radius: 25px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding-left: 14px;
+  height: 42px;
+}
+
+/* Ant Select dropdown */
+.ant-select {
+  width: 100%;
+  max-width: 220px;
+  border-radius: 8px;
+}
+
+/* Table styling */
+.ant-table {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.ant-table-thead > tr > th {
+  background-color: #b0dde4;
+  font-weight: 600;
+  text-align: center;
+  color: #222;
+}
+
+.ant-table-tbody > tr > td {
+  text-align: center;
+  font-size: 15px;
+  color: #333;
+}
+
+/* Button styles */
+.ant-btn {
+  border-radius: 6px;
+}
+
+/* .ant-btn-primary {
+  background-color: #286fb4;
+  border-color: #286fb4;
+}
+
+.ant-btn-primary:hover {
+  background-color: #1c5792;
+  border-color: #1c5792;
+} */
+/* 
+.ant-btn-dangerous {
+  background-color:rgb(107, 189, 222);
+  border-color: rgb(107, 189, 222);
+  color: white;
+}
+
+.ant-btn-dangerous:hover {
+  background-color: rgb(107, 189, 222);
+  border-color: rgb(107, 189, 222);
+} */
+
+/* Modal view styles */
+.ant-modal-content {
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.ant-modal-title {
+  font-size: 20px;
+  color: #286fb4;
+  font-weight: 600;
+}
+
+/* View Modal content */
+ul {
+  padding-left: 0;
+  list-style: none;
+  margin-top: 10px;
+}
+
+ul li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #444;
+}
+
+ul li img {
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .search-filter-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-filter-container > * {
+    width: 100% !important;
+  }
+
+  .report-container h2 {
+    font-size: 24px;
+  }
+}

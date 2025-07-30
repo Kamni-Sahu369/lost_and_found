@@ -172,11 +172,3 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment ₹{self.amount} from {self.payer} "
-
-# ..........................category.............................
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return self.name

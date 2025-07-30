@@ -400,9 +400,9 @@ export const payment_receipts = async (id) => {
 };
 
 //Category..............................................
-// export const getCategories = () => axios.get(Api_Url);
-// export const postCategory = (data) => axios.post(Api_Url, data);
-// export const deleteCategory = (id) => axios.delete(`${Api_Url}${id}/`);
+export const getCategories = () => axios.get(Api_Url);
+export const postCategory = (data) => axios.post(Api_Url, data);
+export const deleteCategory = (id) => axios.delete(`${Api_Url}${id}/`);
 
 
 
@@ -460,44 +460,3 @@ export const getPayments = async () => {
     throw error;
   }
 };
-
-//Category..............................................
-export const getCategories = async () => {
-    console.log("Calling getCategories API");
-  try {
-    const response = await axios.get(`${Api_Url}/categories/`); // ✅ id nahi lagana
-        console.log("API Response:", response.data); // ✅ ADD THIS LINE
-    return response;
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    throw error;
-  }
-};
-export const postCategory = async (data) => {
-  try {
-    const response = await axios.post(`${Api_Url}/categories/`, data); // id hata diya
-    return response.data;
-  } catch (error) {
-    console.error("Error creating category:", error);
-    throw error;
-  }
-};
-export const updateCategory = async (id, data) => {
-  try {
-    const response = await axios.patch(`${Api_Url}/categories/${id}/`, data);
-    return response.data;
-  } catch (error) {
-    console.error("Error updating category:", error);
-    throw error;
-  }
-};
-export const deleteCategory = async (id) => {
-  try {
-    const response = await axios.delete(`${Api_Url}/categories/${id}/`);
-    return response.data;
-  } catch (error) {
-    console.error("Error deleting category:", error);
-    throw error;
-  }
-}
-
