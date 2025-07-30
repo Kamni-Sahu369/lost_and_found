@@ -70,10 +70,7 @@ urlpatterns = [
     path('payments/<int:pk>/update/', PaymentListView.as_view(), name='payment-list'),
       path('payments/create/', RazorpayOrderCreateAPIView.as_view(), name='razorpay_order_create'),
    path('payments/create/<int:pk>', RazorpayOrderCreateAPIView.as_view(), name='razorpay_order_create'),
+    # path('update-payment-status/<int:pk>/', UpdatePaymentStatus.as_view(), name='update-payment-status'),
      path('api/found-items/', FoundItemListAPIView.as_view(), name='found_items_list'),
-
-      # Category...........................................
-    path('categories/', CategoryAPIView.as_view(), name='category-list-create'),
-    path('categories/<int:pk>/', CategoryAPIView.as_view(), name='category-detail-update-delete'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -181,8 +181,4 @@ class PaymentCreateSerializer(serializers.ModelSerializer):
 
         return payment
 
-# ......................category.............................
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = '__all__'
+

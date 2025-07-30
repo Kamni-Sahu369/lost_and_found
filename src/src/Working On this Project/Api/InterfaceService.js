@@ -26,4 +26,8 @@ export const get_claimItemuser = async (id) => {
   return response.data;
 };
 
-
+// >>>>>>>>>.approval payment>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+export const get_allPayments = async () => {
+  const response = await axios.get("http://localhost:8000/payments/");
+  return response.data;
+}
