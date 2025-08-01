@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   Button,
@@ -16,6 +16,7 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons';
 import './All_lostitem.css';
+import { fatch_all_lostitem } from '../../../../Api/Service';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -43,7 +44,13 @@ const AllLostItems = () => {
     setSelectedItem(item);
     setViewModalVisible(true);
   };
-
+ const handlefatchdata=async()=>{
+  const data = await fatch_all_lostitem();
+  setData(data);
+ }
+ useEffect(()=>{
+   handlefatchdata();
+ },[])
   // EDIT
   const handleEdit = (item) => {
     setSelectedItem(item);

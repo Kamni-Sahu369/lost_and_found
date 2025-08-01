@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   Button,
@@ -16,6 +16,7 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons';
 import './Payment_report.css';
+import { get_userPayments } from '../../../../Api/Service';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -34,7 +35,46 @@ const PaymentReport = () => {
     setSelectedItem(item);
     setViewModalVisible(true);
   };
+// const handlepayreport=async()=>{
+//   const responsedata =await get_userPayments()
+//   setData(responsedata)
+//   // setOriginalData(response)
+// }
+const handlepayreport = async () => {
+  try {
+    const response = await get_userPayments();
 
+    // Map backend keys to frontend keys
+    const mappedData = response.map((item, index) => ({
+      key: item.id || index, // fallback to index if no id
+      paymentId: item.transaction_id,
+      month: item.created_at,
+      year: item.year,
+      itemName: item.found_item,          // adjust if nested
+      category: item.lost_item_detail.category,
+      itemName: item.lost_item_detail.name,
+      location: item.lost_item_detail.location,
+      // category: item.found_item_detail.category,
+      // category: item.found_item_detail.name,
+      date: item.item?.date,
+      time: item.item?.time,
+      location: item.item?.location,
+      amount: item.amount,
+      status: item.status,
+      image: item.item?.image,            // or item.image_proof
+    }));
+
+    setData(mappedData);
+    setOriginalData(mappedData);
+  } catch (error) {
+    console.error('Failed to load payment report:', error);
+    message.error('Failed to load payment report');
+  }
+};
+
+useEffect(() => {
+  handlepayreport();
+},[])
   const handleEdit = (item) => {
     setSelectedItem(item);
     form.setFieldsValue(item);
@@ -80,7 +120,7 @@ const PaymentReport = () => {
   };
 
   const columns = [
-    { title: 'Payment ID', dataIndex: 'paymentId', key: 'paymentId' },
+    { title: 'Payment ID', dataIndex: 'paymentId', key: 'transaction_id' },
     { title: 'Month', dataIndex: 'month', key: 'month' },
     { title: 'Year', dataIndex: 'year', key: 'year' },
     { title: 'Item Name', dataIndex: 'itemName', key: 'itemName' },
