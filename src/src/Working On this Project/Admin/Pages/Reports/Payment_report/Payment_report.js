@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Button,
@@ -9,23 +9,20 @@ import {
   Space,
   Tooltip,
   message,
-} from 'antd';
-import {
-  EyeOutlined,
-  EditOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
-import './Payment_report.css';
-import { get_userPayments } from '../../../../Api/Service';
+} from "antd";
+import { EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import "./Payment_report.css";
+import { get_userPayments } from "../../../../Api/Service";
 
 const { Search } = Input;
 const { Option } = Select;
+const BASE_URL = "http://127.0.0.1:8000/";
 
 const PaymentReport = () => {
   const [data, setData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
-  const [statusFilter, setStatusFilter] = useState('All');
-  const [searchValue, setSearchValue] = useState('');
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [searchValue, setSearchValue] = useState("");
   const [viewModalVisible, setViewModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -35,46 +32,44 @@ const PaymentReport = () => {
     setSelectedItem(item);
     setViewModalVisible(true);
   };
-// const handlepayreport=async()=>{
-//   const responsedata =await get_userPayments()
-//   setData(responsedata)
-//   // setOriginalData(response)
-// }
-const handlepayreport = async () => {
-  try {
-    const response = await get_userPayments();
 
-    // Map backend keys to frontend keys
-    const mappedData = response.map((item, index) => ({
-      key: item.id || index, // fallback to index if no id
-      paymentId: item.transaction_id,
-      month: item.created_at,
-      year: item.year,
-      itemName: item.found_item,          // adjust if nested
-      category: item.lost_item_detail.category,
-      itemName: item.lost_item_detail.name,
-      location: item.lost_item_detail.location,
-      // category: item.found_item_detail.category,
-      // category: item.found_item_detail.name,
-      date: item.item?.date,
-      time: item.item?.time,
-      location: item.item?.location,
-      amount: item.amount,
-      status: item.status,
-      image: item.item?.image,            // or item.image_proof
-    }));
+  const handlepayreport = async () => {
+    try {
+      const response = await get_userPayments();
 
-    setData(mappedData);
-    setOriginalData(mappedData);
-  } catch (error) {
-    console.error('Failed to load payment report:', error);
-    message.error('Failed to load payment report');
-  }
-};
+      const mappedData = response.map((item, index) => {
+        const createdAt = new Date(item.created_at);
+        const month = createdAt.toLocaleString("default", { month: "long" });
+        const time = createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const year = createdAt.getFullYear();
 
-useEffect(() => {
-  handlepayreport();
-},[])
+        return {
+          key: item.id || index,
+          paymentId: item.transaction_id,
+          month: month,
+          time: time,
+          year: year,
+          itemName: item.lost_item_detail?.name,
+          category: item.lost_item_detail?.category,
+          location: item.lost_item_detail?.location,
+          amount: item.amount,
+          status: item.status,
+          image: item.lost_item_detail?.item_image,
+        };
+      });
+
+      setData(mappedData);
+      setOriginalData(mappedData);
+    } catch (error) {
+      console.error("Failed to load payment report:", error);
+      message.error("Failed to load payment report");
+    }
+  };
+
+  useEffect(() => {
+    handlepayreport();
+  }, []);
+
   const handleEdit = (item) => {
     setSelectedItem(item);
     form.setFieldsValue(item);
@@ -85,7 +80,7 @@ useEffect(() => {
     const updated = data.filter((item) => item.key !== key);
     setData(updated);
     setOriginalData(updated);
-    message.success('Entry deleted');
+    message.success("Entry deleted");
   };
 
   const handleEditSubmit = () => {
@@ -95,7 +90,7 @@ useEffect(() => {
       );
       setData(updated);
       setOriginalData(updated);
-      message.success('Payment updated');
+      message.success("Payment updated");
       setEditModalVisible(false);
     });
   };
@@ -112,47 +107,61 @@ useEffect(() => {
 
   const filterData = (search, status) => {
     const filtered = originalData.filter((item) => {
-      const searchMatch = Object.values(item).join(' ').toLowerCase().includes(search.toLowerCase());
-      const statusMatch = status === 'All' || !status ? true : item.status === status;
+      const searchMatch = Object.values(item)
+        .join(" ")
+        .toLowerCase()
+        .includes(search.toLowerCase());
+      const statusMatch =
+        status === "All" || !status ? true : item.status === status;
       return searchMatch && statusMatch;
     });
     setData(filtered);
   };
 
   const columns = [
-    { title: 'Payment ID', dataIndex: 'paymentId', key: 'transaction_id' },
-    { title: 'Month', dataIndex: 'month', key: 'month' },
-    { title: 'Year', dataIndex: 'year', key: 'year' },
-    { title: 'Item Name', dataIndex: 'itemName', key: 'itemName' },
-    { title: 'Category', dataIndex: 'category', key: 'category' },
-    { title: 'Date', dataIndex: 'date', key: 'date' },
-    { title: 'Time', dataIndex: 'time', key: 'time' },
-    { title: 'Location', dataIndex: 'location', key: 'location' },
-    { title: 'Amount', dataIndex: 'amount', key: 'amount' },
-    { title: 'Status', dataIndex: 'status', key: 'status' },
+    { title: "Payment ID", dataIndex: "paymentId", key: "transaction_id" },
+    { title: "Month", dataIndex: "month", key: "month" },
+    { title: "Time", dataIndex: "time", key: "time" },
+    { title: "Year", dataIndex: "year", key: "year" },
+    { title: "Item Name", dataIndex: "itemName", key: "itemName" },
+    { title: "Category", dataIndex: "category", key: "category" },
+    { title: "Location", dataIndex: "location", key: "location" },
+    { title: "Amount", dataIndex: "amount", key: "amount" },
+    { title: "Status", dataIndex: "status", key: "status" },
     {
-      title: 'Image',
-      dataIndex: 'image',
-      key: 'image',
-      render: (url) => (
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          <img src={url} alt="payment proof" width={50} />
-        </a>
-      ),
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      render: (url) =>
+        url ? (
+          <a href={`${BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
+            <img src={`${BASE_URL}${url}`} alt="payment proof" width={50} />
+          </a>
+        ) : (
+          <span>No Image</span>
+        ),
     },
     {
-      title: 'Actions',
-      key: 'actions',
+      title: "Actions",
+      key: "actions",
       render: (_, record) => (
         <Space>
           <Tooltip title="View">
             <Button icon={<EyeOutlined />} onClick={() => handleView(record)} />
           </Tooltip>
           <Tooltip title="Edit">
-            <Button type="primary" icon={<EditOutlined />} onClick={() => handleEdit(record)} />
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(record)}
+            />
           </Tooltip>
           <Tooltip title="Delete">
-            <Button danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.key)} />
+            <Button
+              danger
+              icon={<DeleteOutlined />}
+              onClick={() => handleDelete(record.key)}
+            />
           </Tooltip>
         </Space>
       ),
@@ -169,10 +178,14 @@ useEffect(() => {
           allowClear
           onSearch={handleSearch}
           className="oval-search"
-          style={{ width: '60%' }}
+          style={{ width: "60%" }}
         />
 
-        <Select defaultValue="All" onChange={handleFilter} style={{ width: '35%' }}>
+        <Select
+          defaultValue="All"
+          onChange={handleFilter}
+          style={{ width: "35%" }}
+        >
           <Option value="All">All</Option>
           <Option value="Paid">Paid</Option>
           <Option value="Pending">Pending</Option>
@@ -185,7 +198,7 @@ useEffect(() => {
         rowKey="key"
         pagination={{ pageSize: 5 }}
         bordered
-        scroll={{ x: 'max-content' }}
+        scroll={{ x: "max-content" }}
       />
 
       <Modal
@@ -198,16 +211,17 @@ useEffect(() => {
           <ul>
             <li><strong>Payment ID:</strong> {selectedItem.paymentId}</li>
             <li><strong>Month:</strong> {selectedItem.month}</li>
+            <li><strong>Time:</strong> {selectedItem.time}</li>
             <li><strong>Year:</strong> {selectedItem.year}</li>
             <li><strong>Item Name:</strong> {selectedItem.itemName}</li>
             <li><strong>Category:</strong> {selectedItem.category}</li>
-            <li><strong>Date:</strong> {selectedItem.date}</li>
-            <li><strong>Time:</strong> {selectedItem.time}</li>
             <li><strong>Location:</strong> {selectedItem.location}</li>
             <li><strong>Amount:</strong> {selectedItem.amount}</li>
             <li><strong>Status:</strong> {selectedItem.status}</li>
             <li>
-              <img src={selectedItem.image} alt="Payment Proof" width={100} />
+              {selectedItem.image && (
+                <img src={`${BASE_URL}${selectedItem.image}`} width={100} alt="proof" />
+              )}
             </li>
           </ul>
         )}
@@ -226,6 +240,9 @@ useEffect(() => {
           <Form.Item name="month" label="Month" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
+          <Form.Item name="time" label="Time" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
           <Form.Item name="year" label="Year" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
@@ -234,12 +251,6 @@ useEffect(() => {
           </Form.Item>
           <Form.Item name="category" label="Category" rules={[{ required: true }]}>
             <Input />
-          </Form.Item>
-          <Form.Item name="date" label="Date" rules={[{ required: true }]}>
-            <Input type="date" />
-          </Form.Item>
-          <Form.Item name="time" label="Time" rules={[{ required: true }]}>
-            <Input type="time" />
           </Form.Item>
           <Form.Item name="location" label="Location" rules={[{ required: true }]}>
             <Input />

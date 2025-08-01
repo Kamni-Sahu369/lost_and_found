@@ -10,4 +10,5 @@ CATEGORY_CHOICES = [
     ('vehicles_related', 'Vehicles and Related Items'),
     ('office_study', 'Office and Study Items'),
     ('religious_items', 'Religious Items'),
+    ('others', 'Others'),
 ]
