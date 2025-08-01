@@ -6,6 +6,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.template.loader import render_to_string
@@ -85,6 +86,47 @@ class PracticeList(APIView):
         user_obj.password = make_password(new_password)
         user_obj.save()
         return Response({"message": "Password updated successfully"})
+
+    def delete(self, request, pk=None):
+        if not pk:
+            return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user_obj = My_Reg.objects.get(id=pk)
+            user_obj.delete()
+            return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except My_Reg.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+    def put(self, request, pk=None):
+        
+        if not pk:
+            return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user_obj = My_Reg.objects.get(id=pk)
+            
+        except My_Reg.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Use serializer with partial=True to allow partial updates
+        serializer = MyReg_Serializer(user_obj, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            # If password is present, hash it before saving
+            if 'password' in serializer.validated_data:
+                serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
+
+            serializer.save()
+            return Response({"message": "User updated successfully"})
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
 # Authentication Login
@@ -248,7 +290,7 @@ class AllMatchedItemsAPIView(APIView):
         return Response(matches, status=status.HTTP_200_OK)
 
 class CreateProfile(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     # def post(self, request):
     #     data = request.data.copy()
@@ -292,6 +334,32 @@ class CreateProfile(APIView):
             serializer = CreateUserProfileSerializer(profiles, many=True)
             return Response(serializer.data)
         
+
+
+    def put(self, request, id=None):
+        if not id:
+            return Response({"error": "ID required for update"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            profile = CreateUserProfile.objects.get(pk=id)
+            serializer = CreateUserProfileSerializer(profile, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except :
+            return Response({"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, id=None):
+        if not id:
+            return Response({"error": "ID required for deletion"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            profile = CreateUserProfile.objects.get(id=id)
+            profile.delete()
+            return Response({"message": "Profile deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        except CreateUserProfile.DoesNotExist:
+            return Response({"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
+
+   
 #==========================#Feedback#================================================
 class FeedbackView(APIView):
     def get(self, request, pk=None):

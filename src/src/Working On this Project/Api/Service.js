@@ -15,6 +15,29 @@ export const otp_varify= async (data) => {
   return response.data;
 };
 
+export const Mp_reg_delete = async (id) => {
+  const token = localStorage.getItem("token");
+
+  const response = await axios.delete(`${Api_Url}/PracticeList/${id}/`, {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+
+  return response.data;
+};
+export const Mp_reg_update = async (id, data) => {
+  const token = localStorage.getItem("token");
+
+  const response = await axios.put(`${Api_Url}/PracticeList/${id}/`, data, {
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+
+  return response.data;
+};
+
 
 // Registration data get
 export const getPracticeListAll = async () => {
@@ -259,6 +282,64 @@ export const updateProfile_get = async (id) => {
     console.error("Error fetching profile(s):", error);
     throw error;
   }
+};
+
+
+
+
+// Adjust these according to your actual API endpoints
+// const BASE_URL = "http://localhost:8000";
+
+// export const deleteUserById = async (id) =>
+//   await fetch(`${BASE_URL}/CreateProfile/${id}/`, { method: "DELETE" });
+
+// export const updateUserById = async (id, data) =>
+//   await fetch(`${BASE_URL}/CreateProfile/${id}/`, {
+//     method: "PUT",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(data),
+//   });
+
+
+
+// ✅ Add token from localStorage to Authorization header
+
+export const deleteUserById = async (id) => {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${Api_Url}/CreateProfile/${id}/`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    console.error("Delete failed:", error);
+    throw new Error("Delete failed");
+  }
+};
+
+export const updateUserById = async (id, data) => {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${Api_Url}/CreateProfile/${id}/`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    console.error("Update failed:", error);
+    throw new Error("Update failed");
+  }
+
+  return await res.json();
 };
 
 
