@@ -1,19 +1,19 @@
-
 import React, { useEffect, useState } from "react";
-import { Input, Table, Spin } from "antd";
-import { Lost_get, Found_get, getPracticeList } from "../../../Api/Service";
+import { Input, Modal, Spin } from "antd";
+import { Lost_get, Found_get, getPracticeList, Lost_getById, Found_getById } from "../../../Api/Service";
 import "./DashboardHome.css";
 
 function DashboardHome() {
   const [lostItems, setLostItems] = useState([]);
   const [foundItems, setFoundItems] = useState([]);
   const [practiceList, setPracticeList] = useState(null);
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "default"
-  );
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "default");
   const [open, setOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
   const [loading, setLoading] = useState(false);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     fetchUserStats();
@@ -70,31 +70,31 @@ function DashboardHome() {
       console.error("Error fetching found items:", error);
     }
   };
+  
 
-  const cardData = practiceList
-    ? [
-      {
-        title: "Total Users",
-        value: practiceList.total_users,
-        color: "bg-black text-white",
-      },
-      {
-        title: "Active Users",
-        value: practiceList.active_users,
-        // color: "bg-green-100 text-green-800",
-      },
-      {
-        title: "Inactive Users",
-        value: practiceList.inactive_users,
-        color: "bg-yellow-100 text-yellow-800",
-      },
-      {
-        title: "Admins",
-        value: practiceList.admins,
-        color: "bg-purple-100 text-purple-800",
-      },
-    ]
-    : [];
+
+
+
+  const handleItemClick = async (item, type) => {
+    try {
+      let data;
+      if (type === "lost") {
+        const find_data=filteredLostItems.find(o=>o.id===item.id)
+        // data = await Lost_getById(item.id);
+        console.log(find_data)
+          setSelectedItem(find_data);
+        
+      } else {
+        // data = await Found_getById(item.id);
+         const find_data=filteredFoundItems.find(o=>o.id===item.id)
+         setSelectedItem(find_data);
+      }
+    
+      setIsModalVisible(true);
+    } catch (err) {
+      console.error("Error fetching item details", err);
+    }
+  };
 
   const filteredLostItems =
     selectedCategory === "All Categories"
@@ -106,27 +106,9 @@ function DashboardHome() {
       ? foundItems
       : foundItems.filter((item) => item.category === selectedCategory);
 
-  // const columns = [
-  //   { title: "ID", dataIndex: "id", key: "id" },
-  //   { title: "Name", dataIndex: "name", key: "name" },
-  //   { title: "Email", dataIndex: "email", key: "email" },
-  //   { title: "Country", dataIndex: "country", key: "country" },
-  //   { title: "Phone", dataIndex: "phone", key: "phone" },
-  // ];
-
-
-
-  const columns = [
-    { title: "ID", dataIndex: "id", key: "id" },
-    { title: "Name", dataIndex: "name", key: "name" },
-    { title: "Email", dataIndex: "email", key: "email" },
-    { title: "Country", dataIndex: "country", key: "country" },
-    { title: "Phone", dataIndex: "phone", key: "phone" },
-
-  ];
-
   return (
     <div className="dashboard_container">
+      {/* Header + Theme */}
       <div className="dashboard-header">
         <select
           className="category-select"
@@ -134,24 +116,15 @@ function DashboardHome() {
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
           <option value="All Categories">All Categories</option>
-          <option value="personal_belongings">Personal Belongings</option>
-          <option value="bags_accessories">Bags and Accessories</option>
-          <option value="documents">Documents</option>
-          <option value="electronics">Electronics</option>
-          <option value="clothing_wearables">Clothing and Wearables</option>
-          <option value="kids_items">Kids' Items</option>
-          <option value="pets">Pets</option>
-          <option value="vehicles">Vehicles</option>
-          <option value="office_study">Office and Study</option>
-          <option value="religious_items">Religious Items</option>
+          {/* Add other options */}
         </select>
 
         <Input.Search
           placeholder="Search lost or found items..."
           enterButton
           size="large"
-          onSearch={(value) => console.log("Search:", value)}
           style={{ width: 360 }}
+          onSearch={(value) => console.log("Search:", value)}
         />
 
         <div className="dropdown-container">
@@ -166,67 +139,65 @@ function DashboardHome() {
         </div>
       </div>
 
+      {/* Cards */}
       <div className="dashboard-content">
         <div className="card-container">
-          {/* {cardData.map((card, idx) => (
-            <div className="stat-card"  key={idx}>
-              <h3>{card.title}</h3>
-              <p>{card.value}</p>
-            </div>
-          ))} */}
-
-
-
-          {cardData.map((card, idx) => (
-            <div className={`stat-card ${card.title === "Total Users" ? "total-users" :
-                card.title === "Active Users" ? "active-users" :
-                  card.title === "Inactive Users" ? "inactive-users" :
-                    card.title === "Admins" ? "admins" : ""
-              }`} key={idx}>
-              <h3>{card.title}</h3>
-              <p>{card.value}</p>
-            </div>
-          ))}
-
+          {practiceList &&
+            [
+              { title: "Total Users", value: practiceList.total_users },
+              { title: "Active Users", value: practiceList.active_users },
+              { title: "Inactive Users", value: practiceList.inactive_users },
+              { title: "Admins", value: practiceList.admins },
+            ].map((card, idx) => (
+              <div className="stat-card" key={idx}>
+                <h3>{card.title}</h3>
+                <p>{card.value}</p>
+              </div>
+            ))}
         </div>
 
+        {/* Lost Items */}
         <h3 className="section-titlelost">Lost Items</h3>
         <div className="card-row">
           {filteredLostItems.map((item) => (
-            <div className="card" key={item.id}>
+            <div className="card" key={item.id} onClick={() => handleItemClick(item, "lost")}>
               <img src={`http://localhost:8000${item.item_image}`} alt={item.name} />
               <p>{item.name}</p>
             </div>
           ))}
         </div>
 
+        {/* Found Items */}
         <h3 className="section-titlefound">Found Items</h3>
         <div className="card-row">
           {filteredFoundItems.map((item) => (
-            <div className="card" key={item.id}>
+            <div className="card" key={item.id} onClick={() => handleItemClick(item, "found")}>
               <img src={`http://localhost:8000${item.item_image}`} alt={item.name} />
               <p>{item.name}</p>
             </div>
           ))}
         </div>
-
-        {/* <div className="table-section">
-          <h2>All Users Data</h2>
-          {loading ? (
-            <Spin tip="Loading..." />
-          ) : (
-            <div className="table-wrapper">
-              <Table
-                dataSource={practiceList?.users || []}
-                columns={columns}
-                rowKey="id"
-                bordered
-                pagination={{ pageSize: 5 }}
-              />
-            </div>
-          )}
-        </div> */}
       </div>
+
+      {/* Modal */}
+      <Modal
+        open={isModalVisible}
+        onOk={() => setIsModalVisible(false)}
+        onCancel={() => setIsModalVisible(false)}
+        okText="OK"
+        cancelButtonProps={{ style: { display: "none" } }}
+        title="Item Details"
+      >
+        {selectedItem && (
+          <div >
+            <p><strong>Name:</strong> {selectedItem.name}</p>
+            <p><strong>Description:</strong> {selectedItem.description}</p>
+            <p><strong>Category:</strong> {selectedItem.category}</p>
+            <p><strong>Location:</strong> {selectedItem.location_found || selectedItem.location}</p>
+            <p><strong>Date:</strong> {selectedItem.date_reported || selectedItem.date}</p>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

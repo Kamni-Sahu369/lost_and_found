@@ -72,5 +72,7 @@ urlpatterns = [
    path('payments/create/<int:pk>', RazorpayOrderCreateAPIView.as_view(), name='razorpay_order_create'),
     # path('update-payment-status/<int:pk>/', UpdatePaymentStatus.as_view(), name='update-payment-status'),
      path('api/found-items/', FoundItemListAPIView.as_view(), name='found_items_list'),
+    #matchitem
+     path('api/all-matched-items/', AllMatchedItemsAPIView.as_view(), name='all-matched-items'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

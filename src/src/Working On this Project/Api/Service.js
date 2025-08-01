@@ -460,3 +460,52 @@ export const getPayments = async () => {
     throw error;
   }
 };
+
+// ✅  for dashboard Lost item by ID
+export const Lost_getById = async (id) => {
+  try {
+    const response = await axios.get(`${Api_Url}/LostItemCreateView/${id}/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching lost item by ID:", error);
+    throw error;
+  }
+};
+
+// ✅ Found item by ID
+export const Found_getById = async (id) => {
+  try {
+    const response = await axios.get(`${Api_Url}/FoundItemCreateView/${id}/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching found item by ID:", error);
+    throw error;
+  }
+};
+
+export const fatch_all_founditem = async () => {
+  try {
+    const response = await axios.get(`${Api_Url}/FoundItemCreateView/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching payments:", error);
+    throw error;
+  }
+};
+export const fatch_all_lostitem = async () => {
+  try {
+    const response = await axios.get(`${Api_Url}/LostItemCreateView/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching payments:", error);
+    throw error;
+  }
+};export const getAllMatchedItems = async () => {
+  try {
+    const response = await axios.get(`${Api_Url}/api/all-matched-items/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching matched items:', error);
+    throw error;
+  }
+};

@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 import random
+from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.status import HTTP_401_UNAUTHORIZED
 
@@ -224,7 +225,27 @@ class FoundItemCreateView(APIView):
         except FoundItem.DoesNotExist:
             return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>matchitem>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+from fuzzywuzzy import fuzz
+class AllMatchedItemsAPIView(APIView):
+    def get(self, request):
+        matches = []
 
+        lost_items = LostItem.objects.all()
+        found_items = FoundItem.objects.all()
+
+        for lost in lost_items:
+            for found in found_items:
+                score = fuzz.partial_ratio(lost.name.lower(), found.name.lower())
+                if score >= 60 and lost.category == found.category:
+                    serializer = FoundItemSerializer(found, context={'request': request})
+                    matched_data = serializer.data
+                    matched_data['match_score'] = score
+                    matched_data['lost_item_name'] = lost.name
+                    matched_data['lost_item_id'] = lost.id
+                    matches.append(matched_data)
+
+        return Response(matches, status=status.HTTP_200_OK)
 
 class CreateProfile(APIView):
     permission_classes = [IsAuthenticated]
