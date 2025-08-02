@@ -350,8 +350,8 @@ const LostFoundTable = () => {
   // Fetch items
   const fetchItems = async () => {
     try {
-      const lostDataRaw = await Lost_get();
-      const foundDataRaw = await Found_get();
+      const lostDataRaw = await Lost_get(localStorage.getItem("user_id"));
+      const foundDataRaw = await Found_get(localStorage.getItem("user_id"));
 
       const lostData = lostDataRaw.map((item, index) => ({
         key: `L-${index + 1}`,
