@@ -21,6 +21,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import "./Pending.css";
+import { toast } from "react-toastify";
 import { get_claimItem } from "../../../../Api/InterfaceService";
 import { post_payment } from "../../../../Api/Service";
 
@@ -79,7 +80,7 @@ function Pending() {
 
     try {
       await post_payment(paymentData);
-      alert("Claim Approved & Payment Recorded!");
+      toast.success("Claim Approved & Payment Recorded!");
 
       setClaims((prevClaims) =>
         prevClaims.filter((claim) => claim.id !== selectedClaimId)

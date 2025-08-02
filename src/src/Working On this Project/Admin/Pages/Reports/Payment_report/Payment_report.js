@@ -13,6 +13,7 @@ import {
 import { EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import "./Payment_report.css";
 import { get_userPayments } from "../../../../Api/Service";
+import { toast } from "react-toastify";
 
 const { Search } = Input;
 const { Option } = Select;
@@ -80,7 +81,7 @@ const PaymentReport = () => {
     const updated = data.filter((item) => item.key !== key);
     setData(updated);
     setOriginalData(updated);
-    message.success("Entry deleted");
+    toast.success("Entry deleted");
   };
 
   const handleEditSubmit = () => {
@@ -90,7 +91,7 @@ const PaymentReport = () => {
       );
       setData(updated);
       setOriginalData(updated);
-      message.success("Payment updated");
+      toast.success("Payment updated");
       setEditModalVisible(false);
     });
   };

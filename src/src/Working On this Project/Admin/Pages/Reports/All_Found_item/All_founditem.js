@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 import React, { useEffect, useState } from 'react';
 import {
   Table,
@@ -23,11 +16,14 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons';
 import './All_founditem.css';
+import {Found_update} from '../../../../Api/Service';
+import {Found_delete} from '../../../../Api/Service';
 import { fatch_all_founditem } from '../../../../Api/Service';
+import { toast } from 'react-toastify';
 
 const { Search } = Input;
 const { Option } = Select;
-
+const BASE_URL = "http://127.0.0.1:8000/";
 const AllFoundItems = () => {
   const [data, setData] = useState([]); // no initial data
   const [originalData, setOriginalData] = useState([]); // to keep fetched data
@@ -39,44 +35,77 @@ const AllFoundItems = () => {
   const [form] = Form.useForm();
 
 
-  const handleDelete = (key) => {
+  const handleDelete = async (key) => {
+  try {
+    // Find the item by key to get its real ID
+    const itemToDelete = data.find((item) => item.key === key);
+    //  toast.success("Item deleted successfully!");
+    if (!itemToDelete) {
+      message.error("Item not found");
+      return;
+    }
+
+    // Make API call with ID
+    await Found_delete(itemToDelete.id);
+
+    // Update UI after deletion
     const updated = data.filter((item) => item.key !== key);
     setData(updated);
-    setOriginalData(updated); // update original data too
-    message.success('Item deleted');
-  };
-
-
-  const handlefatchdata=async()=>{
-    const data = await fatch_all_founditem();
-    setData(data);
+    setOriginalData(updated);
+    toast.success("Item deleted successfully!");
+  } catch (error) {
+    console.error("Delete failed", error);
+    message.error("Failed to delete item");
   }
+};
+
+
+  const handlefatchdata = async () => {
+  const response = await fatch_all_founditem();
+  // Add `key` to each item
+  const mappedData = response.map((item) => ({
+    ...item,
+    key: item.id, // required by Ant Design table
+     image: item.item_image,
+  }));
+
+  setData(mappedData);
+  setOriginalData(mappedData); // ✅ This was missing
+};
 
   useEffect(()=>{
     handlefatchdata();
   },[])
+ const handleupdatefounddata = (item) => {
+  setSelectedItem(item);             // Set selected item
+  form.setFieldsValue(item);        // Pre-fill form
+  setEditModalVisible(true);        // Open modal only, do NOT call API here
+};
   const handleView = (item) => {
     setSelectedItem(item);
     setViewModalVisible(true);
   };
+  const handleEditSubmit = async () => {
+  try {
+    const values = await form.validateFields();
 
-  const handleEdit = (item) => {
-    setSelectedItem(item);
-    form.setFieldsValue(item);
-    setEditModalVisible(true);
-  };
+    // ✅ Make PATCH request with selected item's ID
+    const updatedItem = await Found_update(selectedItem.id, values);
 
-  const handleEditSubmit = () => {
-    form.validateFields().then((values) => {
-      const updated = data.map((item) =>
-        item.key === selectedItem.key ? { ...item, ...values } : item
-      );
-      setData(updated);
-      setOriginalData(updated);
-      message.success('Item updated');
-      setEditModalVisible(false);
-    });
-  };
+    // ✅ Update local table data
+    const updatedList = data.map((item) =>
+      item.key === selectedItem.key ? { ...item, ...updatedItem } : item
+    );
+
+    setData(updatedList);
+    setOriginalData(updatedList);
+    toast.success("Item updated successfully!");
+    setEditModalVisible(false);
+  } catch (error) {
+    console.error("Update failed", error);
+    message.error("Failed to update item");
+  }
+};
 
   const handleSearch = (value) => {
     setSearchValue(value);
@@ -116,9 +145,9 @@ const AllFoundItems = () => {
       dataIndex: 'image',
       key: 'image',
       render: (url) => (
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          <img src={url} alt="item" width={50} />
-        </a>
+       <a href={`${BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
+            <img src={`${BASE_URL}${url}`} alt="payment proof" width={50} />
+          </a>
       ),
     },
     {
@@ -133,7 +162,7 @@ const AllFoundItems = () => {
             <Button
               type="primary"
               icon={<EditOutlined />}
-              onClick={() => handleEdit(record)}
+              onClick={() => handleupdatefounddata(record)}
             />
           </Tooltip>
           <Tooltip title="Delete">
@@ -197,7 +226,7 @@ const AllFoundItems = () => {
             <li><strong>Date:</strong> {selectedItem.date}</li>
             <li><strong>Time:</strong> {selectedItem.time}</li>
             <li><strong>Location:</strong> {selectedItem.location}</li>
-            <li><img src={selectedItem.image} alt="item" width="100" /></li>
+             <img src={`${BASE_URL}${selectedItem.image}`} width={100} alt="proof" />
           </ul>
         )}
       </Modal>
@@ -218,8 +247,8 @@ const AllFoundItems = () => {
           </Form.Item>
           <Form.Item name="status" label="Status" rules={[{ required: true }]}>
             <Select>
-              <Option value="Lost">Lost</Option>
-              <Option value="Found">Found</Option>
+              <Option value="false">Lost</Option>
+              <Option value="true">Found</Option>
             </Select>
           </Form.Item>
           <Form.Item name="date" label="Date" rules={[{ required: true }]}>
@@ -229,9 +258,6 @@ const AllFoundItems = () => {
             <Input />
           </Form.Item>
           <Form.Item name="location" label="Location" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="image" label="Image URL" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
         </Form>

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Form,
@@ -34,7 +33,7 @@ const LostForm = () => {
     try {
       const response = await Lost_post(values);
       console.log("Success:", response);
-      toast.success("Lost item posted successfully!");
+      toast.success("logeedin successfully!");
       form.resetFields();
       setFileList([]);
     } catch (error) {
@@ -82,6 +81,7 @@ const LostForm = () => {
                 <Option value="vehicles_related">Vehicles and Related Items</Option>
                 <Option value="office_study">Office and Study Items</Option>
                 <Option value="religious_items">Religious Items</Option>
+                <Option value="others">Others</Option>
               </Select>
             </Form.Item>
           </Col>
