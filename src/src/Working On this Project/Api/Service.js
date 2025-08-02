@@ -58,6 +58,15 @@ export const getPracticeList = async (id) => {
   });
   return response.data;
 };
+export const getPracticeListadmin = async (id) => {
+  const token = localStorage.getItem("access_token")
+  const response = await axios.get(`${Api_Url}/PracticeList/`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
 
 export const updateUserPassword = async (id, data) => {
   const response = await axios.patch(`${Api_Url}/PracticeList/${id}/`, data);

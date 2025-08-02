@@ -16,11 +16,15 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons';
 import './All_lostitem.css';
-import { fatch_all_lostitem } from '../../../../Api/Service';
+import {
+  fatch_all_lostitem,
+  Lost_delete,
+  Lost_update,
+} from '../../../../Api/Service';
 
 const { Search } = Input;
 const { Option } = Select;
-
+const BASE_URL="http://127.0.0.1:8000/"
 const AllLostItems = () => {
   const [data, setData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
@@ -31,12 +35,38 @@ const AllLostItems = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [form] = Form.useForm();
 
+   const handleFetchData = async () => {
+    try {
+      const result = await fatch_all_lostitem();
+      const updated = result.map((item) => ({
+        ...item,
+        key: item.id,
+        image: item.item_image,
+      }));
+      setData(updated);
+      setOriginalData(updated);
+    } catch (error) {
+      console.error(error);
+      message.error('Failed to fetch data');
+    }
+  };
+
+  useEffect(() => {
+    handleFetchData();
+  }, []);
+
   // DELETE
-  const handleDelete = (key) => {
-    const updated = data.filter((item) => item.key !== key);
-    setData(updated);
-    setOriginalData(updated);
-    message.success('Item deleted');
+  const handleDelete = async (id) => {
+    try {
+      await Lost_delete(id);
+      const updated = data.filter((item) => item.id !== id);
+      setData(updated);
+      setOriginalData(updated);
+      message.success('Item deleted successfully');
+    } catch (error) {
+      console.error(error);
+      message.error('Failed to delete item');
+    }
   };
 
   // VIEW
@@ -44,13 +74,7 @@ const AllLostItems = () => {
     setSelectedItem(item);
     setViewModalVisible(true);
   };
- const handlefatchdata=async()=>{
-  const data = await fatch_all_lostitem();
-  setData(data);
- }
- useEffect(()=>{
-   handlefatchdata();
- },[])
+
   // EDIT
   const handleEdit = (item) => {
     setSelectedItem(item);
@@ -58,16 +82,22 @@ const AllLostItems = () => {
     setEditModalVisible(true);
   };
 
-  const handleEditSubmit = () => {
-    form.validateFields().then((values) => {
-      const updated = data.map((item) =>
-        item.key === selectedItem.key ? { ...item, ...values } : item
-      );
+  const handleEditSubmit = async () => {
+    try {
+      const values = await form.validateFields();
+      await Lost_update(selectedItem.id, values);
+
+     const updated = data.map((item) =>
+      item.key === selectedItem.key ? { ...item, ...updated } : item
+    );
       setData(updated);
       setOriginalData(updated);
-      message.success('Item updated');
+      message.success('Item updated successfully');
       setEditModalVisible(false);
-    });
+    } catch (error) {
+      console.error(error);
+      message.error('Failed to update item');
+    }
   };
 
   // FILTERING
@@ -109,9 +139,9 @@ const AllLostItems = () => {
       dataIndex: 'image',
       key: 'image',
       render: (url) => (
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          <img src={url} alt="item" width={50} />
-        </a>
+       <a href={`${BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
+            <img src={`${BASE_URL}${url}`} alt="payment proof" width={50} />
+          </a>
       ),
     },
     {
@@ -133,7 +163,7 @@ const AllLostItems = () => {
             <Button
               danger
               icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record.key)}
+              onClick={() => handleDelete(record.id)}
             />
           </Tooltip>
         </Space>
@@ -171,8 +201,8 @@ const AllLostItems = () => {
         dataSource={data}
         bordered
         pagination={{ pageSize: 5 }}
-        rowKey="key"
-        scroll={{ x: 'max-content' }} // ✅ Added horizontal scroll
+        rowKey="id"
+        scroll={{ x: 'max-content' }}
       />
 
       {/* View Modal */}
@@ -190,7 +220,7 @@ const AllLostItems = () => {
             <li><strong>Date:</strong> {selectedItem.date}</li>
             <li><strong>Time:</strong> {selectedItem.time}</li>
             <li><strong>Location:</strong> {selectedItem.location}</li>
-            <li><img src={selectedItem.image} alt="item" width="100" /></li>
+            <li><img src={`${BASE_URL}${selectedItem.image}`} alt="item" width="100" /></li>
           </ul>
         )}
       </Modal>
@@ -224,9 +254,6 @@ const AllLostItems = () => {
           <Form.Item name="location" label="Location" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="image" label="Image URL" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
         </Form>
       </Modal>
     </div>
@@ -234,3 +261,8 @@ const AllLostItems = () => {
 };
 
 export default AllLostItems;
+
+
+
+
+
