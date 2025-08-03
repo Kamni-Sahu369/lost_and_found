@@ -323,19 +323,37 @@ const AllLostItems = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [form] = Form.useForm();
 
-  // ✅ Fetch and map item_image to image
-  const handleFetchData = async () => {
+   const handleFetchData = async () => {
     try {
       const result = await fatch_all_lostitem();
-      const mappedData = result.map((item) => ({
+      const updated = result.map((item) => ({
         ...item,
-        image: item.item_image, // ✅ Remap for consistency
+        key: item.id,
+        image: item.item_image,
       }));
-      setData(mappedData);
-      setOriginalData(mappedData);
+      setData(updated);
+      setOriginalData(updated);
     } catch (error) {
       console.error(error);
       message.error('Failed to fetch data');
+    }
+  };
+
+  useEffect(() => {
+    handleFetchData();
+  }, []);
+
+  // DELETE
+  const handleDelete = async (id) => {
+    try {
+      await Lost_delete(id);
+      const updated = data.filter((item) => item.id !== id);
+      setData(updated);
+      setOriginalData(updated);
+      message.success('Item deleted successfully');
+    } catch (error) {
+      console.error(error);
+      message.error('Failed to delete item');
     }
   };
 
@@ -363,7 +381,7 @@ const AllLostItems = () => {
     setViewModalVisible(true);
   };
 
-  // ✅ EDIT
+  // EDIT
   const handleEdit = (item) => {
     setSelectedItem(item);
     form.setFieldsValue(item);
@@ -374,9 +392,10 @@ const AllLostItems = () => {
     try {
       const values = await form.validateFields();
       await Lost_update(selectedItem.id, values);
-      const updated = data.map((item) =>
-        item.id === selectedItem.id ? { ...item, ...values } : item
-      );
+
+     const updated = data.map((item) =>
+      item.key === selectedItem.key ? { ...item, ...updated } : item
+    );
       setData(updated);
       setOriginalData(updated);
       message.success('Item updated successfully');
@@ -426,14 +445,11 @@ const AllLostItems = () => {
       title: 'Image',
       dataIndex: 'image',
       key: 'image',
-      render: (url) =>
-        url ? (
-          <a href={`${BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
-            <img src={`${BASE_URL}${url}`} alt="Lost Item" width={50} />
+      render: (url) => (
+       <a href={`${BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
+            <img src={`${BASE_URL}${url}`} alt="payment proof" width={50} />
           </a>
-        ) : (
-          <span>No Image</span>
-        ),
+      ),
     },
     {
       title: 'Actions',
@@ -511,17 +527,7 @@ const AllLostItems = () => {
             <li><strong>Date:</strong> {selectedItem.date}</li>
             <li><strong>Time:</strong> {selectedItem.time}</li>
             <li><strong>Location:</strong> {selectedItem.location}</li>
-            <li>
-              {selectedItem.image ? (
-                <img
-                  src={`${BASE_URL}${selectedItem.image}`}
-                  width={100}
-                  alt="proof"
-                />
-              ) : (
-                <span>No Image</span>
-              )}
-            </li>
+            <li><img src={`${BASE_URL}${selectedItem.image}`} alt="item" width="100" /></li>
           </ul>
         )}
       </Modal>
@@ -562,3 +568,8 @@ const AllLostItems = () => {
 };
 
 export default AllLostItems;
+
+
+
+
+
