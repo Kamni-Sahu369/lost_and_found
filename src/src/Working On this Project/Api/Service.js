@@ -58,6 +58,15 @@ export const getPracticeList = async (id) => {
   });
   return response.data;
 };
+export const getPracticeListadmin = async (id) => {
+  const token = localStorage.getItem("access_token")
+  const response = await axios.get(`${Api_Url}/PracticeList/`,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
 
 export const updateUserPassword = async (id, data) => {
   const response = await axios.patch(`${Api_Url}/PracticeList/${id}/`, data);
@@ -436,6 +445,7 @@ export const post_payment = async (data) => {
 
 // Get payments for the logged-in user
 export const get_userPayments = async (id = null) => {
+   const token = localStorage.getItem("token");
   try {
     let response;
     if (id) {
@@ -566,10 +576,17 @@ export const Found_getById = async (id) => {
 
 export const fatch_all_founditem = async () => {
   try {
-    const response = await axios.get(`${Api_Url}/FoundItemCreateView/`);
+    const token = localStorage.getItem("access_token")
+
+    const response = await axios.get(`${Api_Url}/FoundItemCreateView/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     return response.data;
   } catch (error) {
-    console.error("Error fetching payments:", error);
+    console.error("Error fetching Found item(s):", error.response?.data || error.message);
     throw error;
   }
 };

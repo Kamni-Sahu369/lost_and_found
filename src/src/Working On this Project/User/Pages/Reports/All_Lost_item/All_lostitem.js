@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   Button,
@@ -16,6 +16,7 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons';
 import './All_lostitem.css';
+import { Lost_get } from '../../../../Api/Service'; // ✅ Adjust path as needed
 
 const { Search } = Input;
 const { Option } = Select;
@@ -29,6 +30,34 @@ const AllLostItems = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [form] = Form.useForm();
+
+  // ✅ FETCH LOST ITEMS
+  useEffect(() => {
+    const fetchLostItems = async () => {
+      try {
+        const userId = localStorage.getItem("user_id");
+        const response = await Lost_get(userId);
+
+        const mappedData = response.map((item, index) => ({
+          key: item.id || index,
+          name: item.name,
+          category: item.category,
+          status: item.status,
+          date: item.date,
+          time: item.time,
+          location: item.location,
+          image: item.image,
+        }));
+
+        setData(mappedData);
+        setOriginalData(mappedData);
+      } catch (error) {
+        console.error("Error fetching lost items:", error);
+      }
+    };
+
+    fetchLostItems();
+  }, []);
 
   // DELETE
   const handleDelete = (key) => {
@@ -165,7 +194,7 @@ const AllLostItems = () => {
         bordered
         pagination={{ pageSize: 5 }}
         rowKey="key"
-        scroll={{ x: 'max-content' }} // ✅ Added horizontal scroll
+        scroll={{ x: 'max-content' }}
       />
 
       {/* View Modal */}
