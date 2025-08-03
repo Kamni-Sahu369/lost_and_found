@@ -25,9 +25,9 @@ function ApprovalRequest() {
       dataIndex: "id",
       key: "id",
     },
-    {
+   {
       title: "User",
-      dataIndex: "user",
+      dataIndex: ["lost_item_detail", "user"], // agar nested field ho
       key: "user",
     },
     {
