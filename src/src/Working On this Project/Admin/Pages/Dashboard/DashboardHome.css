@@ -233,7 +233,7 @@ body, .dashboard_container {
 .card-container {
   display: flex;
   justify-content: space-between;
-  padding: 20px 16px;
+  padding: 10px 10px;
   flex-wrap: wrap;
   gap: 16px;
 }
@@ -319,7 +319,7 @@ body, .dashboard_container {
 
 /* Base stat card style */
 .stat-card {
-  padding: 20px;
+  padding: 10px;
   border-radius: 16px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -345,37 +345,43 @@ body, .dashboard_container {
   margin: 0;
 }
 
-/* 🎨 Stylish colors for each card */
+
+
+
+
+
+/* 🌊 Card 1: Cool Mint & Teal */
 .card-container .stat-card:nth-child(1) {
-  background: #d0ebff; /* Light Blue */
-  color: #1d5aa6;
+  background: linear-gradient(135deg, #e6ffff, #ccf2f4);
+  color: #006d77;
 }
 .card-container .stat-card:nth-child(1) p {
-  color: #1e90ff;
+  color: #008891;
 }
 
+/* 🍑 Card 2: Soft Peach & Coral */
 .card-container .stat-card:nth-child(2) {
-  background: #d3f9d8; /* Soft Green */
-  color: #2a7b2e;
+  background: linear-gradient(135deg, #ffe9e0, #ffd4c2);
+  color: #b85c38;
 }
 .card-container .stat-card:nth-child(2) p {
-  color: #28a745;
+  color: #cc704b;
 }
 
+/* ☀️ Card 3: Creamy Yellow & Amber */
 .card-container .stat-card:nth-child(3) {
-  background: #fff3bf; /* Soft Yellow */
-  color: #f1c765;
+  background: linear-gradient(135deg, #fff9db, #ffefc1);
+  color: #996c00;
 }
 .card-container .stat-card:nth-child(3) p {
-  color: #eec489;
+  color: #b38600;
 }
 
+/* 💜 Card 4: Pastel Lavender & Orchid */
 .card-container .stat-card:nth-child(4) {
-  background: #ffd6e7; /* Soft Pink */
-  color: #c41d7f;
+  background: linear-gradient(135deg, #f4e4f9, #fce1ff);
+  color: #732d91;
 }
 .card-container .stat-card:nth-child(4) p {
-  color: #e91e63;
+  color: #8e3ba6;
 }
-
-

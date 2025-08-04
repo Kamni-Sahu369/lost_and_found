@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "antd";
+import { Input, Modal, Spin } from "antd";
 import { Lost_get, Found_get } from "../../../Api/Service";
 import "./DashboardHome.css";
 
@@ -9,6 +9,8 @@ function DashboardHome() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "default");
   const [open, setOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
+   const [selectedItem, setSelectedItem] = useState(null);
+   const [isModalVisible, setIsModalVisible] = useState(false);
 
   // Theme switcher
   useEffect(() => {
@@ -86,6 +88,28 @@ function DashboardHome() {
 ];
 
 
+
+ const handleItemClick = async (item, type) => {
+    try {
+      let data;
+      if (type === "lost") {
+        const find_data=filteredLostItems.find(o=>o.id===item.id)
+        // data = await Lost_getById(item.id);
+        console.log(find_data)
+          setSelectedItem(find_data);
+        
+      } else {
+        // data = await Found_getById(item.id);
+         const find_data=filteredFoundItems.find(o=>o.id===item.id)
+         setSelectedItem(find_data);
+      }
+    
+      setIsModalVisible(true);
+    } catch (err) {
+      console.error("Error fetching item details", err);
+    }
+  };
+
   // Filtered Data by Category
   const filteredLostItems =
     selectedCategory === "All Categories"
@@ -149,36 +173,48 @@ function DashboardHome() {
       </div> */}
 
       {/* Lost Items */}
-      <div className="section">
-        <h3 style={{ color: "red" }}>Lost Items</h3>
-        <div className="item-grid">
+       <h3 className="section-titlelost">Lost Items</h3>
+        <div className="card-row">
           {filteredLostItems.map((item) => (
-            <div className="item-card" key={item.id}>
-              <img
-                src={`http://localhost:8000${item.item_image}`}
-                alt={item.name}
-              />
+            <div className="card" key={item.id} onClick={() => handleItemClick(item, "lost")}>
+              <img src={`http://localhost:8000${item.item_image}`} alt={item.name} />
               <p>{item.name}</p>
             </div>
           ))}
         </div>
-      </div>
 
       {/* Found Items */}
-      <div className="section">
-        <h3 style={{ color: "red" }}>Found Items</h3>
-        <div className="item-grid">
+      <h3 className="section-titlefound">Found Items</h3>
+        <div className="card-row">
           {filteredFoundItems.map((item) => (
-            <div className="item-card" key={item.id}>
-              <img
-                src={`http://localhost:8000${item.item_image}`}
-                alt={item.name}
-              />
+            <div className="card" key={item.id} onClick={() => handleItemClick(item, "found")}>
+              <img src={`http://localhost:8000${item.item_image}`} alt={item.name} />
               <p>{item.name}</p>
             </div>
           ))}
         </div>
-      </div>
+
+
+ <Modal
+        open={isModalVisible}
+        onOk={() => setIsModalVisible(false)}
+        onCancel={() => setIsModalVisible(false)}
+        okText="OK"
+        cancelButtonProps={{ style: { display: "none" } }}
+        title="Item Details"
+      >
+        {selectedItem && (
+          <div >
+            <p><strong>Name:</strong> {selectedItem.name}</p>
+            <p><strong>Description:</strong> {selectedItem.description}</p>
+            <p><strong>Category:</strong> {selectedItem.category}</p>
+            <p><strong>Location:</strong> {selectedItem.location_found || selectedItem.location}</p>
+            <p><strong>Date:</strong> {selectedItem.date_reported || selectedItem.date}</p>
+          </div>
+        )}
+      </Modal>
+
+
     </div>
   );
 }
