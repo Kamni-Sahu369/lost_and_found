@@ -1,30 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Button,
-  Input,
   Select,
   Modal,
   Form,
   Space,
+  Input,
   Tooltip,
   message,
-} from 'antd';
-import {
-  EyeOutlined,
-  EditOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
-import './Yearly_report.css';
+} from "antd";
+import { EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { get_userPayments } from "../../../../Api/Service";
 
-const { Search } = Input;
 const { Option } = Select;
+const BASE_URL = "http://127.0.0.1:8000";
 
-const YearlyReport = () => {
+const PaymentReport = () => {
   const [data, setData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
-  const [statusFilter, setStatusFilter] = useState('All');
-  const [searchValue, setSearchValue] = useState('');
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [yearFilter, setYearFilter] = useState("All"); // ✅ added this
   const [viewModalVisible, setViewModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -33,6 +29,68 @@ const YearlyReport = () => {
   const handleView = (item) => {
     setSelectedItem(item);
     setViewModalVisible(true);
+  };
+
+  const handlepayreport = async () => {
+    try {
+      const response = await get_userPayments();
+      const loggedInUserId = localStorage.getItem("user_id");
+
+      const mappedData = response
+        .filter((item) => item.payer_detail?.id?.toString() === loggedInUserId)
+        .map((item, index) => {
+          const createdAt = new Date(item.created_at);
+          const month = createdAt.toLocaleString("default", { month: "long" });
+          const year = createdAt.getFullYear();
+          const time = createdAt.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          return {
+            key: item.id || index,
+            paymentId: item.transaction_id,
+            month,
+            time,
+            year,
+            itemName: item.lost_item_detail?.name || item.found_item_detail?.name || "N/A",
+            category: item.lost_item_detail?.category || item.found_item_detail?.category || "N/A",
+            location: item.lost_item_detail?.location || item.found_item_detail?.location || "N/A",
+            amount: item.amount,
+            status: item.status,
+            image: item.lost_item_detail?.item_image || item.found_item_detail?.item_image || "",
+          };
+        });
+
+      setData(mappedData);
+      setOriginalData(mappedData);
+    } catch (error) {
+      console.error("Failed to load payment report:", error);
+      message.error("Failed to load payment report");
+    }
+  };
+
+  useEffect(() => {
+    handlepayreport();
+  }, []);
+
+  const applyFilters = (status, year) => {
+    const filtered = originalData.filter((item) => {
+      const matchStatus = status === "All" || item.status === status;
+      const matchYear = year === "All" || item.year.toString() === year;
+      return matchStatus && matchYear;
+    });
+    setData(filtered);
+  };
+
+  const handleStatusFilter = (value) => {
+    setStatusFilter(value);
+    applyFilters(value, yearFilter);
+  };
+
+  const handleYearFilter = (value) => {
+    setYearFilter(value);
+    applyFilters(statusFilter, value);
   };
 
   const handleEdit = (item) => {
@@ -45,7 +103,7 @@ const YearlyReport = () => {
     const updated = data.filter((item) => item.key !== key);
     setData(updated);
     setOriginalData(updated);
-    message.success('Entry deleted');
+    message.success("Entry deleted");
   };
 
   const handleEditSubmit = () => {
@@ -55,86 +113,85 @@ const YearlyReport = () => {
       );
       setData(updated);
       setOriginalData(updated);
-      message.success('Report updated');
+      message.success("Payment updated");
       setEditModalVisible(false);
     });
   };
 
-  const handleSearch = (value) => {
-    setSearchValue(value);
-    filterData(value, statusFilter);
-  };
-
-  const handleFilter = (value) => {
-    setStatusFilter(value);
-    filterData(searchValue, value);
-  };
-
-  const filterData = (search, status) => {
-    const filtered = originalData.filter((item) => {
-      const searchMatch = Object.values(item).join(' ').toLowerCase().includes(search.toLowerCase());
-      const statusMatch = status === 'All' || !status ? true : item.status === status;
-      return searchMatch && statusMatch;
-    });
-    setData(filtered);
-  };
-
   const columns = [
-    { title: 'Year', dataIndex: 'year', key: 'year' },
-    { title: 'Item Name', dataIndex: 'itemName', key: 'itemName' },
-    { title: 'Category', dataIndex: 'category', key: 'category' },
-    { title: 'Date', dataIndex: 'date', key: 'date' },
-    { title: 'Time', dataIndex: 'time', key: 'time' },
-    { title: 'Location', dataIndex: 'location', key: 'location' },
-    { title: 'Total Items Reported', dataIndex: 'totalItemsReported', key: 'totalItemsReported' },
-    { title: 'Total Matched Items', dataIndex: 'totalMatchedItems', key: 'totalMatchedItems' },
-    { title: 'Status', dataIndex: 'status', key: 'status' },
+    { title: "Payment ID", dataIndex: "paymentId", key: "transaction_id" },
+    { title: "Year", dataIndex: "year", key: "year" },
+    { title: "Time", dataIndex: "time", key: "time" },
+    { title: "Item Name", dataIndex: "itemName", key: "itemName" },
+    { title: "Category", dataIndex: "category", key: "category" },
+    { title: "Location", dataIndex: "location", key: "location" },
+    { title: "Amount", dataIndex: "amount", key: "amount" },
+    { title: "Status", dataIndex: "status", key: "status" },
     {
-      title: 'Image',
-      dataIndex: 'image',
-      key: 'image',
-      render: (url) => (
-        <a href={url} target="_blank" rel="noopener noreferrer">
-          <img src={url} alt="report" width={50} />
-        </a>
-      ),
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      render: (url) =>
+        url ? (
+          <a href={`${BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
+            <img src={`${BASE_URL}${url}`} alt="payment proof" width={50} />
+          </a>
+        ) : (
+          <span>No Image</span>
+        ),
     },
     {
-      title: 'Actions',
-      key: 'actions',
+      title: "Actions",
+      key: "actions",
       render: (_, record) => (
         <Space>
           <Tooltip title="View">
             <Button icon={<EyeOutlined />} onClick={() => handleView(record)} />
           </Tooltip>
           <Tooltip title="Edit">
-            <Button type="primary" icon={<EditOutlined />} onClick={() => handleEdit(record)} />
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(record)}
+            />
           </Tooltip>
           <Tooltip title="Delete">
-            <Button danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.key)} />
+            <Button
+              danger
+              icon={<DeleteOutlined />}
+              onClick={() => handleDelete(record.key)}
+            />
           </Tooltip>
         </Space>
       ),
     },
   ];
 
+  const availableYears = [
+    "All",
+    ...Array.from(new Set(originalData.map((item) => item.year.toString()))),
+  ];
+
   return (
     <div className="report-container">
-      <h2>Yearly Report</h2>
+      <h2>Payment Report</h2>
 
-      <div className="search-filter-container">
-        <Search
-          placeholder="Search yearly reports"
-          allowClear
-          onSearch={handleSearch}
-          className="oval-search"
-          style={{ width: '60%' }}
-        />
-
-        <Select defaultValue="All" onChange={handleFilter} style={{ width: '35%' }}>
+      <div
+        className="search-filter-container"
+        style={{ display: "flex", gap: "10px", marginBottom: "16px" }}
+      >
+        <Select defaultValue="All" style={{ width: "50%" }} onChange={handleStatusFilter}>
           <Option value="All">All</Option>
-          <Option value="Complete">Complete</Option>
-          <Option value="In Progress">In Progress</Option>
+          <Option value="Paid">Paid</Option>
+          <Option value="Pending">Pending</Option>
+        </Select>
+
+        <Select defaultValue="All" style={{ width: "50%" }} onChange={handleYearFilter}>
+          {availableYears.map((year) => (
+            <Option key={year} value={year}>
+              {year}
+            </Option>
+          ))}
         </Select>
       </div>
 
@@ -144,41 +201,48 @@ const YearlyReport = () => {
         rowKey="key"
         pagination={{ pageSize: 5 }}
         bordered
-        scroll={{ x: 'max-content' }}
+        scroll={{ x: "max-content" }}
       />
 
       <Modal
-        title="View Yearly Report"
+        title="View Payment Report"
         open={viewModalVisible}
         footer={null}
         onCancel={() => setViewModalVisible(false)}
       >
         {selectedItem && (
           <ul>
+            <li><strong>Payment ID:</strong> {selectedItem.paymentId}</li>
             <li><strong>Year:</strong> {selectedItem.year}</li>
+            <li><strong>Time:</strong> {selectedItem.time}</li>
             <li><strong>Item Name:</strong> {selectedItem.itemName}</li>
             <li><strong>Category:</strong> {selectedItem.category}</li>
-            <li><strong>Date:</strong> {selectedItem.date}</li>
-            <li><strong>Time:</strong> {selectedItem.time}</li>
             <li><strong>Location:</strong> {selectedItem.location}</li>
-            <li><strong>Total Items Reported:</strong> {selectedItem.totalItemsReported}</li>
-            <li><strong>Total Matched Items:</strong> {selectedItem.totalMatchedItems}</li>
+            <li><strong>Amount:</strong> {selectedItem.amount}</li>
             <li><strong>Status:</strong> {selectedItem.status}</li>
             <li>
-              <img src={selectedItem.image} alt="Yearly Report" width={100} />
+              {selectedItem.image && (
+                <img src={`${BASE_URL}${selectedItem.image}`} width={100} alt="proof" />
+              )}
             </li>
           </ul>
         )}
       </Modal>
 
       <Modal
-        title="Edit Yearly Report"
+        title="Edit Monthly Report"
         open={editModalVisible}
         onOk={handleEditSubmit}
         onCancel={() => setEditModalVisible(false)}
       >
         <Form form={form} layout="vertical">
+          <Form.Item name="paymentId" label="Payment ID" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
           <Form.Item name="year" label="Year" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="time" label="Time" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item name="itemName" label="Item Name" rules={[{ required: true }]}>
@@ -187,25 +251,16 @@ const YearlyReport = () => {
           <Form.Item name="category" label="Category" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="date" label="Date" rules={[{ required: true }]}>
-            <Input type="date" />
-          </Form.Item>
-          <Form.Item name="time" label="Time" rules={[{ required: true }]}>
-            <Input type="time" />
-          </Form.Item>
           <Form.Item name="location" label="Location" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="totalItemsReported" label="Total Items Reported" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="totalMatchedItems" label="Total Matched Items" rules={[{ required: true }]}>
+          <Form.Item name="amount" label="Amount" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item name="status" label="Status" rules={[{ required: true }]}>
             <Select>
-              <Option value="Complete">Complete</Option>
-              <Option value="In Progress">In Progress</Option>
+              <Option value="Paid">Paid</Option>
+              <Option value="Pending">Pending</Option>
             </Select>
           </Form.Item>
           <Form.Item name="image" label="Image URL" rules={[{ required: true }]}>
@@ -217,4 +272,4 @@ const YearlyReport = () => {
   );
 };
 
-export default YearlyReport;
+export default PaymentReport;
