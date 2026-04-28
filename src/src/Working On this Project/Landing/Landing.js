@@ -36,7 +36,7 @@ import Yearly_report from '../Admin/Pages/Reports/Yearly_report/Yearly_report'
 import Payment_report from '../Admin/Pages/Reports/Payment_report/Payment_report'
 import Logout from "../Admin/Pages/Logout/Logout";
 import Updates from "../Admin/Pages/Notification/Updates"
-import Payment_Receipts from "../Admin/Pages/Notification/Payment"
+// import Payment_Receipts from "../Admin/Pages/Notification/Payment"
 // User
 import UserDashboard from "../User/Pages/Dashboard/DashboardHome";
 import UserItem from "../User/Pages/Item/Item";
@@ -56,7 +56,7 @@ import UserPending_pay from '../User/Pages/Payment/Pending_pay/Pending_pay'
 import UserReports from "../User/Pages/Reports/Reports";
 import UserUpdates from "../User/Pages/Notification/Updates"
 import Success from "../User/Pages/Notification/Success"
-import Payment_receipts from "../User/Pages/Notification/Payment_receipts"
+// import Payment_receipts from "../User/Pages/Notification/Payment_receipts"
 import UserAll_lostitem from '../User/Pages/Reports/All_Lost_item/All_lostitem';
 import UserAll_founditem from '../User/Pages/Reports/All_Found_item/All_founditem'
 import UserMatchitem from '../User/Pages/Reports/Match_item/Matchitem'
@@ -122,7 +122,7 @@ function Landing() {
                   <Route path="/Pending_pay" element={<Pending_pay />} />
                   <Route path="/Complete_pay" element={<Complete_pay />} />
                   <Route path="/updates" element={<Updates />} />
-                  <Route path="/payment_receipts" element={<Payment_Receipts />} />
+                  {/* <Route path="/payment_receipts" element={<Payment_Receipts />} /> */}
                 </>
               ) : (
                 <>
@@ -153,7 +153,7 @@ function Landing() {
                   <Route path="/updates" element={<UserUpdates />} />
                   <Route path="/success" element={<Success />} />
                   <Route path="/logout" element={<UserLogout />} />
-                  <Route path="/payment_receipts" element={<Payment_receipts />} />
+                  {/* <Route path="/payment_receipts" element={<Payment_receipts />} /> */}
                   {/* Add more user-specific routes here */}
                 </>
               )}+
