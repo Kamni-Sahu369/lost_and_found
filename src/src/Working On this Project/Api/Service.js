@@ -1,6 +1,6 @@
 import axios from "axios";
 // const Api_Url = "https://lost-and-found-co21.onrender.com";
-const Api_Url = process.env.REACT_APP_API_URL;
+const Api_Url = process.env.REACT_APP_API_URL || "https://lost-and-found-co21.onrender.com";
 
 // Registration post
 export const Mp_reg_post = async (data) => {
