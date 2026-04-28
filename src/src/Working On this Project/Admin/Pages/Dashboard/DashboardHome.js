@@ -166,7 +166,7 @@ function DashboardHome() {
         <div className="card-row">
           {filteredLostItems.map((item) => (
             <div className="card" key={item.id} onClick={() => handleItemClick(item, "lost")}>
-              <img src={`http://localhost:8000${item.item_image}`} alt={item.name} />
+              <img src={`https://lost-and-found-co21.onrender.com${item.item_image}`} alt={item.name} />
               <p>{item.name}</p>
             </div>
           ))}
@@ -177,7 +177,7 @@ function DashboardHome() {
         <div className="card-row">
           {filteredFoundItems.map((item) => (
             <div className="card" key={item.id} onClick={() => handleItemClick(item, "found")}>
-              <img src={`http://localhost:8000${item.item_image}`} alt={item.name} />
+              <img src={`https://lost-and-found-co21.onrender.com${item.item_image}`} alt={item.name} />
               <p>{item.name}</p>
             </div>
           ))}

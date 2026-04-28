@@ -1,5 +1,5 @@
 import axios from "axios";
-const Api_Url = "http://localhost:8000";
+const Api_Url = "https://lost-and-found-co21.onrender.com";
 
 // Get token from localStorage
 const getAuthHeaders = () => {
@@ -28,6 +28,6 @@ export const get_claimItemuser = async (id) => {
 
 // >>>>>>>>>.approval payment>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 export const get_allPayments = async () => {
-  const response = await axios.get("http://localhost:8000/payments/");
+  const response = await axios.get("https://lost-and-found-co21.onrender.com/payments/");
   return response.data;
 }

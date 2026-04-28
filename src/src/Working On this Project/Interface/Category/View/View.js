@@ -54,7 +54,7 @@
 
 //           <div className="main_img">
 //             <img
-//               src={`http://localhost:8000${item.item_image}`}
+//               src={`https://lost-and-found-co21.onrender.com${item.item_image}`}
 //               alt={item.name}
 //               className="view-image"
 //             />
@@ -269,7 +269,7 @@ console.log(item)
 
         <div className="main_img">
           <img
-            src={`http://localhost:8000${item.item_image}`}
+            src={`https://lost-and-found-co21.onrender.com${item.item_image}`}
             alt={item.name}
             className="view-image"
           />

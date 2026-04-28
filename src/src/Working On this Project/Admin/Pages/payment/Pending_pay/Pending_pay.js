@@ -29,7 +29,7 @@ const PendingPaymentsPage = () => {
 
   const fetchPayments = async () => {
     try {
-      const res = await fetch("http://localhost:8000/paymentsList/");
+      const res = await fetch("https://lost-and-found-co21.onrender.com/paymentsList/");
       const data = await res.json();
       console.log("Fetched payments:", data);
       setItems(data);
@@ -47,7 +47,7 @@ const PendingPaymentsPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch("http://localhost:8000/payments/create/", {
+      await fetch("https://lost-and-found-co21.onrender.com/payments/create/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -72,7 +72,7 @@ const PendingPaymentsPage = () => {
     }
 
     // Step 1: Create Razorpay Order from Django
-    const orderRes = await fetch("http://localhost:8000/payments/create/", {
+    const orderRes = await fetch("https://lost-and-found-co21.onrender.com/payments/create/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -98,7 +98,7 @@ const PendingPaymentsPage = () => {
       order_id: orderData.transaction_id,
       handler: async function (response) {
         // Step 3: Confirm payment success to backend
-        const confirmRes = await fetch("http://localhost:8000/payments/webhook/", {
+        const confirmRes = await fetch("https://lost-and-found-co21.onrender.com/payments/webhook/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

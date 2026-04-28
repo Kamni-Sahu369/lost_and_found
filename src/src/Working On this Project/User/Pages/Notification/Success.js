@@ -9,7 +9,7 @@ function Success() {
 
   useEffect(() => {
     if (sessionId) {
-      fetch(`http://localhost:8000/api/stripe/session/${sessionId}/`)
+      fetch(`https://lost-and-found-co21.onrender.com/api/stripe/session/${sessionId}/`)
         .then((res) => res.json())
         .then((data) => {
           setSessionData(data);

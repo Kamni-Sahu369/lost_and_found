@@ -121,7 +121,7 @@ function Updates() {
                 <p>
                   <FileTextOutlined />{" "}
                   <a
-                    href={`http://localhost:8000${claim.receipt_bill}`}
+                    href={`https://lost-and-found-co21.onrender.com${claim.receipt_bill}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

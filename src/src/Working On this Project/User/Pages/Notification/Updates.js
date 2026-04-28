@@ -46,7 +46,7 @@ function UserPayments() {
             {item.receipt_bill && (
               <p>
                 <a
-                  href={`http://localhost:8000${item.receipt_bill}`}
+                  href={`https://lost-and-found-co21.onrender.com${item.receipt_bill}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

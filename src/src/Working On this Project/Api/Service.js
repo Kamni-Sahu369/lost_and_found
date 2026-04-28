@@ -1,5 +1,5 @@
 import axios from "axios";
-// const Api_Url = "http://localhost:8000";
+// const Api_Url = "https://lost-and-found-co21.onrender.com";
 const Api_Url = process.env.REACT_APP_API_URL;
 
 // Registration post
@@ -298,7 +298,7 @@ export const updateProfile_get = async (id) => {
 
 
 // Adjust these according to your actual API endpoints
-// const BASE_URL = "http://localhost:8000";
+// const BASE_URL = "https://lost-and-found-co21.onrender.com";
 
 // export const deleteUserById = async (id) =>
 //   await fetch(`${BASE_URL}/CreateProfile/${id}/`, { method: "DELETE" });

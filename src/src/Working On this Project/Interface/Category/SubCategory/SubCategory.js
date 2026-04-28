@@ -114,7 +114,7 @@ function SubCategory() {
           {combinedItems.map((i) => (
             <div className="phone_col" key={i.id}>
               <img
-                src={`http://localhost:8000${i.item_image}`}
+                src={`https://lost-and-found-co21.onrender.com${i.item_image}`}
                 alt={i.name}
                 className="item_image"
               />

@@ -181,7 +181,7 @@ function Pending() {
                       <Descriptions.Item label="Image" span={2}>
                         <Image
                           width={150}
-                          src={`http://localhost:8000${claim.lost_item_detail.item_image}`}
+                          src={`https://lost-and-found-co21.onrender.com${claim.lost_item_detail.item_image}`}
                           alt="Lost item"
                           style={{ borderRadius: 6 }}
                         />
@@ -193,7 +193,7 @@ function Pending() {
                 {claim.receipt_bill && (
                   <Descriptions.Item label="Proof">
                     <a
-                      href={`http://localhost:8000${claim.receipt_bill}`}
+                      href={`https://lost-and-found-co21.onrender.com${claim.receipt_bill}`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

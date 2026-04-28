@@ -73,7 +73,7 @@ function CompletePay() {
 
   const fetchPayments = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/paymentsList-complete/`);
+      const res = await fetch(`https://lost-and-found-co21.onrender.com/paymentsList-complete/`);
       const data = await res.json();
       console.log("Fetched completed payments:", data);
       setItems(data);

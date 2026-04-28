@@ -9,7 +9,7 @@ console.log(email,'registerData')
 
 const CheckoutButton = ({amount}) => {
   const handleClick = async () => {
-    const res = await fetch('http://localhost:8000/create-checkout-session/', {
+    const res = await fetch('https://lost-and-found-co21.onrender.com/create-checkout-session/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

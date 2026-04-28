@@ -262,7 +262,7 @@
 //       >
 //         {selectedImage ? (
 //           <img
-//             src={`http://127.0.0.1:8000${selectedImage}`}
+//             src={`https://lost-and-found-co21.onrender.com${selectedImage}`}
 //             alt="Item"
 //             style={{ width: '100%', maxHeight: '400px', objectFit: 'contain' }}
 //           />
@@ -551,7 +551,7 @@ const LostFoundTable = () => {
       >
         {selectedImage ? (
           <img
-            src={`http://127.0.0.1:8000${selectedImage}`}
+            src={`https://lost-and-found-co21.onrender.com${selectedImage}`}
             alt="Item"
             style={{ width: '100%', maxHeight: '400px', objectFit: 'contain' }}
           />
