@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path , include
 from myapp.views import *
-from payment.views import *
+# from payment.views import *
 from rest_framework_simplejwt.views import ( TokenObtainPairView,TokenRefreshView,)
 from django.conf.urls.static import static
 from django.conf import settings
@@ -55,12 +55,12 @@ urlpatterns = [
     path('payments/<int:id>/', PaymentAPIView.as_view()),
     # .....................................................................
     # payment
-    path("create-checkout-session/", create_checkout_session),
-    path("stripe_webhook", stripe_webhook),
-    path("payment-details/", get_payment_details),  # ✅ Added
-    path("api/stripe/session/<str:session_id>/", stripe_session_details),
-    path("api/my-payments/", my_payments),
-    path("api/my-payments/<int:id>/", my_payments),
+    # path("create-checkout-session/", create_checkout_session),
+    # path("stripe_webhook", stripe_webhook),
+    # path("payment-details/", get_payment_details),  # ✅ Added
+    # path("api/stripe/session/<str:session_id>/", stripe_session_details),
+    # path("api/my-payments/", my_payments),
+    # path("api/my-payments/<int:id>/", my_payments),
 
     #Razorpay.................................................................
     path('paymentsList/', PaymentListView.as_view(), name='payment-list'),
