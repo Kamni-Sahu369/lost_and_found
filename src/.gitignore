@@ -19,3 +19,25 @@ yarn-error.log*
 # OS files
 .DS_Store
 Thumbs.db
+
+
+
+
+
+# Media files
+media/
+*.zip
+
+# Environment
+.env
+.env.local
+
+# Dependencies
+node_modules/
+build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+db.sqlite3
