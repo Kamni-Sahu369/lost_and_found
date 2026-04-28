@@ -1,5 +1,6 @@
 import axios from "axios";
-const Api_Url = "http://localhost:8000";
+// const Api_Url = "http://localhost:8000";
+const Api_Url = process.env.REACT_APP_API_URL;
 
 // Registration post
 export const Mp_reg_post = async (data) => {

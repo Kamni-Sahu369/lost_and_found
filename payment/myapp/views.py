@@ -290,17 +290,6 @@ class AllMatchedItemsAPIView(APIView):
         return Response(matches, status=status.HTTP_200_OK)
 
 class CreateProfile(APIView):
-    # permission_classes = [IsAuthenticated]
-
-    # def post(self, request):
-    #     data = request.data.copy()
-    #     data['user'] = request.user.id
-    #     serializer = CreateUserProfileSerializer(data=data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors)
-
     def post(self, request):
         data = request.data.copy()
         data['user'] = request.user.id
@@ -520,7 +509,7 @@ class ClaimItemAPIView(APIView):
     
 
 class PaymentAPIView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         serializer = PaymentSerializer(data=request.data)
